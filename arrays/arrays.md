@@ -30,6 +30,8 @@ class Solution {
   ✅ This works because:
   The array has values from 1 to N, so we use value - 1 as the index.\
   The first time we see a value, we make the corresponding index negative.\
-  If we see it again, the number is already negative → it's duplicate.\
+  If we see it again, the number is already negative → it's duplicate.
 
+
+### 2. dfghcgvhn
       
