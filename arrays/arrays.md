@@ -246,6 +246,99 @@ for (int i = 0; i < len; i++) {
 This solution efficiently removes duplicates **in-place**, and ensures we only retain unique values while preserving order. It handles edge cases like empty input and returns the correct length of the unique array portion.
 
 ---
+```
+```
+### 3. 🥉 Find the Third Largest Element in an Array
+/*
+ * 🥉 Find the Third Largest Element in an Array
+ *
+ * ✅ Problem Statement:
+ * Given an array of integers, return the third largest **distinct** element.
+ * If the third largest doesn't exist, return -1.
+ *
+ * ✅ Key Observations:
+ * - Track three distinct max values: first, second, third.
+ * - Skip duplicates to ensure distinct elements.
+ * - Maintain values in a single pass.
+ *
+ * ✅ Time Complexity: O(n)
+ * ✅ Space Complexity: O(1)
+ */
+
+class Solution {
+    int thirdLargest(int arr[]) {
+        // Handle edge case: less than 3 elements
+        if (arr.length < 3) return -1;
+
+        int first = Integer.MIN_VALUE;
+        int second = Integer.MIN_VALUE;
+        int third = Integer.MIN_VALUE;
+
+        for (int i = 0; i < arr.length; i++) {
+            // Skip duplicates
+            if (arr[i] == first || arr[i] == second || arr[i] == third) continue;
+
+            if (arr[i] > first) {
+                third = second;
+                second = first;
+                first = arr[i];
+            } else if (arr[i] > second) {
+                third = second;
+                second = arr[i];
+            } else if (arr[i] > third) {
+                third = arr[i];
+            }
+        }
+
+        return third == Integer.MIN_VALUE ? -1 : third;
+    }
+
+    // Test it with an example
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        int[] arr = {70, 60, 60, 50, 50, 40};
+        System.out.println("Third largest element is: " + sol.thirdLargest(arr));
+        // Expected output: 50
+    }
+}
+```
+class Solution {
+    int thirdLargest(int arr[]) {
+        // Your code here
+      int first = Integer.MIN_VALUE, second = Integer.MIN_VALUE, 
+      third = Integer.MIN_VALUE;
+      
+      for(int i = 0; i< arr.length;i++){
+          if(arr[i] > first){
+              third = second;
+              second = first;
+              first = arr[i];
+          }else if(arr[i] > second ){
+              third = second;
+              second = arr[i];
+          }else if(arr[i] >third){
+              third = arr[i];
+          }
+      }
+      // in case of duplicate 
+    //   for (int i = 0; i < arr.length; i++) {
+    //         if (arr[i] > first) {
+    //             third = second;
+    //             second = first;
+    //             first = arr[i];
+    //         } else if (arr[i] > second && arr[i] != first) {
+    //             third = second;
+    //             second = arr[i];
+    //         } else if (arr[i] > third && arr[i] != second && arr[i] != first) {
+    //             third = arr[i];
+    //         }
+    //     }
+      return third;
+
+    }
+}
+```
+
 
 
       
