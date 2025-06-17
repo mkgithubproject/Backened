@@ -159,4 +159,93 @@ Profit = 6 - 1 = 5
 - Keep track of **buying low** and **selling high**.
 - Efficient solution avoids nested loops (which would be O(n²)).
 
+
+```
+```
+### 3. 🧹 Remove Duplicates from Sorted Array (Java)
+
+## 📝 Problem Statement
+
+Given a **sorted array**, remove the duplicates **in-place** such that each element appears only once and return the new length.
+
+Do **not** allocate extra space for another array; you must do this by **modifying the input array** in-place with O(1) extra memory.
+
+---
+
+## ✅ Approach
+
+### Key Observations:
+
+* The array is **sorted**, so duplicates will be **adjacent**.
+* You can iterate through the array and shift non-duplicate values forward.
+
+---
+
+## ✅ Java Implementation
+
+```java
+class Solution {
+    // Function to remove duplicates from the given sorted array
+    public int removeDuplicates(int[] arr) {
+        // Edge case: empty array
+        if (arr == null || arr.length == 0) return 0;
+
+        int index = 0; // Index to place unique elements
+
+        // Traverse till the second last element
+        for (int i = 0; i < arr.length - 1; i++) {
+            // If current and next element are different, keep it
+            if (arr[i] != arr[i + 1]) {
+                arr[index++] = arr[i];
+            }
+        }
+
+        // Always include the last element
+        arr[index++] = arr[arr.length - 1];
+
+        return index; // Length of array with unique elements
+    }
+}
+```
+
+---
+
+## 🧺 Example
+
+```java
+int[] arr = {1, 1, 2, 2, 3};
+Solution sol = new Solution();
+int len = sol.removeDuplicates(arr);
+
+System.out.print("Unique elements: ");
+for (int i = 0; i < len; i++) {
+    System.out.print(arr[i] + " ");
+}
+// Output: Unique elements: 1 2 3
+```
+
+---
+
+## 🔍 Time and Space Complexity
+
+* **Time Complexity**: O(n) – where `n` is the number of elements in the array.
+* **Space Complexity**: O(1) – in-place modification, no extra space used.
+
+---
+
+## ⚠️ Edge Cases
+
+* Empty array: `[]` → Return 0
+* All unique: `[1, 2, 3]` → Return length 3
+* All duplicates: `[1, 1, 1, 1]` → Return 1
+
+---
+
+## ✅ Summary
+
+This solution efficiently removes duplicates **in-place**, and ensures we only retain unique values while preserving order. It handles edge cases like empty input and returns the correct length of the unique array portion.
+
+---
+
+
       
