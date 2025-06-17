@@ -65,5 +65,98 @@ class Solution {
 ```
 
 
-### 2. dfghcgvhn
+
+### 2. 📈 Stock Buy and Sell – Max One Transaction Allowed
+
+## 📝 Problem Statement
+
+Given an array of stock prices, where the `i-th` element represents the price of the stock on day `i`, find the **maximum profit** you can achieve from **one** buy and **one** sell operation.
+
+- You **must** buy before you sell.
+- If no profit is possible, return `0`.
+
+---
+
+## 🧠 Approach
+
+To solve this problem in **O(n)** time and **O(1)** space:
+
+1. Track the **minimum price** seen so far while iterating.
+2. Calculate the **potential profit** at each step.
+3. Update the **maximum profit** if the current profit is greater.
+
+---
+
+## ✅ Java Implementation
+
+```java
+import java.util.*;
+
+public class StockProfit {
+    public static int maxProfit(int[] prices) {
+        if (prices == null || prices.length < 2) return 0;
+
+        int minPrice = prices[0];         // 🟡 Minimum price seen so far
+        int maxProfit = 0;                // 🔵 Maximum profit so far
+
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];     // 🔽 Found a new lower buying price
+            } else {
+                int profit = prices[i] - minPrice;   // 💰 Potential profit
+                if (profit > maxProfit) {
+                    maxProfit = profit;   // 🆙 Update max profit if better
+                }
+            }
+        }
+
+        return maxProfit;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {7, 1, 5, 3, 6, 4};
+        System.out.println("Maximum Profit: " + maxProfit(prices));
+    }
+}
+```
+
+---
+
+## 🧪 Example
+
+```
+Input:  [7, 1, 5, 3, 6, 4]
+Output: 5
+
+Explanation:
+Buy on day 2 (price = 1)
+Sell on day 5 (price = 6)
+Profit = 6 - 1 = 5
+```
+
+---
+
+## ⏱ Time & Space Complexity
+
+| Metric           | Value   |
+|------------------|---------|
+| Time Complexity  | O(n)    |
+| Space Complexity | O(1)    |
+
+---
+
+## 📌 Edge Cases
+
+- All prices decreasing → Profit = 0
+- Only one day → Profit = 0
+- Null or empty array → Profit = 0
+
+---
+
+## 💡 Notes
+
+- This problem is a classic example of a **greedy algorithm**.
+- Keep track of **buying low** and **selling high**.
+- Efficient solution avoids nested loops (which would be O(n²)).
+
       
