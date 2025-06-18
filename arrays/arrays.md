@@ -377,6 +377,87 @@ Then check the middle with right neighbour. If middle is smaller, swap the eleme
 Repeat the process till complete array is traversed.
 ```
 ```
+### 5. Pair Sum in a Sorted and Rotated Array
+  ```
+class Solution {
+    static boolean pairInSortedRotated(int arr[], int target) {
+        // Your code here
+        // find pivot element
+        int pivot = -1;
+        for(int i =0 ;i <arr.length-1 ; i++){
+            if(arr[i+1] < arr[i]){
+                pivot = i;
+                break;
+            }
+        }
+        int startPointer = 0;
+        int endPointer = arr.length-1;
+        if(pivot!=-1){
+            startPointer = pivot+1;
+            endPointer = pivot;
+        }
+        while(startPointer!=endPointer){
+            if(arr[startPointer]+arr[endPointer] == target){
+                return true;
+            }else if(arr[startPointer]+arr[endPointer] > target){
+                // reduce end pointer
+                endPointer = (endPointer-1+arr.length)%arr.length;
+            }else{
+                startPointer = (startPointer+1)%arr.length;
+            }
+        }
+        return false;
+        
+    }
+}
+  ```
+  #### Notes:
+  
+ First find the largest element in an array which is the pivot point. The element just after the largest element is the smallest element. Once   we have the indices of the largest and the smallest elements, we use two pointer technique to find the pair.\
+ 1. Set the left pointer(l) to the smallest value and the right pointer(r) to the highest value.\
+ 2. To handle the circular nature of the rotated array, we will use the modulo operation with the array size.(n/arraySize => (0 - arraySize-1 remainder )\
+
+### Method :2 [Naive Approach] Using Hashing - O(n) Time and O(n) Space
+```
+// Java code to check whether any pair exists
+// whose sum is equal to the given target value
+
+import java.util.HashSet;
+class GfG {
+    static boolean pairInSortedRotated(int[] arr, int target){
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+
+            // Calculate the complement that added to
+            // arr[i], equals the target
+            int complement = target - arr[i];
+
+            // Check if the complement exists in the set
+            if (set.contains(complement)) {
+                return true;
+            }
+
+            // Add the current element to the set
+            set.add(arr[i]);
+        }
+        
+        // If no pair is found
+        return false;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {11, 15, 6, 8, 9, 10};
+        int target = 16;
+
+        if (pairInSortedRotated(arr, target))
+            System.out.println("true");
+        else
+            System.out.println("false");
+    }
+}
+```
+```
+```
 
 
 
