@@ -339,6 +339,45 @@ class Solution {
 }
 ```
 
+### 4. Convert array into Zig-Zag fashion
+  ```
+  
+class Solution {
+    public static void zigZag(int[] arr) {
+        // code here
+        boolean lessThanFlag = true;
+        // approach arr[i-1] < arr[i] > arr[i+1].
+        for(int i=0;i<arr.length-1;i++){
+            if(lessThanFlag){
+                if(arr[i]> arr[i+1]){
+                    // swap
+                    int temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }else{ // lessThanFlag false 
+                if(arr[i] < arr[i+1]){
+                    // swap
+                    int temp = arr[i];
+                    arr[i] = arr[i+1];
+                    arr[i+1] = temp;
+                }
+            }
+            lessThanFlag = !lessThanFlag;
+        }
+    }
+}
+
+  ```
+  #### Notes:
+  
+The idea is that for each triplet, the middle element should be greater than its adjacent neighbours. So, for each triplet:\
+First check the left neighbour with the middle element. If middle is smaller, swap the elements.\
+Then check the middle with right neighbour. If middle is smaller, swap the elements.\
+Repeat the process till complete array is traversed.
+```
+```
+
 
 
       
