@@ -489,6 +489,18 @@ class GfG {
         }
     }
 }
+```
+### 7. Rotate an Array by d - Counterclockwise or Left:
+ m1: [Naive Approach] Rotate one by one - O(n * d) Time and O(1) Space\
+ m2: [Better Approach] Using Temporary Array - O(n) Time and O(n) Space\
+ m3:[Expected Approach 1] Using Juggling Algorithm - O(n) Time and O(1) Space\
+ m4:[Expected Approach 2] Using Reversal Algorithm - O(n) Time and O(1) Space\
+ code:\
+ ```
+ ```
+ 
+
+
 
 
 
