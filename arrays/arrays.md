@@ -459,6 +459,41 @@ class GfG {
 ```
 ```
 
+### 6. Sort an array of 0s, 1s and 2s 
+  ```
+  class Solution {
+    public static void sort012(int arr[], int n) {
+        int i = 0;
+        int nz = 0;           // Next position for 0
+        int nt = n - 1;       // Next position for 2
+
+        while (i <= nt) {
+            if (arr[i] == 0) {
+                // Swap current element with position of nz
+                int temp = arr[nz];
+                arr[nz] = arr[i];
+                arr[i] = temp;
+                i++;
+                nz++;
+            } else if (arr[i] == 2) {
+                // Swap current element with position of nt
+                int temp = arr[nt];
+                arr[nt] = arr[i];
+                arr[i] = temp;
+                nt--;
+                // i is not incremented here because swapped value needs to be checked
+            } else {
+                // If the element is 1, move forward
+                i++;
+            }
+        }
+    }
+}
+
+  ```
+  ```
+
+
 
 
       
