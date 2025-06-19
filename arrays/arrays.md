@@ -495,9 +495,39 @@ class GfG {
  m2: [Better Approach] Using Temporary Array - O(n) Time and O(n) Space\
  m3:[Expected Approach 1] Using Juggling Algorithm - O(n) Time and O(1) Space\
  m4:[Expected Approach 2] Using Reversal Algorithm - O(n) Time and O(1) Space\
- code:\
+       Reverse the subarray containing the first d elements of the array.\
+       Reverse the subarray containing the last (n - d) elements of the array.\
+       Finally, reverse all the elements of the array.\
+ code:
  ```
+class Solution {
+    // Function to rotate an array by d elements in counter-clockwise direction.
+    static void rotateArr(int arr[], int d) {
+        d = d%arr.length;
+        reverseArray(arr,0, d-1);
+        reverseArray(arr,d, arr.length-1);
+        reverseArray(arr,0, arr.length-1);
+    }
+    
+    static void reverseArray(int arr[] , int startingIndex, int endIndex){
+        while(startingIndex < endIndex){
+            int temp = arr[startingIndex];
+            arr[startingIndex] = arr[endIndex];
+            arr[endIndex] = temp;
+            startingIndex++;
+            endIndex--;
+        }
+    }
+}
  ```
+edge case: for d = d%arr.length \
+int[] arr = {10, 20, 30, 40, 50};
+int d = 7; // Greater than arr.length (which is 5)
+Since rotating an array of length 5 by 7 positions counter-clockwise is the same as rotating by 2 (because 7 % 5 = 2), 
+```
+```
+### 8. #########:
+
  
 
 
