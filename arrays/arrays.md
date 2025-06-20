@@ -596,6 +596,74 @@ m3: [Better Approach 2] Using Hashing - O(n) Time and O(n) Space
         return -1;
     }
 ```
+m4: [Expected Approach] Using Moore's Voting Algorithm- O(n) Time and O(1) Space\
+If an element occurs more than half the time (n/2) in an array, it will "survive" all pairwise eliminations against other elements.\
+### How It Works (In Simple Words):
+  ## Candidate Selection (Voting Phase):
+
+      Initialize a candidate and a count.
+
+      For each element:
+
+          If count == 0, set candidate = element.
+
+          If element == candidate, increment count.
+
+          Else, decrement count.
+
+  ## Validation (Optional):
+
+        Count how many times the candidate appears.
+
+        If it appears more than n/2, it's the majority element.
+```
+// Java program to find Majority
+// element in an array
+
+class GfG {
+    static int majorityElement(int[] arr) {
+        int n = arr.length;
+        int candidate = -1;
+        int count = 0;
+
+        // Find a candidate
+        for (int num : arr) {
+            if (count == 0) {
+                candidate = num;
+                count = 1;
+            } else if (num == candidate) {
+                count++;
+            } else {
+                count--;
+            }
+        }
+
+        // Validate the candidate
+        count = 0;
+        for (int num : arr) {
+            if (num == candidate) {
+                count++;
+            }
+        }
+	
+      	// If count is greater than n / 2, return the candidate; otherwise, return -1
+        if (count > n / 2) {
+            return candidate;
+        } else {
+            return -1;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 1, 2, 1, 3, 5, 1};
+        System.out.println(majorityElement(arr));
+    }
+}
+```
+
+### 9. Maximum Subarray Sum - Kadane's Algorithm
+
+
 
 
  
