@@ -248,7 +248,7 @@ This solution efficiently removes duplicates **in-place**, and ensures we only r
 ---
 ```
 ```
-### 3. 🥉 Find the Third Largest Element in an Array
+### 4. 🥉 Find the Third Largest Element in an Array
 /*
  * 🥉 Find the Third Largest Element in an Array
  *
@@ -339,7 +339,7 @@ class Solution {
 }
 ```
 
-### 4. Convert array into Zig-Zag fashion
+### 5. Convert array into Zig-Zag fashion
   ```
   
 class Solution {
@@ -377,7 +377,7 @@ Then check the middle with right neighbour. If middle is smaller, swap the eleme
 Repeat the process till complete array is traversed.
 ```
 ```
-### 5. Pair Sum in a Sorted and Rotated Array
+### 6. Pair Sum in a Sorted and Rotated Array
   ```
 class Solution {
     static boolean pairInSortedRotated(int arr[], int target) {
@@ -459,7 +459,7 @@ class GfG {
 ```
 ```
 
-### 6. Sort an array of 0s, 1s and 2s 
+### 7. Sort an array of 0s, 1s and 2s 
   ```
   class Solution {
     public static void sort012(int arr[], int n) {
@@ -490,7 +490,7 @@ class GfG {
     }
 }
 ```
-### 7. Rotate an Array by d - Counterclockwise or Left:
+### 8. Rotate an Array by d - Counterclockwise or Left:
  m1: [Naive Approach] Rotate one by one - O(n * d) Time and O(1) Space\
  m2: [Better Approach] Using Temporary Array - O(n) Time and O(n) Space\
  m3:[Expected Approach 1] Using Juggling Algorithm - O(n) Time and O(1) Space\
@@ -526,7 +526,7 @@ int d = 7; // Greater than arr.length (which is 5)
 Since rotating an array of length 5 by 7 positions counter-clockwise is the same as rotating by 2 (because 7 % 5 = 2), 
 ```
 ```
-### 8. Majority Element
+### 9. Majority Element
   m1: Naive Approach] Using Two Nested Loops - O(n^2) Time and O(1) Space\
   m2: [Better Approach 1] Using Sorting - O(n log n) Time and O(1) Space
   ```
@@ -661,7 +661,7 @@ class GfG {
 }
 ```
 
-### 9. Maximum Subarray Sum - Kadane's Algorithm
+### 10. Maximum Subarray Sum - Kadane's Algorithm
 
 
 
