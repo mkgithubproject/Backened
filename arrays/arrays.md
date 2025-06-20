@@ -526,7 +526,77 @@ int d = 7; // Greater than arr.length (which is 5)
 Since rotating an array of length 5 by 7 positions counter-clockwise is the same as rotating by 2 (because 7 % 5 = 2), 
 ```
 ```
-### 8. #########:
+### 8. Majority Element
+  m1: Naive Approach] Using Two Nested Loops - O(n^2) Time and O(1) Space\
+  m2: [Better Approach 1] Using Sorting - O(n log n) Time and O(1) Space
+  ```
+class Solution {
+    static int majorityElement(int arr[]) {
+        // code here
+        Arrays.sort(arr);
+        int count = 1;
+        if(arr.length ==1){
+            return arr[0];
+        }
+        for(int i = 1 ;i < arr.length ;i++){
+            if(arr[i] ==  arr[i-1]){
+                count++;
+                if(count > arr.length/2){
+                return arr[i];
+            }
+            }else{
+                count =1;
+            }
+            
+            
+        }
+        return -1;
+    }
+}
+or
+class Solution {
+    static int majorityElement(int arr[]) {
+        int n = arr.length;
+        Arrays.sort(arr);
+        // Potential majority element
+        int candidate = arr[n/2];  
+    
+        int count = 0;
+        for (int num : arr) {
+            if (num == candidate) {
+                count++;
+            }
+        }
+    
+        if (count > n/2) {
+            return candidate;
+        }
+        // No majority element
+        return -1; 
+    }
+}
+```
+m3: [Better Approach 2] Using Hashing - O(n) Time and O(n) Space
+```
+ static int majorityElement(int[] arr) {
+        int n = arr.length;
+        Map<Integer, Integer> countMap = new HashMap<>();
+
+        // Traverse the array and count occurrences using the hash map
+        for (int num : arr) {
+            countMap.put(num, countMap.getOrDefault(num, 0) + 1);
+          
+            // Check if current element count exceeds n / 2
+            if (countMap.get(num) > n / 2) {
+                return num;
+            }
+        }
+
+        // If no majority element is found, return -1
+        return -1;
+    }
+```
+
 
  
 
