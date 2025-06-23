@@ -662,7 +662,54 @@ class GfG {
 ```
 
 ### 10. Maximum Subarray Sum - Kadane's Algorithm
+  Method1: [Naive Approach] By iterating over all subarrays - O(n^2) Time and O(1) Space\
+  Method2 : [Expected Approach] Using Kadane's Algorithm - O(n) Time and O(1) Space
+  #### Kadane says: “As long as the path is helping me grow, I’ll keep going.If not, I’ll start again from the current position.”
+  ```
+	class Solution {
+    int maxSubarraySum(int[] arr) {
+        // Your code here
+        int maxSum = Integer.MIN_VALUE;
+        int sum = 0;
+        for(int i = 0 ; i< arr.length; i++){
+            sum = Math.max(arr[i], sum + arr[i]);
+            maxSum = Math.max(maxSum, sum);
+        }
+        return maxSum;
+    }
+}
+```
+#### Modified Kadane’s Algorithm with Start & End Index Tracking
+```
+class Solution {
+    int maxSubarraySum(int[] arr) {
+        int maxSum = Integer.MIN_VALUE;
+        int sum = 0;
+        int start = 0, end = 0, tempStart = 0;
 
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] > sum + arr[i]) {
+                sum = arr[i];
+                tempStart = i;  // New potential start of subarray
+            } else {
+                sum += arr[i];
+            }
+
+            if (sum > maxSum) {
+                maxSum = sum;
+                start = tempStart;  // Confirmed start of max subarray
+                end = i;            // Current index is the end
+            }
+        }
+
+        System.out.println("Maximum Subarray Sum: " + maxSum);
+        System.out.println("Start Index: " + start);
+        System.out.println("End Index: " + end);
+
+        return maxSum;
+    }
+}
+```
 
 
 
