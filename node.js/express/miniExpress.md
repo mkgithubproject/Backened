@@ -86,7 +86,8 @@ function createApp() {
   app.listen = function (port, cb) {
     const server = http.createServer(app);
     server.listen(port, cb);
-  };
+  }; // http.createServer(app) is like telling Node:“Here’s my function that knows how to handle all requests.”
+      //And .listen() starts listening for those requests on a port.
 
   return app;
 }
