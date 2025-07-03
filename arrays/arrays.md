@@ -710,6 +710,89 @@ class Solution {
     }
 }
 ```
+### 11. Stock Buy and Sell - Max one Transaction Allowed
+```
+// local minima / maxima
+class Solution {
+    public int maximumProfit(int prices[]) {
+        int localMinima = prices[0];
+        int localMaxima = prices[0];
+        int totalProfit = 0;
+
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] >= localMaxima) {
+                localMaxima = prices[i];
+            } else {
+                totalProfit += (localMaxima - localMinima);
+                localMinima = prices[i];
+                localMaxima = prices[i];
+            }
+        }
+
+        totalProfit += (localMaxima - localMinima);
+        return totalProfit;
+    }
+}
+
+```
+```
+class GfG {
+  
+    // Function to calculate the maximum profit
+    static int maximumProfit(int[] prices) {
+        int n = prices.length;
+        int lMin = prices[0];  // Local Minima
+        int lMax = prices[0];  // Local Maxima
+        int res = 0;
+
+        int i = 0;
+        while (i < n - 1) {
+          
+            // Find local minima
+            while (i < n - 1 && prices[i] >= prices[i + 1]) { i++; }
+            lMin = prices[i];
+           
+            // Local Maxima
+            while (i < n - 1 && prices[i] <= prices[i + 1]) { i++; }
+            lMax = prices[i];
+          
+            // Add current profit
+            res += (lMax - lMin);
+        }
+      
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] prices = {100, 180, 260, 310, 40, 535, 695};
+        System.out.println(maximumProfit(prices));
+    }
+}
+```
+To maximize profit in this problem when multiple transactions are allowed:\
+
+You should buy at every local minima and sell at every local maxima.\
+
+A simpler logic: Add all increments (i.e., whenever price[i] > price[i-1], add the difference).
+
+```
+class Solution {
+    public int maximumProfit(int prices[]) {
+        int totalProfit = 0;
+        
+        for(int i = 1; i < prices.length; i++) {
+            if(prices[i] > prices[i - 1]) {
+                totalProfit += prices[i] - prices[i - 1];
+            }
+        }
+        
+        return totalProfit;
+    }
+}
+```
+### 12. 
+
+
 
 
 
