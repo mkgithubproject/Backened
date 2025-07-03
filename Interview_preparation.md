@@ -1,7 +1,7 @@
 
 # Save the interview preparation roadmap as a Markdown file.
 
-markdown_content = """
+
 # 🧭 Node.js Backend Developer Interview Preparation Roadmap (2.5 Years Experience)
 
 **🎯 Goal:** Prepare for mid-level Node.js backend interviews (target: 12+ LPA)
