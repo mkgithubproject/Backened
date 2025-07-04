@@ -39,3 +39,27 @@ http.createServer((req, res) => {
     res.end('Send a POST request');
   }
 }).listen(3000);
+
+## low level
+```
+const net = require('net');
+
+const server = net.createServer((socket) => {
+  socket.on('data', (data) => {
+    const request = data.toString();
+    console.log('📥 Raw request:');
+    console.log(request);
+
+    // You could parse HTTP headers and body manually here
+
+    const httpResponse = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello from raw socket!`;
+
+    socket.write(httpResponse);
+    socket.end();
+  });
+});
+
+server.listen(3000, () => {
+  console.log('🧩 Raw socket server listening on port 3000');
+});
+```
