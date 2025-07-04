@@ -206,3 +206,29 @@ app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');
 });
 ```
+
+### request socket
+```
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  console.log('🔗 Socket ID:', req.socket.remotePort);
+
+  setTimeout(() => {
+    res.end(`Response to socket ${req.socket.remotePort}`);
+  }, 1000);
+});
+
+server.listen(3000, () => {
+  console.log('Server started on http://localhost:3000');
+});
+```
+When you open two tabs in the browser and go to localhost:3000, you’ll see:\
+ 🔗 Socket ID: 51846\
+ 🔗 Socket ID: 51848\
+And each response says:\
+Response to socket 51846\
+Response to socket 51848\
+This proves that each res is already linked to its own req, because they share the same socket.
+
+
