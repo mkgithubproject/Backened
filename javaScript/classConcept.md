@@ -50,6 +50,7 @@ function Person(name, age) {
 const p1 = new Person("Bob", 30);
 console.log(p1.sayHello());
 // Output: Hi, I'm Bob and I'm 30 years old
+### ⚠️ Drawback: Every instance gets its own copy of the method (more memory usage).
 ###########################################
 
 --------------------------------
@@ -92,6 +93,7 @@ class Dog extends Animal {
 const dog = new Dog("Rocky", "Labrador");
 dog.speak(); // Rocky barks
 ```
+// Efficient memory use: All instances share the same method.
 ### Constructor Functions and Prototypes (Rewritten Version)
 ```
 function Animal(name) {
