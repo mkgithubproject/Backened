@@ -9,6 +9,30 @@ class MyPromise {
     this.onRejectedCallbacks = [];  // Queue for .catch() when rejected
 
     // Resolve function to transition from pending to fulfilled
+    // defined inside the constructor becase
+    /**
+     **Reason: `resolve` and `reject` are executor-scoped functions**
+    They're intended to be used **only during the execution of the executor function** you pass to the `MyPromise` constructor — and not outside it.---
+
+    ### 🚩 Key Points:
+
+        #### 1. **Encapsulation**
+        
+          * These functions are private to the constructor scope.
+          * They're not exposed as class methods because no external code should be able to call them (only the executor).
+        
+        #### 2. **Closure Access to `this`**
+        
+          * The `resolve` and `reject` functions close over `this` (the promise instance), 
+          allowing them to mutate `this.state`, `this.value`, etc.
+        
+        #### 3. **Promise spec behavior**
+        
+          * In native JavaScript Promises, the `resolve` and `reject` functions passed to the executor are also internal, 
+           not methods on the instance.
+          * This mirrors that behavior.
+
+    **/
     const resolve = (value) => {
       if (this.state === 'pending') {
         this.state = 'fulfilled';
