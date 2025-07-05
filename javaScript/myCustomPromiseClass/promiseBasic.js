@@ -77,7 +77,9 @@ class MyPromise {
       }
     });
   }
-
+  catch(onRejected) {
+  return this.then(null, onRejected);
+}
   // 3. finally(): Always runs regardless of resolve/reject
   // - Doesn’t change result
   // - Useful for cleanup
