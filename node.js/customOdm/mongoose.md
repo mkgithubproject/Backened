@@ -75,12 +75,12 @@ Mongoose is an ODM (Object Document Mapper) for MongoDB that provides:
 
 ## 👉 Overview
 
-Mongoose is an ODM (Object Document Mapper) for MongoDB that provides:
+Mongoose is an ODM (Object Document Mapper) for MongoDB that provides:\
 
-* Schema validation
-* Model abstraction
-* Query building
-* Middleware support
+* Schema validation\
+* Model abstraction\
+* Query building\
+* Middleware support\
 * Virtuals, hooks, and more
 
 ---
@@ -269,23 +269,6 @@ txt
      [MongoDB Server]
 ```
 
----
-
-## 📝 Final Thoughts
-
-Mongoose adds:
-
-✅ Structure
-✅ Type safety
-✅ Built-in validations
-✅ Hooks/middleware
-✅ Cleaner query APIs
-✅ Strong developer experience
-
----
-
-
-```
 ### implemantion custom odm
 
 ```
