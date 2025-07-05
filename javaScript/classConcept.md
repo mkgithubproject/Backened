@@ -36,6 +36,22 @@ Person.prototype.sayHello = function() {
 const john = new Person("John");
 john.sayHello(); // Hello, I'm John
 
+####################################
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+
+  // Method defined inside the constructor
+  this.sayHello = function() {
+    return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+  };
+}
+
+const p1 = new Person("Bob", 30);
+console.log(p1.sayHello());
+// Output: Hi, I'm Bob and I'm 30 years old
+###########################################
+
 --------------------------------
 class Animal {
   speak() {
