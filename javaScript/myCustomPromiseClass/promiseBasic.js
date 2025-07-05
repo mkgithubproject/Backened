@@ -72,7 +72,7 @@ class MyPromise {
       } else if (this.state === 'rejected') {
         setTimeout(() => rejectedHandler(this.reason), 0);
       } else {
-        this.onFulfilledCallbacks.push(() => setTimeout(() => fulfilledHandler(this.value), 0));
+        this.onFulfilledCallbacks.push(() => setTimeout(() => fulfilledHandler(this.value), 0));v// if we rite multple line p.then,p.then like that
         this.onRejectedCallbacks.push(() => setTimeout(() => rejectedHandler(this.reason), 0));
       }
     });
