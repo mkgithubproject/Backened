@@ -1,0 +1,127 @@
+### classes
+A class in JavaScript is a blueprint for creating objects with properties and methods.\
+It's just syntactic sugar over JavaScript’s prototypal inheritance.
+
+## 📦 Basic Syntax of a Class
+```
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  sayHello() {
+    console.log(`Hi, I'm ${this.name} and I'm ${this.age} years old.`);
+  }
+}
+
+
+const p1 = new Person("Mohit", 25);
+p1.sayHello(); // Hi, I'm Mohit and I'm 25 years old.
+
+```
+## Every object in JavaScript has a hidden property called [[Prototype]] (also accessible via __proto__), which refers to another object.
+
+That forms a prototype chain: childLevel1 --- childLeve1 -- parentObject --- null\
+john --> Person.prototype --> Object.prototype --> null
+```
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function() {
+  console.log(`Hello, I'm ${this.name}`);
+};
+
+const john = new Person("John");
+john.sayHello(); // Hello, I'm John
+
+--------------------------------
+class Animal {
+  speak() {
+    console.log("Generic sound");
+  }
+}
+
+const a = new Animal();
+a.speak(); // Generic sound
+
+// Under the hood:
+console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
+--------------------------------------
+```
+### 🔁 What Actually Happens Under the Hood?
+```
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+
+  speak() {
+    console.log(`${this.name} makes a noise`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);
+    this.breed = breed;
+  }
+
+  speak() {
+    console.log(`${this.name} barks`);
+  }
+}
+
+const dog = new Dog("Rocky", "Labrador");
+dog.speak(); // Rocky barks
+```
+### Constructor Functions and Prototypes (Rewritten Version)
+```
+function Animal(name) {
+  this.name = name;
+}
+
+Animal.prototype.speak = function() {
+  console.log(`${this.name} makes a noise`);
+};
+
+function Dog(name, breed) {
+  // call Animal constructor
+  Animal.call(this, name);
+  this.breed = breed;
+}
+
+// Inherit from Animal
+Dog.prototype = Object.create(Animal.prototype); // set prototype chain
+Dog.prototype.constructor = Dog; // reset constructor pointer
+
+// Override speak method
+Dog.prototype.speak = function() {
+  console.log(`${this.name} barks`);
+};
+
+const dog = new Dog("Rocky", "Labrador");
+dog.speak(); // Rocky barks
+```
+## Prototype Chain for dog
+```
+dog
+ └── [[Prototype]] → Dog.prototype
+                      └── [[Prototype]] → Animal.prototype
+                                               └── [[Prototype]] → Object.prototype
+```
+So when you call dog.speak():\
+
+1.JS looks at dog.__proto__ → Dog.prototype\
+
+2.Finds the speak() method → calls it\
+
+3.If it wasn't there, it would go to Animal.prototype\
+
+4.Then to Object.prototype\
+
+5.Then null
+
+
+
