@@ -284,25 +284,186 @@ Mongoose adds:
 
 ---
 
-## 👨‍💼 Author
 
-**Mohit Gangwar**
-Backend Developer — Node.js, MongoDB, DevOps
-[Follow on GitHub](#)
+```
+### implemantion custom odm
 
----
+```
+// custom_odm.js
+const { MongoClient } = require('mongodb');
 
-## 🪖 License
+// --- MongoDB Connection ---
+const uri = 'mongodb://localhost:27017';
+const client = new MongoClient(uri);
+let db = null;
 
-MIT
+// Connect to MongoDB database
+async function connect() {
+  if (!db) {
+    await client.connect();
+    db = client.db('custom_odm');
+  }
+  return db;
+}
 
----
+// --- Schema Class ---
+// Defines the structure of the document and stores middleware functions
+class Schema {
+  constructor(definition) {
+    this.definition = definition;
+    this.middleware = {
+      pre: {},
+      post: {}
+    };
+  }
 
-✅ Want to go deeper?
-Ask me to build:
+  // Register a pre-hook for a specific lifecycle method (save, update, remove)
+  pre(hook, fn) {
+    if (!this.middleware.pre[hook]) this.middleware.pre[hook] = [];
+    this.middleware.pre[hook].push(fn);
+  }
 
-* A **custom mini-ODM like Mongoose** from scratch
-* A guide on **how Mongoose handles population & joins**
-* **Mongoose performance tips** and indexing strategies
+  // Register a post-hook
+  post(hook, fn) {
+    if (!this.middleware.post[hook]) this.middleware.post[hook] = [];
+    this.middleware.post[hook].push(fn);
+  }
+
+  // Simple type validation against the schema
+  validate(data) {
+    for (const key in this.definition) {
+      const type = this.definition[key];
+      const value = data[key];
+      if (value === undefined) continue;
+      if (typeof type === 'function') {
+        if (typeof value !== type.name.toLowerCase()) {
+          throw new Error(`Validation failed for '${key}': expected ${type.name}`);
+        }
+      }
+    }
+  }
+}
+
+// --- Model Factory Function ---
+// Returns a class with document behavior: save, update, remove, find
+function Model(name, schema) {
+  class CustomModel {
+    constructor(data) {
+      // Assign all properties from input data to the instance
+      Object.assign(this, data);
+    }
+
+    // Save the document to MongoDB with pre/post middleware
+    async save() {
+      const db = await connect();
+      const collection = db.collection(name);
+      schema.validate(this);
+
+      if (schema.middleware.pre['save']) {
+        for (const fn of schema.middleware.pre['save']) await fn.call(this);
+      }
+
+      const result = await collection.insertOne(this);
+
+      if (schema.middleware.post['save']) {
+        for (const fn of schema.middleware.post['save']) await fn.call(this);
+      }
+
+      return result;
+    }
+
+    // Update document with pre/post hooks
+    async update(changes) {
+      const db = await connect();
+      const collection = db.collection(name);
+
+      Object.assign(this, changes);
+      schema.validate(this);
+
+      if (schema.middleware.pre['update']) {
+        for (const fn of schema.middleware.pre['update']) await fn.call(this);
+      }
+
+      const result = await collection.updateOne({ _id: this._id }, { $set: changes });
+
+      if (schema.middleware.post['update']) {
+        for (const fn of schema.middleware.post['update']) await fn.call(this);
+      }
+
+      return result;
+    }
+
+    // Remove the document from MongoDB
+    async remove() {
+      const db = await connect();
+      const collection = db.collection(name);
+
+      if (schema.middleware.pre['remove']) {
+        for (const fn of schema.middleware.pre['remove']) await fn.call(this);
+      }
+
+      const result = await collection.deleteOne({ _id: this._id });
+
+      if (schema.middleware.post['remove']) {
+        for (const fn of schema.middleware.post['remove']) await fn.call(this);
+      }
+
+      return result;
+    }
+
+    // Static method to find documents by query
+    static async find(query = {}) {
+      const db = await connect();
+      const collection = db.collection(name);
+      const docs = await collection.find(query).toArray();
+      return docs.map(doc => new CustomModel(doc));
+    }
+  }
+
+  return CustomModel;
+}
+
+// --- Example Usage ---
+(async () => {
+  // 1. Define schema
+  const userSchema = new Schema({
+    name: String,
+    email: String
+  });
+
+  // 2. Add middleware hooks
+  userSchema.pre('save', async function () {
+    console.log('[Pre Save]', this.name);
+  });
+
+  userSchema.post('save', async function () {
+    console.log('[Post Save]', this.name);
+  });
+
+  userSchema.pre('update', async function () {
+    console.log('[Pre Update]', this.name);
+  });
+
+  userSchema.post('update', async function () {
+    console.log('[Post Update]', this.name);
+  });
+
+  userSchema.pre('remove', async function () {
+    console.log('[Pre Remove]', this.name);
+  });
+
+  userSchema.post('remove', async function () {
+    console.log('[Post Remove]', this.name);
+  });
+
+  // 3. Create model
+  const User = Model('users', userSchema);
+
+  // 4. Create and manipulate document
+  const user = new User({ name: 'Bob', email: 'bob@example.com' });
+  await user.save();                  // insert document
+  await user.update({ name: 'Bobby' }); // update document
+  await user.remove();               // delete document
+})();
 
 ```
