@@ -123,5 +123,28 @@ So when you call dog.speak():\
 
 5.Then null
 
+## A factory function is a regular JavaScript function that returns a new object (or class or instance). It’s a way to create and customize objects without using the class keyword.
+```
+function createUser(name, age) {
+  return {
+    name,
+    age,
+    greet() {
+      console.log(`Hi, I'm ${this.name} and I'm ${this.age}`);
+    }
+  };
+}
+
+const user1 = createUser("Mohit", 25);
+user1.greet(); // Hi, I'm Mohit and I'm 25
+```
+# 🧠 Why Use a Factory Function?
+1.Simple way to create reusable object templates\
+2.Can avoid this, new, and class\
+3.You can customize the logic inside\
+4.You can create closures (private variables)
+
+
+
 
 
