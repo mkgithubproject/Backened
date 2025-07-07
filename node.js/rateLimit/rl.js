@@ -29,7 +29,7 @@ This implementation uses a simple Fixed Window Counter algorithm.
 const Redis = require("ioredis");
 const redis = new Redis(); // Connects to localhost:6379 by default
 
-function rateLimiter({ windowInSeconds, maxRequests }) {
+function rateLimiter({ windowInSeconds, maxRequests }) { // factory function
   return async (req, res, next) => {
     const key = `rate_limit:${req.ip}`;
     const current = await redis.incr(key);
