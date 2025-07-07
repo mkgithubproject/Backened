@@ -104,4 +104,141 @@ new MyPromise((resolve, reject) => {
 
 ---
 
-Let me know if you want to add `.catch`, `.finally`, or error propagation!
+### 🔍 Deep Dive into `fulfilledHandler`
+
+```js
+const fulfilledHandler = (value) => {
+  try {
+    const result = onFulfilled ? onFulfilled(value) : value;
+    result instanceof MyPromise ? result.then(resolve, reject) : resolve(result);
+  } catch (err) {
+    reject(err);
+  }
+};
+```
+
+**What it does:**
+
+* Runs when the previous promise is **fulfilled**.
+* Tries to execute the user’s success handler (`onFulfilled`).
+* Handles the **result**:
+
+  * If it's another `MyPromise`, it **waits** for it to finish (`.then(resolve, reject)`).
+  * If it's a normal value, it **immediately resolves** the next promise in the chain.
+* If an error is thrown, it **rejects the next promise**.
+
+**Line-by-Line Breakdown:**
+
+| Line                                                                | Purpose                                                                 |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| `const result = onFulfilled ? onFulfilled(value) : value;`          | Call user’s handler if it exists, else just forward the value           |
+| `result instanceof MyPromise ? result.then(...) : resolve(result);` | Support chaining: wait if it's a promise, resolve immediately if not    |
+| `catch (err)`                                                       | Catches any error thrown in user's handler and rejects the next promise |
+
+**Example:**
+
+```js
+MyPromise.resolve(5)
+  .then(val => val + 10)                    // result = 15
+  .then(val => new MyPromise(r => r(val))) // result = MyPromise(15)
+  .then(console.log);                      // logs: 15
+```
+
+---
+
+### 🔍 Deep Dive into `rejectedHandler`
+
+```js
+const rejectedHandler = (reason) => {
+  try {
+    const result = onRejected ? onRejected(reason) : reject(reason);
+    result instanceof MyPromise ? result.then(resolve, reject) : resolve(result);
+  } catch (err) {
+    reject(err);
+  }
+};
+```
+
+**What it does:**
+
+* Runs when the previous promise is **rejected**.
+* Tries to execute the user’s failure handler (`onRejected`).
+* If the user **did not provide** a rejection handler, the rejection is passed down.
+* If the handler returns:
+
+  * a promise → it’s chained using `.then(resolve, reject)`
+  * a value → resolve the next promise with it
+* If the handler throws → reject the next promise
+
+**Key Points:**
+
+| Line                                               | Purpose                                      |
+| -------------------------------------------------- | -------------------------------------------- |
+| `onRejected ? onRejected(reason) : reject(reason)` | Call user's handler or forward the rejection |
+| `result instanceof MyPromise`                      | If it's a promise, wait on it                |
+| `resolve(result)`                                  | Otherwise, resolve next promise              |
+| `catch (err)`                                      | Rejects next promise if any error is thrown  |
+
+**Example:**
+
+```js
+MyPromise.reject("fail")
+  .then(null, (err) => {
+    console.log("Caught:", err);
+    return "Recovered";
+  })
+  .then(res => console.log("Next:", res));
+
+// Output:
+// Caught: fail
+// Next: Recovered
+```
+
+---
+
+### 🔍 Deep Dive into `.catch()` and `.finally()`
+
+#### `.catch()`
+
+```js
+catch(onRejected) {
+  return this.then(null, onRejected);
+}
+```
+
+* It’s just **syntactic sugar** for `.then(null, onRejected)`.
+* Useful for **error-only** handling.
+
+#### `.finally()`
+
+```js
+finally(callback) {
+  return this.then(
+    value => MyPromise.resolve(callback()).then(() => value),
+    reason => MyPromise.resolve(callback()).then(() => { throw reason })
+  );
+}
+```
+
+* Runs `callback` regardless of success or failure.
+* Converts its result to a promise (if it isn’t already).
+* After the callback finishes:
+
+  * If original was successful → resolves with original value
+  * If original failed → rethrows the original error
+
+**Example:**
+
+```js
+MyPromise.resolve("data")
+  .finally(() => console.log("Cleanup"))
+  .then(res => console.log("Success:", res));
+
+// Output:
+// Cleanup
+// Success: data
+```
+
+---
+
+Let me know if you'd like to dive into promise chaining, unhandled rejections, or building `all`, `race`, `allSettled`, etc.!
