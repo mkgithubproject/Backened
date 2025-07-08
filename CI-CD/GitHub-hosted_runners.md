@@ -141,3 +141,38 @@ pm2 restart my-app || pm2 start npm --name my-app -- start
 * SSH then uses it automatically to connect to EC2.
 
 ✅ **Secure, automated, and production-ready.**
+
+```
+### Run npm ci Only If Dependencies Changed
+
+#!/bin/bash
+set -e
+
+APP_DIR="/home/ubuntu/my-node-app"
+cd "$APP_DIR"
+
+echo "🔄 Pulling latest code..."
+
+# Store current HEAD commit hash
+PREV_COMMIT=$(git rev-parse HEAD)
+
+# Pull latest changes from remote
+git pull origin main
+
+# Store new HEAD commit hash
+NEW_COMMIT=$(git rev-parse HEAD)
+
+# Check if package.json or package-lock.json changed between commits
+if git diff --name-only "$PREV_COMMIT" "$NEW_COMMIT" | grep -qE 'package(-lock)?\\.json'; then
+  echo "📦 Dependencies changed. Installing..."
+  npm ci
+else
+  echo "✅ No dependency changes. Skipping npm install."
+fi
+echo "🏗️ Building..."
+npm run build
+
+echo "🚀 Restarting app with PM2..."
+pm2 restart my-app || pm2 start npm --name my-app -- start
+
+```
