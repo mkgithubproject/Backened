@@ -142,12 +142,53 @@ echo "🏗️ Building the app..."
 npm run build
 
 echo "🚀 Restarting app with PM2..."
-pm install -g pm2
+npm install -g pm2
 pm2 restart my-app || pm2 start npm --name my-app -- start
 ```
 
 > Make sure `deploy.sh` is pushed with the repo and has executable permission:
 > `chmod +x deploy.sh`
+
+---
+
+### 🔄 How GitHub Queues Jobs for Self-Hosted Runners
+
+#### 🔹 Can a self-hosted runner handle multiple jobs at once?
+
+* ❌ **No. One runner handles only one job at a time.**
+* 🕒 Any extra jobs are **queued by GitHub** and wait until the runner is free.
+
+#### 🔹 What happens when you push multiple commits?
+
+```txt
+Push 1 → Job starts on self-hosted runner ✅
+Push 2 → Queued in GitHub UI ⏳
+Push 3 → Queued in GitHub UI ⏳
+```
+
+#### 🔹 Where is the queue stored?
+
+* On GitHub’s servers.
+* The runner process **polls GitHub** for available jobs.
+
+---
+
+### ⚡ Can I Run Multiple Jobs in Parallel?
+
+Yes — by registering **multiple runners** (instances of the runner binary) on the same or different servers:
+
+```bash
+# Clone the runner folder and register it with a different name
+mkdir actions-runner-2 && cd actions-runner-2
+curl -O <runner-url>
+tar xzf <runner-file>
+./config.sh --name runner-2
+./run.sh &
+```
+
+Now you have `runner-1` and `runner-2`, each capable of running a separate job.
+
+> Be cautious! Running multiple runners on the same low-power machine (like a t2.micro) can cause performance issues.
 
 ---
 
@@ -162,9 +203,14 @@ pm2 restart my-app || pm2 start npm --name my-app -- start
 
 ### ✅ Summary
 
-* A self-hosted runner is your own CI worker
-* You set it up once and it keeps listening for jobs
-* Use it when you need flexibility, control, or persistent environment
-* You can connect it to any GitHub repo and run secure deployments
+| Concept                | Self-Hosted Runner                       |
+| ---------------------- | ---------------------------------------- |
+| Job isolation          | ❌ Jobs run on same persistent server     |
+| Job queuing            | ✅ GitHub queues when runner is busy      |
+| Parallel jobs          | ⚠️ Only if you manually add more runners |
+| Persistent environment | ✅ Stays between jobs                     |
+| Cleanup                | 🧹 You are responsible for it            |
 
-Would you like to add Nginx, Docker, or rollback steps next?
+✅ Use self-hosted runners for full control and flexibility — and GitHub will smartly queue jobs if they arrive too fast.
+
+Would you like to add visual diagrams of how this runner-job queue system works?
