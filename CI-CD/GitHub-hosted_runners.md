@@ -1,4 +1,8 @@
-
+### github runner :
+```
+A GitHub Runner is a server or a virtual machine that runs your GitHub Actions workflows.
+ It's what actually executes the steps defined in your .github/workflows/*.yml files.
+```
 ## 🛠 GitHub Actions Deployment with SSH PEM Key – Explained
 
 ### 🎯 Goal:
