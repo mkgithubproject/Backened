@@ -1,4 +1,14 @@
+Imagine Node.js as a restaurant:
 
+Main thread = The main chef (executes JS synchronously)
+
+Event loop = The kitchen manager (keeps the kitchen moving)
+
+Callback queue = List of people waiting with orders
+
+Microtask queue = VIP queue for promises (they get priority)
+
+Promise resolution = A waiter promising a dessert later — it goes to the VIP queue.
 
 That’s a **very smart and important** concern — let’s unpack it carefully.
 
