@@ -1,192 +1,224 @@
-// STEP-BY-STEP EXPLANATION
+Let’s create a **custom Promise** from scratch in a **very simple way** with **line-by-line explanation**, using a **real-world example**: *ordering food online*.
 
-// 1. Constructor: Initializes the promise
-// - Sets state to 'pending'
-// - Defines resolve and reject functions (accessible only inside)
-// - Executes the executor function immediately
+---
 
+## 🥡 Real-world Example: Food Order System
+
+We’ll simulate ordering food using a custom-built `MyPromise` class that behaves like the native JavaScript `Promise`.
+
+---
+
+## ✅ Final Output Usage (Before Diving In)
+
+```js
+const order = new MyPromise((resolve, reject) => {
+  setTimeout(() => {
+    const foodReady = true;
+    if (foodReady) {
+      resolve("🍕 Pizza is ready!");
+    } else {
+      reject("❌ Food not available");
+    }
+  }, 1000);
+});
+
+order.then((message) => {
+  console.log("SUCCESS:", message);
+}).catch((error) => {
+  console.log("FAIL:", error);
+});
+```
+
+Now let's build `MyPromise` line by line 👇
+
+---
+
+## 🔧 Step-by-Step Implementation
+
+```js
 class MyPromise {
   constructor(executor) {
-    this.state = 'pending';           // Tracks current state: pending/fulfilled/rejected
-    this.value = undefined;          // Stores fulfilled value
-    this.reason = undefined;         // Stores rejection reason
-    this.onFulfilledCallbacks = [];  // Queued success handlers
-    this.onRejectedCallbacks = [];   // Queued failure handlers
-    this.onFinallyCallbacks = [];    // Queued finally handlers
+```
+
+* `MyPromise` is a class, just like native `Promise`.
+* It takes a function called `executor(resolve, reject)` as an argument. This function has your async logic.
+
+---
+
+```js
+    this.status = "pending";  // "pending", "fulfilled", or "rejected"
+    this.value = undefined;   // stores result of resolve/reject
+    this.successCallback = null;
+    this.failureCallback = null;
+```
+
+* `status` tracks the current state of the promise.
+* `value` stores the resolved or rejected value.
+* Callbacks are stored to call later when the promise resolves or rejects.
+
+---
+
+```js
+    const resolve = (value) => {
+      if (this.status !== "pending") return; // can’t change state again
+      this.status = "fulfilled";
+      this.value = value;
+      if (this.successCallback) {
+        this.successCallback(value);
+      }
+    };
+```
+
+* `resolve` changes the status to `"fulfilled"` and stores the value.
+* If `.then()` was called earlier, we run the stored success callback.
+
+---
+
+```js
+    const reject = (reason) => {
+      if (this.status !== "pending") return;
+      this.status = "rejected";
+      this.value = reason;
+      if (this.failureCallback) {
+        this.failureCallback(reason);
+      }
+    };
+```
+
+* Same as `resolve`, but for rejection.
+
+---
+
+```js
+    try {
+      executor(resolve, reject); // run the user-provided async function
+    } catch (err) {
+      reject(err); // if error happens, treat it as rejection
+    }
+  }
+```
+
+* Wrap `executor` in a try-catch in case it throws errors synchronously.
+
+---
+
+### ✅ Implement `.then()` and `.catch()` Methods
+
+```js
+  then(callback) {
+    if (this.status === "fulfilled") {
+      callback(this.value); // already resolved? just call it
+    } else {
+      this.successCallback = callback; // else store for later
+    }
+    return this; // so we can chain
+  }
+
+  catch(callback) {
+    if (this.status === "rejected") {
+      callback(this.value); // already rejected? just call it
+    } else {
+      this.failureCallback = callback; // else store for later
+    }
+    return this; // so we can chain
+  }
+}
+```
+
+---
+
+## 📦 Final Complete Code
+
+```js
+class MyPromise {
+  constructor(executor) {
+    this.status = "pending";
+    this.value = undefined;
+    this.successCallback = null;
+    this.failureCallback = null;
 
     const resolve = (value) => {
-      if (this.state === 'pending') {
-        this.state = 'fulfilled';
-        this.value = value;
-        this.onFulfilledCallbacks.forEach(fn => fn(value)); // Run .then() handlers
-        this.onFinallyCallbacks.forEach(fn => fn());        // Run .finally() handlers
+      if (this.status !== "pending") return;
+      this.status = "fulfilled";
+      this.value = value;
+      if (this.successCallback) {
+        this.successCallback(value);
       }
     };
 
     const reject = (reason) => {
-      if (this.state === 'pending') {
-        this.state = 'rejected';
-        this.reason = reason;
-        this.onRejectedCallbacks.forEach(fn => fn(reason)); // Run rejection handlers
-        this.onFinallyCallbacks.forEach(fn => fn());         // Run .finally() handlers
+      if (this.status !== "pending") return;
+      this.status = "rejected";
+      this.value = reason;
+      if (this.failureCallback) {
+        this.failureCallback(reason);
       }
     };
 
     try {
-      executor(resolve, reject); // Runs user-provided executor function
+      executor(resolve, reject);
     } catch (err) {
-      reject(err); // Reject if executor throws an error
+      reject(err);
     }
   }
 
-  // 2. then(): Handles fulfilled and rejected values
-  // - Returns a new promise to support chaining
-  // - Calls handlers immediately if already settled
-  // - Queues them otherwise
-  then(onFulfilled, onRejected) {
-    return new MyPromise((resolve, reject) => {
-      const fulfilledHandler = (value) => {
-        try {
-          const result = onFulfilled ? onFulfilled(value) : value;
-          result instanceof MyPromise ? result.then(resolve, reject) : resolve(result);
-        } catch (err) {
-          reject(err);
-        }
-      };
-
-      const rejectedHandler = (reason) => {
-        try {
-          if (onRejected) {
-            const result = onRejected(reason);
-            result instanceof MyPromise ? result.then(resolve, reject) : resolve(result);
-          } else {
-            reject(reason); // forward error
-          }
-        } catch (err) {
-          reject(err);
-        }
-      };
-
-      if (this.state === 'fulfilled') {
-        setTimeout(() => fulfilledHandler(this.value), 0);
-      } else if (this.state === 'rejected') {
-        setTimeout(() => rejectedHandler(this.reason), 0);
-      } else {
-        this.onFulfilledCallbacks.push(() => setTimeout(() => fulfilledHandler(this.value), 0));v// if we rite multple line p.then,p.then like that
-        this.onRejectedCallbacks.push(() => setTimeout(() => rejectedHandler(this.reason), 0));
-      }
-    });
+  then(callback) {
+    if (this.status === "fulfilled") {
+      callback(this.value);
+    } else {
+      this.successCallback = callback;
+    }
+    return this;
   }
-  catch(onRejected) {
-  return this.then(null, onRejected);
-}
-  // 3. finally(): Always runs regardless of resolve/reject
-  // - Doesn’t change result
-  // - Useful for cleanup
-  finally(onFinally) {
-    return this.then(
-      value => {
-        onFinally?.();
-        return value; // Pass the value along
-      },
-      reason => {
-        onFinally?.();
-        throw reason; // Re-throw error for next .catch()
-      }
-    );
+
+  catch(callback) {
+    if (this.status === "rejected") {
+      callback(this.value);
+    } else {
+      this.failureCallback = callback;
+    }
+    return this;
   }
 }
+```
 
+---
 
-// 📖 Step-by-Step Explanation
+## 🧪 Test With Real Example
 
-// 🎬 constructor(executor)
-// Sets initial state:
-// - pending → not resolved yet
-// - fulfilled → resolve() was called
-// - rejected → reject() was called
+```js
+const order = new MyPromise((resolve, reject) => {
+  setTimeout(() => {
+    const foodReady = true;
+    if (foodReady) {
+      resolve("🍕 Pizza is ready!");
+    } else {
+      reject("❌ Food not available");
+    }
+  }, 1000);
+});
 
-// Defines resolve(value):
-// - Changes state to 'fulfilled'
-// - Saves the value
-// - Calls every function in onFulfilledCallbacks
-// - Calls any .finally() callbacks
+order
+  .then((message) => {
+    console.log("SUCCESS:", message);
+  })
+  .catch((error) => {
+    console.log("FAIL:", error);
+  });
+```
 
-// Defines reject(reason):
-// - Changes state to 'rejected'
-// - Saves the reason
-// - Calls every function in onRejectedCallbacks
-// - Calls any .finally() callbacks
+---
 
-// Executes executor(resolve, reject) immediately like a native Promise
+## 🧠 Summary
 
+| Concept     | Meaning                                     |
+| ----------- | ------------------------------------------- |
+| `executor`  | Your async logic (like fetching or timeout) |
+| `resolve()` | Marks the promise as success                |
+| `reject()`  | Marks the promise as failure                |
+| `then()`    | Runs on success                             |
+| `catch()`   | Runs on failure                             |
 
-// 📦 .then(onFulfilled, onRejected)
-// Returns a new MyPromise (promise chaining support)
-// If the original promise is already settled:
-// - Runs onFulfilled or onRejected asynchronously
-// If still pending, pushes handlers to be run later
-// Handles returned values or errors
-// Supports:
-// - Chaining: then(...).then(...)
-// - Promises returned inside .then(...)
+---
 
-
-// 🧹 .finally(callback)
-// Adds a cleanup function that runs on both success and failure
-// Does not change the value or reason
-// Internally uses .then(...) to hook into the result
-
-
-// ⚙️ Why resolve() and reject() are inside constructor?
-// - To keep them private
-// - They must access this.state, this.value, etc.
-// - Prevents external code from calling .resolve() on any promise instance
-
-
-// 🔄 Timeline Example
-// const p = new MyPromise((resolve, reject) => {
-//   setTimeout(() => {
-//     resolve("🎉 Done!");
-//   }, 1000);
-// });
-
-// p.then(result => {
-//   console.log("✅ Got:", result);
-// }).finally(() => {
-//   console.log("🧹 Cleanup");
-// });
-
-// What happens:
-// - p is created → state is 'pending'
-// - After 1 sec → resolve("🎉 Done!")
-// - state → 'fulfilled'
-// - .then(...) runs: logs "✅ Got: 🎉 Done!"
-// - .finally() runs: logs "🧹 Cleanup"
-
-
-// ✅ Summary Table (Markdown Format)
-//
-// | Feature          | What it does                              |
-// | ---------------- | ----------------------------------------- |
-// | `this.state`     | Tracks the status of the promise          |
-// | `this.value`     | Holds resolved value                      |
-// | `this.reason`    | Holds rejection reason                    |
-// | `.then()`        | Adds success and failure handlers         |
-// | `.finally()`     | Adds a cleanup function                   |
-// | `resolve(value)` | Marks fulfilled and runs success handlers |
-// | `reject(reason)` | Marks rejected and runs error handlers    |
-// | `.forEach(fn)`   | Executes all saved callbacks with result  |
-// | Feature          | What it does                              |
-// | ---------------- | ----------------------------------------- |
-// | `this.state`     | Tracks the status of the promise          |
-// | `this.value`     | Holds resolved value                      |
-// | `this.reason`    | Holds rejection reason                    |
-// | `.then()`        | Adds success and failure handlers         |
-// | `.finally()`     | Adds a cleanup function                   |
-// | `resolve(value)` | Marks fulfilled and runs success handlers |
-// | `reject(reason)` | Marks rejected and runs error handlers    |
-// | `.forEach(fn)`   | Executes all saved callbacks with result  |
-// this.state     | Tracks the status of the promise
-// this.value     | Holds resolved value
-// this.reason    | Holds rejection reason
+Would you like to extend it to support **chaining**, or **finally**, or **async-await compatibility** next?
