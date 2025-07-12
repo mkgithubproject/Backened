@@ -790,7 +790,59 @@ class Solution {
     }
 }
 ```
-### 12. 
+### 12.  Next Permutation
+Let's try some examples to see if we can recognize some patterns. \
+[1, 2, 3, 4, 5]: next is [1, 2, 3, 5, 4] \
+Observation: 4 moves and 5 comes in place of it\
+[1, 2, 3, 5, 4]: next is [1, 2, 4, 3, 5]\
+Observation: 3 moves, 4 comes in place of it. 3 comes before 5 (mainly 3 and 5 are in sorted order)\
+[1, 2, 3, 6, 5, 4]: next is [1, 2, 4, 3, 5, 6] \
+Observation: 3 moves, 4 comes in place of it. [3, 5 and 6 are placed in sorted order]\
+[3, 2, 1]: next is [1, 2, 3]\
+Observation: All elements are reverse sorted. Result is whole array sorted.\
+```
+class Solution {
+    void nextPermutation(int[] arr) {
+        int n = arr.length;
+        int i = n - 2;
+
+        // Step 1: Find first decreasing element from the end
+        while (i >= 0 && arr[i] >= arr[i + 1]) {
+            i--;
+        }
+
+        // Step 2: If found, find the next greater element on the right
+        if (i >= 0) {
+            int j = n - 1;
+            while (arr[j] <= arr[i]) {
+                j--;
+            }
+            // Swap arr[i] and arr[j]
+            swap(arr, i, j);
+        }
+
+        // Step 3: Reverse the right part (from i+1 to end)
+        reverse(arr, i + 1, n - 1);
+    }
+
+    // Helper method to swap two elements in the array
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    // Helper method to reverse a part of the array
+    private void reverse(int[] arr, int start, int end) {
+        while (start < end) {
+            swap(arr, start, end);
+            start++;
+            end--;
+        }
+    }
+}
+```
+### 13 
 
 
 
