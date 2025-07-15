@@ -842,7 +842,27 @@ class Solution {
     }
 }
 ```
-### 13 
+### 13  find path using recursion
+```
+let obj = {a:{b:{c:12, j:false},k:null}};
+
+function getPath(obj, keysPath){
+    if(keysPath.length == 1){
+        return obj[keysPath]
+    }
+    if(keysPath.length ==0){
+        return 'undefined'
+    }
+    let splittedKeyPath = keysPath.split('.')
+    let myResult = obj[splittedKeyPath[0]];
+
+    let recursiveResult = getPath(myResult , keysPath.slice(2))
+    return recursiveResult;
+}
+
+console.log(getPath(obj,'a.b.c'))
+```
+### 14. 
 
 
 
