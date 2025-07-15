@@ -1,4 +1,4 @@
-### 3 Sum - Find All Triplets with Zero Sum
+### 3 Sum - Find All Triplets with Zero Sum , Ensure all returned triplets are unique and sorted.
 ## [Naive Approach] Using Three Nested Loops - O(n^3) Time and O(1) Space
 ```
 // Java program to find triplet having sum zero using 
@@ -42,6 +42,7 @@ class GfG {
 }
 ```
 ```
+if array is sorted
 hint:1 So, we essentially need to find three numbers x, y, and z such that they add up to the given value. 
 If we fix one of the numbers say x, we are left with the two-sum problem at hand!
 
@@ -49,5 +50,7 @@ hint 2: For the two-sum problem, if we fix one of the numbers, say x, we have to
 which is value - x where value is the input parameter. Can we change our array somehow so that this search becomes faster?
 
 hint 3: The second train of thought for two-sum is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?
+```
+```
 ```
 
