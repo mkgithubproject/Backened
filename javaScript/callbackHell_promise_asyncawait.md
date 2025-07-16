@@ -130,3 +130,152 @@ handleData();
 ---
 
 Would you like a real-life API example using all 4 styles (callback, callback hell, promise, and async/await)?
+Great! Let’s walk through a **real-life API example** using all four styles:
+
+---
+
+## 🔧 Use Case: **Get User → Get Posts by User → Display Data**
+
+We’ll simulate this using `setTimeout` to mock API calls.
+
+---
+
+## 🔁 1. **Callback Style**
+
+```js
+function getUser(callback) {
+  setTimeout(() => {
+    console.log("Fetched user");
+    callback({ id: 1, name: "Alice" });
+  }, 1000);
+}
+
+function getPostsByUser(userId, callback) {
+  setTimeout(() => {
+    console.log(`Fetched posts for user ${userId}`);
+    callback(["Post1", "Post2"]);
+  }, 1000);
+}
+
+function displayData(user, posts) {
+  console.log("User:", user);
+  console.log("Posts:", posts);
+}
+
+getUser(user => {
+  getPostsByUser(user.id, posts => {
+    displayData(user, posts);
+  });
+});
+```
+
+---
+
+## 🔁 2. **Callback Hell Style**
+
+```js
+setTimeout(() => {
+  console.log("Fetched user");
+  const user = { id: 1, name: "Alice" };
+
+  setTimeout(() => {
+    console.log(`Fetched posts for user ${user.id}`);
+    const posts = ["Post1", "Post2"];
+
+    setTimeout(() => {
+      console.log("User:", user);
+      console.log("Posts:", posts);
+    }, 500);
+
+  }, 1000);
+
+}, 1000);
+```
+
+> 😵 Notice the **deep nesting** and poor readability.
+
+---
+
+## ✅ 3. **Promise Style**
+
+```js
+function getUser() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log("Fetched user");
+      resolve({ id: 1, name: "Alice" });
+    }, 1000);
+  });
+}
+
+function getPostsByUser(userId) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log(`Fetched posts for user ${userId}`);
+      resolve(["Post1", "Post2"]);
+    }, 1000);
+  });
+}
+
+getUser()
+  .then(user => {
+    return getPostsByUser(user.id).then(posts => {
+      console.log("User:", user);
+      console.log("Posts:", posts);
+    });
+  })
+  .catch(err => console.error("Error:", err));
+```
+
+---
+
+## ✅✅ 4. **Async/Await Style** (Best & Cleanest)
+
+```js
+function getUser() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log("Fetched user");
+      resolve({ id: 1, name: "Alice" });
+    }, 1000);
+  });
+}
+
+function getPostsByUser(userId) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log(`Fetched posts for user ${userId}`);
+      resolve(["Post1", "Post2"]);
+    }, 1000);
+  });
+}
+
+async function fetchAndDisplayData() {
+  try {
+    const user = await getUser();
+    const posts = await getPostsByUser(user.id);
+    console.log("User:", user);
+    console.log("Posts:", posts);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+fetchAndDisplayData();
+```
+
+---
+
+## ✅ Summary
+
+| Style         | Readability | Flexibility | Error Handling |
+| ------------- | ----------- | ----------- | -------------- |
+| Callback      | 😐 OK       | ❌ Low       | ❌ Manual       |
+| Callback Hell | ❌ Bad       | ❌ Low       | ❌ Hard         |
+| Promise       | 🙂 Better   | ✅ Good      | ✅ Easy         |
+| Async/Await   | ✅ Best      | ✅✅ Best     | ✅✅ Best        |
+
+---
+
+Let me know if you'd like to try this with **real APIs like JSONPlaceholder**, or implement the same logic in **Node.js with Express**.
+
