@@ -269,3 +269,89 @@ System.out.println(ageMap);  // Output: {Alice=28, Bob=30}
 
 If you'd like, I can also show the internal working of `HashSet` and `HashMap` (like how hashing works). Just let me know!
 
+The difference between `int` and `Integer` in Java is fundamental and very important:
+
+---
+
+## ✅ `int` vs `Integer` in Java
+
+| Feature            | `int` (Primitive)      | `Integer` (Wrapper Class)              |
+| ------------------ | ---------------------- | -------------------------------------- |
+| Type               | Primitive data type    | Reference (Object) type                |
+| Default value      | `0`                    | `null`                                 |
+| Stored in          | Stack memory           | Heap memory                            |
+| Can be `null`?     | ❌ No                   | ✅ Yes                                  |
+| Part of Object?    | ❌ Not an object        | ✅ It is an object                      |
+| Use in collections | ❌ Not allowed directly | ✅ Required for collections like `List` |
+| Autoboxing?        | ❌ No                   | ✅ Yes (from `int` to `Integer`)        |
+| Unboxing?          | ❌ No                   | ✅ Yes (from `Integer` to `int`)        |
+
+---
+
+### 🔹 1. `int` — Primitive
+
+```java
+int a = 5;
+```
+
+* Simple and fast.
+* Cannot be used directly in object-based APIs (like `List`).
+
+---
+
+### 🔹 2. `Integer` — Wrapper Class
+
+```java
+Integer b = 5; // autoboxing from int to Integer
+```
+
+* Part of the `java.lang` package.
+* Can be `null`.
+* Needed in collections like `ArrayList<Integer>`.
+
+---
+
+## 🔄 Autoboxing & Unboxing
+
+Java automatically converts between `int` and `Integer`:
+
+### 🔄 Autoboxing (int ➝ Integer)
+
+```java
+Integer obj = 10; // int automatically boxed to Integer
+```
+
+### 🔁 Unboxing (Integer ➝ int)
+
+```java
+Integer obj = 20;
+int val = obj; // automatically unboxed
+```
+
+---
+
+## 📌 When to Use What?
+
+| Situation                         | Use       |
+| --------------------------------- | --------- |
+| High performance (e.g., loops)    | `int`     |
+| Use in Collections (e.g., `List`) | `Integer` |
+| Nullable values                   | `Integer` |
+
+---
+
+## ❗ Example Showing Difference
+
+```java
+List<Integer> list = new ArrayList<>();
+list.add(10);       // Works
+list.add(null);     // Works
+
+List<int> list2 = new ArrayList<>(); // ❌ Compilation error
+```
+
+---
+
+Let me know if you'd like a diagram showing memory differences or how autoboxing works internally!
+
+
