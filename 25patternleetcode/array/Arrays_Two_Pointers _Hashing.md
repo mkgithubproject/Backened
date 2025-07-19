@@ -185,5 +185,34 @@ class Solution {
 ```
 
 ### 3. Longest Consecutive Sequence
+## using sorting
+## using hashmap
+```
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        HashSet<Integer> set = new HashSet<Integer>();
+        // add all the unique element in hash
+        for(int val : nums){
+            set.add(val);
+        }
+
+        int longest =0;
+        for(int num : set){
+            // Only try to build sequence from start of sequence
+            if(!set.contains(num-1)){
+              int currentNum = num;
+              int count =1;
+              while(set.contains(currentNum+1)){
+                 count++;
+                 currentNum++;
+              }
+              longest = Math.max(longest, count);
+            }
+        }
+        return longest;
+
+    }
+}
+```
 
 
