@@ -129,3 +129,61 @@ Returns a List<List<Integer>>, which matches the method return type.\
 }
 ```
 
+### 2. Container With Most Water
+## brute force [Naive Approach] Finding all possible boundaries - O(n^2) Time and O(1) Space
+## just like , a , b ,c, d, e ( a-b , ac, a-d , a-e boundaris which ever has max water)
+```
+// Java Program to find the maximum amount of water
+// by iterating over all possible boundaries
+
+import java.util.*;
+class GfG {
+    static int maxWater(int[] arr) {
+        int n = arr.length;
+        int res = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+              
+                // Calculate the amount of water
+                int amount = Math.min(arr[i], arr[j]) * (j - i);
+              
+                // Keep track of maximum amount of water
+                res = Math.max(amount, res);
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 1, 8, 6, 4, 6, 5, 5};
+        System.out.println(maxWater(arr));
+    }
+}
+```
+## [Expected Approach] Using Two Pointers - O(n) Time and O(1) Space
+## note compare a-e (if a smaller than e then dont need to check for a-b, a-c, a-d because height will be same and width is decreasing so volume is decreasing)
+```
+class Solution {
+    public int maxArea(int[] height) {
+        int res = 0;
+        int start = 0;
+        int end = height.length -1;
+        while(start< end){
+            int h = Math.min(height[start], height[end]);
+            int width = end-start;
+            res = Math.max(res, h*width);
+            if(height[start] < height[end]){
+                start++;
+            }else{
+                end--;
+            }
+        }
+        return res;
+    }
+    
+}
+```
+
+### 3. Longest Consecutive Sequence
+
+
