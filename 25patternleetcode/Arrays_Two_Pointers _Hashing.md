@@ -51,6 +51,7 @@ which is value - x where value is the input parameter. Can we change our array s
 
 hint 3: The second train of thought for two-sum is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?
 ```
+```
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         // Set<List<Integer>> result = new HashSet<>();
@@ -94,9 +95,17 @@ class Solution {
 
 }
 ```
+```
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         HashSet<List<Integer>> res=new HashSet<List<Integer>>();
+res is a Set of lists.\
+Each List<Integer> is a triplet (e.g., [a, b, c]) that sums to 0.\
+A Set automatically removes duplicates, which is useful here.\
+So it must return a List<List<Integer>>, not a Set.\
+Does two things:
+Copies all elements from the Set res into a new List.\
+Returns a List<List<Integer>>, which matches the method return type.\
         Arrays.sort(nums);
         for(int i=0;i<nums.length-2;i++){
             int j=i+1;
