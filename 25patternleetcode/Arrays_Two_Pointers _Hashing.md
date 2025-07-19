@@ -51,6 +51,72 @@ which is value - x where value is the input parameter. Can we change our array s
 
 hint 3: The second train of thought for two-sum is, without changing the array, can we use additional space somehow? Like maybe a hash map to speed up the search?
 ```
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        // Set<List<Integer>> result = new HashSet<>();
+        List<List<Integer>> result = new ArrayList<>();
+        int target = 0;
+        Arrays.sort(nums);
+        HashSet<Long> set = new HashSet<Long>(); // for removing duplicates triplet
+        for(int i= 0;  i<nums.length ; i++){ // i<n-2 or i<n no problem
+           int newTarg = target - nums[i];
+           int start = i+1;
+           int end = nums.length - 1;
+           while(start<end){
+            if(nums[start]+nums[end]> newTarg){
+                end--;
+            }else if(nums[start]+nums[end] < newTarg){
+                start++;
+            }else{
+                long hash = getHash(nums[i],nums[start],nums[end]);
+                if(set.contains(hash) == false){
+                  List<Integer> triplet = new ArrayList<Integer>(Arrays.asList(nums[i],nums[start],nums[end]));
+                  result.add(triplet);
+                  set.add(hash);
+                }
+                
+                start++;
+                end--;
+            }
+           }
+        }
+        return result;
+    }
+
+    public Long getHash(int a, int b, int c) {
+        long hash = a;
+        hash *= 100000000;
+        hash += b;
+        hash *= 100000000;
+        hash += c;
+        return hash;
+    }
+
+}
 ```
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        HashSet<List<Integer>> res=new HashSet<List<Integer>>();
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length-2;i++){
+            int j=i+1;
+            int k=nums.length-1;
+            while(j<k){
+                int sum=nums[j]+nums[k];
+                if(sum==-nums[i]){
+                  res.add(Arrays.asList(nums[i],nums[j],nums[k]));
+                  j++;
+                  k--;
+                }else if(sum>-nums[i]){
+                    k--;
+                }else{
+                    j++;
+                }
+            }
+        }
+        return new ArrayList<>(res);
+        
+    }
+}
 ```
 
