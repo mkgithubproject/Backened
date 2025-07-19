@@ -189,3 +189,83 @@ public class GroceryList {
 ---
 
 If you'd like this in a **Canva-style note** format (as you asked earlier), let me know and I’ll prepare it accordingly.
+
+Great question — let's break down the differences between `Set`, `HashSet`, and `HashMap` in Java, both **conceptually** and with **examples**.
+
+---
+
+## 🔹 1. `Set` – **Interface**
+
+* `Set` is a **collection interface** in Java that **does not allow duplicate elements**.
+* It is part of `java.util`.
+* **Cannot be instantiated directly.**
+
+```java
+Set<String> set = new HashSet<>();
+```
+
+---
+
+## 🔹 2. `HashSet` – **Implementation of Set**
+
+* `HashSet` is a **concrete class** that implements the `Set` interface using a **hash table**.
+* **No duplicates**, **no guaranteed order**.
+* Allows `null` elements (only one null).
+
+### ✅ Example:
+
+```java
+Set<String> names = new HashSet<>();
+names.add("Alice");
+names.add("Bob");
+names.add("Alice");  // Duplicate, will be ignored
+
+System.out.println(names);  // Output: [Alice, Bob] (order not guaranteed)
+```
+
+---
+
+## 🔹 3. `HashMap` – **Key-Value Mapping**
+
+* `HashMap` stores data in **key-value pairs**.
+* It allows **one `null` key** and multiple `null` values.
+* **Keys must be unique**. Values can be duplicated.
+
+### ✅ Example:
+
+```java
+Map<String, Integer> ageMap = new HashMap<>();
+ageMap.put("Alice", 25);
+ageMap.put("Bob", 30);
+ageMap.put("Alice", 28);  // Overwrites previous value
+
+System.out.println(ageMap);  // Output: {Alice=28, Bob=30}
+```
+
+---
+
+## 🔁 Comparison Table
+
+| Feature         | `Set`                    | `HashSet`                    | `HashMap`                          |
+| --------------- | ------------------------ | ---------------------------- | ---------------------------------- |
+| Type            | Interface                | Class (implements `Set`)     | Class (implements `Map`)           |
+| Data Storage    | Unique elements          | Unique elements (hash table) | Key-value pairs (hash table)       |
+| Duplicates      | Not allowed              | Not allowed                  | Keys: not allowed, Values: allowed |
+| Null Handling   | Implementation-dependent | 1 null allowed               | 1 null key, many null values       |
+| Access pattern  | Only values              | Only values                  | Keys and values                    |
+| Order guarantee | No                       | No                           | No                                 |
+
+---
+
+## 📌 When to Use What?
+
+| Use Case                               | Best Choice       |
+| -------------------------------------- | ----------------- |
+| Unique collection of items             | `Set` / `HashSet` |
+| Fast lookup of keys to associated data | `HashMap`         |
+| Interface-based programming            | `Set` (or `Map`)  |
+
+---
+
+If you'd like, I can also show the internal working of `HashSet` and `HashMap` (like how hashing works). Just let me know!
+
