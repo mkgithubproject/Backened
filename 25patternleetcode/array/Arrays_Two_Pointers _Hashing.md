@@ -95,6 +95,43 @@ class Solution {
 
 }
 ```
+## or
+```
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        // Set<List<Integer>> result = new HashSet<>();
+        List<List<Integer>> result = new ArrayList<>();
+        int target = 0;
+        Arrays.sort(nums);
+        HashSet<List<Integer>> set = new HashSet<>(); // for removing duplicates triplet
+        for (int i = 0; i < nums.length; i++) { // i<n-2 or i<n no problem
+            int newTarg = target - nums[i];
+            int start = i + 1;
+            int end = nums.length - 1;
+            while (start < end) {
+                if (nums[start] + nums[end] > newTarg) {
+                    end--;
+                } else if (nums[start] + nums[end] < newTarg) {
+                    start++;
+                } else {
+                    // long hash = getHash(nums[i],nums[start],nums[end]);
+                    List<Integer> triplet = new ArrayList<Integer>(Arrays.asList(nums[i], nums[start], nums[end]));
+
+                    if (set.contains(triplet) == false) {
+                        result.add(triplet);
+                        set.add(triplet);
+                    }
+
+                    start++;
+                    end--;
+                }
+            }
+        }
+        return result;
+    }
+
+}
+```
 ```
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
