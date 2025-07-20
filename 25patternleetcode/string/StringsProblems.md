@@ -1,8 +1,10 @@
-### 4. Longest Substring Without Repeating Characters
-## [Naive Approach] Substrings Starting From Every Index - O(26*n) Time and O(1) Space
-# he idea is to find length of longest substring with distinct characters starting from every index and maximum of all such lengths will be our answer. 
-# To find the length of the longest substring with distinct characters starting from an index, we create a new visited array of size = 26 to keep # track of included characters in the substring. vis[0] checks for 'a', vis[1] checks for 'b', vis[2] checks for 'c' and so on.
-# Input: s = "abcabcbb"( a liya then b liya , c liya ab phir se a a gaya idhr se skip kro isse jada long sequnce sequnce ni banegi a character se ab b se start krnege)
+## 4. Longest Substring Without Repeating Characters
+ ### [Naive Approach] Substrings Starting From Every Index - O(26*n) Time and O(1) Space
+ the idea is to find length of longest substring with distinct characters starting from every index and maximum of all such lengths will be our answer. 
+ To find the length of the longest substring with distinct characters starting from an index, we create a new visited array of size = 26 to keep  track of included characters in the substring. vis[0] checks for 'a', vis[1] checks for 'b', vis[2] checks for 'c' and so on.\
+
+ 
+ Input: s = "abcabcbb"( a liya then b liya , c liya ab phir se a a gaya idhr se skip kro isse jada long sequnce sequnce ni banegi a character se ab b se start krnege)
 ```
 // Java program to find the length of the longest
 // substring without repeating characters
@@ -71,8 +73,8 @@ class Solution {
     }
 }
 ```
-## [Expected Approach 1] Using Sliding Window - O(n) Time and O(1) Space (aquire and release technique)
-# Input: s = "abcbadbd" (window me a,b,c then now a again b aya matlab a se ab sequnce ni ban sakti ab start window pahle mila h usse age se krenege kyonki a ke next character se jo bhi sequence hongi like bc vo pahle wali window se chhoti hi hongi hamesha , hum map me current window rakh rahe h
+### [Expected Approach 1] Using Sliding Window - O(n) Time and O(1) Space (aquire and release technique)
+Input: s = "abcbadbd" (window me a,b,c then now a again b aya matlab a se ab sequnce ni ban sakti ab start window pahle mila h usse age se krenege kyonki a ke next character se jo bhi sequence hongi like bc vo pahle wali window se chhoti hi hongi hamesha , hum map me current window rakh rahe h
 ```
 class Solution {
     public int lengthOfLongestSubstring(String s) {
