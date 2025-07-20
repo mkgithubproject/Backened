@@ -99,6 +99,90 @@ class Solution {
 ```
 
 ## 5. Minimum Window Substring
+### [Naive Approach] By Generating all the Substrings - O(n^3) time and O(n) space:
+```
+import java.util.Arrays;
+
+public class GFG {
+
+    public static boolean containsAllCharacters(String s,
+                                                String p)
+    {
+        int[] count = new int[256];
+        Arrays.fill(count, 0);
+
+        // Count the frequency of each character in the
+        // pattern
+        for (char ch : p.toCharArray())
+            count[ch]++;
+
+        // For each character in the substring, decrement
+        // its count
+        for (char ch : s.toCharArray()) {
+            if (count[ch] > 0)
+                count[ch]--;
+        }
+
+        // If all counts in the count array are zero, the
+        // substring contains all characters of the pattern
+        for (int c : count) {
+            if (c > 0)
+                return false;
+        }
+
+        return true;
+    }
+
+    // Function to find the smallest substring containing
+    // all characters of the pattern
+    public static String findSmallestSubstring(String s,
+                                               String p)
+    {
+        int m = s.length();
+        int n = p.length();
+        String smallestSubstring = "";
+        int minLen = Integer.MAX_VALUE;
+
+        // Generate all substrings of the given string
+        for (int i = 0; i < m; i++) {
+            for (int j = i; j < m; j++) {
+                String substr = s.substring(i, j + 1);
+
+                // Check if the substring contains all
+                // characters of the pattern
+                if (containsAllCharacters(substr, p)) {
+                    int currLen = substr.length();
+
+                    // Update the smallestSubstring if the
+                    // current substring is smaller
+                    if (currLen < minLen) {
+                        minLen = currLen;
+                        smallestSubstring = substr;
+                    }
+                }
+            }
+        }
+
+        return smallestSubstring;
+    }
+
+    public static void main(String[] args)
+    {
+        String s = "timetopractice";
+        String p = "toc";
+
+        String result = findSmallestSubstring(s, p);
+
+        if (!result.isEmpty()) {
+            System.out.println(result);
+        }
+        else {
+            System.out.println(-1);
+        }
+    }
+}
+```
+### [Expected Approach] Using Window Sliding - O(n) Time and O(1) Space:
 ```
 ```
 
