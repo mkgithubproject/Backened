@@ -182,7 +182,9 @@ public class GFG {
     }
 }
 ```
-### [Expected Approach] Using Window Sliding - O(n) Time and O(1) Space:
+### [Expected Approach] Using Window Sliding - O(n) Time and O(1) Space: (acquire and release):
+## s = "ADOBECODEBANC", t = "ABC" , first char se us char tak jayenge jab tak t ke legthg cover ni ho jaye , jaise hi ho gai ab release krenege 
+## next char se dekhenege kya pata chhoti substring mil jaye jab tak release krenege jab tak t ke chars na hile min update krte rahenge , agar hil gayi phir se acquire kro
 ```
 ```
 
