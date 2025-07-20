@@ -1,1 +1,99 @@
 ### 4. Longest Substring Without Repeating Characters
+## [Naive Approach] Substrings Starting From Every Index - O(26*n) Time and O(1) Space
+# he idea is to find length of longest substring with distinct characters starting from every index and maximum of all such lengths will be our answer. 
+# To find the length of the longest substring with distinct characters starting from an index, we create a new visited array of size = 26 to keep # track of included characters in the substring. vis[0] checks for 'a', vis[1] checks for 'b', vis[2] checks for 'c' and so on.
+# Input: s = "abcabcbb"( a liya then b liya , c liya ab phir se a a gaya idhr se skip kro isse jada long sequnce sequnce ni banegi a character se ab b se start krnege)
+```
+// Java program to find the length of the longest
+// substring without repeating characters
+
+import java.util.*;
+
+class GfG {
+
+    static int longestUniqueSubstr(String s)
+    {
+        int n = s.length();
+        int res = 0;
+
+        for (int i = 0; i < n; i++) {
+
+            // Initializing all characters as not visited
+            boolean[] vis = new boolean[26];
+
+            for (int j = i; j < n; j++) {
+
+                // If current character is visited
+                // Break the loop
+                if (vis[s.charAt(j) - 'a'] == true)
+                    break;
+
+                // Else update the result if this window is
+                // larger, and mark current character as
+                // visited.
+                else {
+                    res = Math.max(res, j - i + 1);
+                    vis[s.charAt(j) - 'a'] = true;
+                }
+            }
+        }
+        return res;
+    }
+
+    public static void main(String[] args)
+    {
+        String s = "geeksforgeeks";
+        System.out.println(longestUniqueSubstr(s));
+    }
+
+
+}
+######################### using hash same approach ####################
+import java.util.*;
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        HashSet<Character>hs = new HashSet<>();
+        int max=0;
+        int start=0;
+        int end=0;
+        while(start<s.length()){
+            if(hs.contains(s.charAt(start))){
+                hs.remove(s.charAt(end));
+                end++;
+            }else{
+                hs.add(s.charAt(start));
+                max=Math.max(max,start-end+1);
+                start++;
+            }
+        }
+        return max;
+        
+    }
+}
+```
+## [Expected Approach 1] Using Sliding Window - O(n) Time and O(1) Space (aquire and release technique)
+# Input: s = "abcbadbd" (window me a,b,c then now a again b aya matlab a se ab sequnce ni ban sakti ab start window pahle mila h usse age se krenege kyonki a ke next character se jo bhi sequence hongi like bc vo pahle wali window se chhoti hi hongi hamesha , hum map me current window rakh rahe h
+```
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+         int[] arr = new int[128]; // aslo can take hashmap or hashset
+        int n = s.length();
+        int len = 0;
+        for(int i = 0, j = 0; j < n; j++){
+            int c = s.charAt(j);
+            arr[c]++;
+            if(arr[c] > 1){
+                while(arr[c] > 1){
+                    arr[s.charAt(i)]--;
+                    i++;
+                }
+            }
+            len = Math.max(len, j - i + 1);
+        }
+        return len;
+    }
+}
+
+```
+
+
