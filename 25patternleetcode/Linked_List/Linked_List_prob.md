@@ -70,9 +70,9 @@ public class Solution {
 ```
 
 ## 16. Merge Two Sorted Lists
-### approach1 , take a arraylist and put all the linkedlist element into it and sort arrayloist then again create a new linked list 
-### recursive2 , merge two sorted linked list 
-### using pointer3 , whichever is smaller create a newNode and push at last of new node
+### approach1: , take a arraylist and put all the linkedlist element into it and sort arrayloist then again create a new linked list 
+### recursive2: , merge two sorted linked list 
+### using pointer3: , whichever is smaller create a newNode and push at last of new node
 ### Using Iterative Merge - O(n+m) Time and O(1) Space
 ```
 /**
