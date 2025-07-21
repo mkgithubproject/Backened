@@ -32,9 +32,10 @@ class Solution {
         return newHead;
     }
 }
-
-## 15. Linked List Cycle
 ```
+## 15. Linked List Cycle
+### [Naive Approach] Using HashSet - O(n) Time and O(n) Space
+### [Expected Approach] Using Floyd's Cycle-Finding Algorithm - O(n) Time and O(1) Space ,(slow and fast pointer)
 ```
 ```
 
