@@ -89,3 +89,32 @@ class Solution {
 
 ```
 ## 11. Lowest Common Ancestor of a BST 
+```
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        // Base condition: if root is null
+        if (root == null) return null;
+
+        // If both p and q are smaller, go left
+        if (p.val < root.val && q.val < root.val)
+            return lowestCommonAncestor(root.left, p, q);
+
+        // If both p and q are greater, go right
+        if (p.val > root.val && q.val > root.val)
+            return lowestCommonAncestor(root.right, p, q);
+
+        // If one is on left and one is on right, root is LCA 
+        return root;
+    }
+}
+```
