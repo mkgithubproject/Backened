@@ -322,6 +322,123 @@ public class DequeExample {
 
 ---
 
-Would you like me to continue with **interview problems** or **implement your own custom Queue class** with all features?
+Implementing a **Queue using a Linked List** involves creating a data structure where elements are added at the **rear** and removed from the **front** (FIFO: First In, First Out).
 
-Let me know your next goal!
+---
+
+### 🔧 Core Operations of Queue
+
+1. `enqueue(data)` → Insert at rear
+2. `dequeue()` → Remove from front
+3. `peek()` → Return front element
+4. `isEmpty()` → Check if queue is empty
+
+---
+
+### ✅ Queue Using Linked List in Java
+
+```java
+// Node class
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// Queue class
+public class QueueUsingLinkedList {
+    Node front, rear;
+
+    // Constructor
+    public QueueUsingLinkedList() {
+        this.front = this.rear = null;
+    }
+
+    // Enqueue operation (add to rear)
+    public void enqueue(int data) {
+        Node newNode = new Node(data);
+
+        // If queue is empty
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+
+        rear.next = newNode;
+        rear = newNode;
+    }
+
+    // Dequeue operation (remove from front)
+    public int dequeue() {
+        if (front == null) {
+            System.out.println("Queue is empty");
+            return -1;
+        }
+
+        int value = front.data;
+        front = front.next;
+
+        // If front becomes null, update rear as well
+        if (front == null)
+            rear = null;
+
+        return value;
+    }
+
+    // Peek operation
+    public int peek() {
+        if (front == null) {
+            System.out.println("Queue is empty");
+            return -1;
+        }
+        return front.data;
+    }
+
+    // isEmpty check
+    public boolean isEmpty() {
+        return front == null;
+    }
+
+    // Print Queue
+    public void printQueue() {
+        Node temp = front;
+        while (temp != null) {
+            System.out.print(temp.data + " --> ");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
+
+    // Main method to test
+    public static void main(String[] args) {
+        QueueUsingLinkedList q = new QueueUsingLinkedList();
+
+        q.enqueue(10);
+        q.enqueue(20);
+        q.enqueue(30);
+
+        q.printQueue(); // 10 --> 20 --> 30 --> null
+
+        System.out.println("Dequeued: " + q.dequeue()); // 10
+        System.out.println("Peek: " + q.peek()); // 20
+        q.printQueue(); // 20 --> 30 --> null
+    }
+}
+```
+
+---
+
+### 🧠 Key Concepts
+
+* `front` → Points to the first node to be dequeued.
+* `rear` → Points to the last node where new data is enqueued.
+* If `front` and `rear` are both `null`, the queue is empty.
+
+---
+
+Would you like this in **C++**, **Python**, or want to implement a **circular queue** too?
+
