@@ -293,9 +293,75 @@ This represents:
 
 ### 📤 Output Traversal for Verification:
 
-Use the existing `printLevelOrder`, `preorder`, `inorder`, `postorder` functions to confirm the structure is built correctly.
+Great follow-up!
 
 ---
 
-Would you like me to insert this DFS input section directly into your canvas document under the existing input methods?
+## 🌲 Height of a Binary Tree
+
+The **height** of a binary tree is defined as the **number of edges** on the **longest path from the root node to any leaf node**.
+
+> ⚠️ Note: Some definitions count **nodes** instead of **edges** — so depending on your use case:
+
+* **Height by edges** (common in competitive programming) = longest path in edges
+* **Height by nodes** = longest path in nodes
+
+We’ll assume **height by edges** here.
+
+---
+
+### ✅ Example:
+
+```
+        1
+       / \
+      2   3
+     /
+    4
+```
+
+* Longest path from root to a leaf: `1 → 2 → 4`
+* Number of **edges** = 2
+* ➤ So, **height = 2**
+
+---
+
+## 📘 Java Code: Height of Binary Tree
+
+```java
+public static int height(TreeNode root) {
+    if (root == null) return -1; // return 0 if counting height by nodes
+
+    int leftHeight = height(root.left);
+    int rightHeight = height(root.right);
+
+    return 1 + Math.max(leftHeight, rightHeight);
+}
+```
+
+---
+
+### 🔍 Explanation:
+
+* For each node, recursively compute the height of left and right subtrees.
+* The height of the tree is `1 + max(leftHeight, rightHeight)`.
+
+---
+
+### 📤 Sample Usage:
+
+```java
+System.out.println("Height of the tree: " + height(root));
+```
+
+---
+
+### 🔄 Time Complexity:
+
+* **O(n)** — visits every node once
+
+---
+
+
+
 
