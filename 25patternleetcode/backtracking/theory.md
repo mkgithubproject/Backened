@@ -107,6 +107,130 @@ public class SubsetsBacktracking {
     }
 }
 ```
+Let's **dry run** the `SubsetsBacktracking` code step by step for the input:
+
+```java
+int[] nums = {1, 2};
+```
+
+---
+
+## 🔍 GOAL:
+
+Generate **all subsets (the power set)** of `{1, 2}` using backtracking.
+
+---
+
+### ✅ FUNCTION SIGNATURE:
+
+```java
+backtrack(nums, start, currentSubset, resultList)
+```
+
+* `nums`: input array → `{1, 2}`
+* `start`: current index in array to consider
+* `current`: current subset being built
+* `result`: list of all subsets found so far
+
+---
+
+## 🔁 DRY RUN
+
+### Initial call:
+
+```java
+backtrack({1, 2}, 0, [], result)
+```
+
+### Step-by-step recursion:
+
+#### 1️⃣ Call: `backtrack(nums, 0, [], result)`
+
+* Add `[]` to result
+* Loop from i = 0 to 1
+
+##### ➤ i = 0:
+
+* Choose `1` → current = `[1]`
+* Call: `backtrack(nums, 1, [1], result)`
+
+---
+
+#### 2️⃣ Call: `backtrack(nums, 1, [1], result)`
+
+* Add `[1]` to result
+* Loop from i = 1 to 1
+
+##### ➤ i = 1:
+
+* Choose `2` → current = `[1, 2]`
+* Call: `backtrack(nums, 2, [1, 2], result)`
+
+---
+
+#### 3️⃣ Call: `backtrack(nums, 2, [1, 2], result)`
+
+* Add `[1, 2]` to result
+* `start = 2` equals `nums.length` → return
+
+⏪ Backtrack: remove `2` → current = `[1]`
+
+---
+
+⏪ Backtrack again: remove `1` → current = `[]`
+
+##### ➤ Now back to 1st call, i = 1:
+
+* Choose `2` → current = `[2]`
+* Call: `backtrack(nums, 2, [2], result)`
+
+---
+
+#### 4️⃣ Call: `backtrack(nums, 2, [2], result)`
+
+* Add `[2]` to result
+* `start = 2` → return
+
+⏪ Backtrack: remove `2` → current = `[]`
+
+---
+
+## ✅ FINAL RESULT LIST:
+
+```
+[]
+[1]
+[1, 2]
+[2]
+```
+
+---
+
+## 📌 TREE STRUCTURE OF BACKTRACKING PATHS
+
+```
+        []
+       /  \
+     [1]  [2]
+     /      \
+  [1,2]     X
+```
+
+Each node is a recursive call, and each edge is a decision to include or exclude a number.
+
+---
+
+## 📦 Summary:
+
+| Call Stack | Current Subset | Result List So Far      |
+| ---------- | -------------- | ----------------------- |
+| 0          | `[]`           | `[[]]`                  |
+| 1          | `[1]`          | `[[], [1]]`             |
+| 2          | `[1,2]`        | `[[], [1], [1,2]]`      |
+| 3 (back)   | `[1]`          | —                       |
+| 4          | `[2]`          | `[[], [1], [1,2], [2]]` |
+
+Let me know if you want a **dry run tree diagram** or a **visual trace** for deeper understanding.
 
 ---
 
