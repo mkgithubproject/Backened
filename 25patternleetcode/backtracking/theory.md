@@ -223,6 +223,16 @@ public class NQueens {
 
 ```
 ---
+output :
+.Q..\
+...Q\
+Q...\
+..Q.
+
+..Q.\
+Q...\
+...Q\
+.Q..
 
 ## 🔄 Dry Run Example: n = 4
 
