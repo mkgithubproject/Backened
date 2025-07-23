@@ -151,6 +151,158 @@ public static int fibMemo(int n) {
 ```
 
 ---
+Great! Let's **deep dive into Recursive Tree Dry Runs** — one of the most powerful ways to visualize recursion and truly **understand what’s going on**.
+
+---
+
+## 🌳 What Is a Recursive Tree?
+
+A **recursive tree** is a way to **visualize all recursive calls** made by a function.
+
+* Each **node** represents a call to the function.
+* The **branches** represent the calls that this node makes.
+
+---
+
+## 🔢 Example: Fibonacci Recursive Tree
+
+Let’s dry-run `fibonacci(4)` using this simple recursive code:
+
+```java
+public static int fib(int n) {
+    if (n == 0 || n == 1) return n;
+    return fib(n - 1) + fib(n - 2);
+}
+```
+
+---
+
+### ✅ Step 1: Understand the function
+
+```java
+fib(4)
+= fib(3) + fib(2)
+= (fib(2) + fib(1)) + (fib(1) + fib(0))
+= ((fib(1) + fib(0)) + 1) + (1 + 0)
+= ((1 + 0) + 1) + (1 + 0)
+= (1 + 1) + 1 = 3
+```
+
+---
+
+### 🌳 Recursive Tree Diagram
+
+```
+                    fib(4)
+                  /        \
+              fib(3)       fib(2)
+             /     \        /     \
+         fib(2)   fib(1)  fib(1)  fib(0)
+         /    \
+     fib(1)  fib(0)
+```
+
+Now let’s write the **return values** on the leaves and bubble them up:
+
+```
+                    fib(4)
+                  /        \
+              fib(3)       fib(2)
+             /     \        /     \
+         fib(2)   1       1       0
+         /    \
+       1      0
+```
+
+Then evaluate bottom-up:
+
+* `fib(1) = 1`, `fib(0) = 0`
+* So, `fib(2) = 1 + 0 = 1`
+* Then, `fib(3) = fib(2) + fib(1) = 1 + 1 = 2`
+* `fib(2) = 1`
+* Finally, `fib(4) = fib(3) + fib(2) = 2 + 1 = 3`
+
+✔️ **Result** = 3
+
+---
+
+### 🔁 How Many Calls Are Made?
+
+For `fib(n)`:
+
+* Total calls = **Exponential**, specifically `O(2^n)` in the naive recursive case.
+* That’s why `fib(40)` using naive recursion is super slow!
+
+---
+
+## 🧪 Let's Try Another: Power Function
+
+```java
+public static int power(int a, int b) {
+    if (b == 0) return 1;
+    return a * power(a, b - 1);
+}
+```
+
+### Example: `power(2, 3)` → `2^3`
+
+Recursive Tree:
+
+```
+power(2, 3)
+   ↓
+2 * power(2, 2)
+        ↓
+    2 * power(2, 1)
+            ↓
+        2 * power(2, 0)
+                ↓
+              return 1
+```
+
+🧮 Multiply on return path:
+
+```
+2 * (2 * (2 * 1)) = 8
+```
+
+---
+
+## 🧠 When To Use a Recursive Tree?
+
+Use it for:
+
+* Understanding **call explosion** (like in Fibonacci).
+* Visualizing **backtracking** (e.g., subsets, permutations).
+* Debugging incorrect base cases or overlapping calls.
+
+---
+
+## 🔄 Common Pattern in Trees
+
+```java
+function(args)
+ ├─ function(smallerArgs1)
+ │   └─ ...
+ └─ function(smallerArgs2)
+     └─ ...
+```
+
+---
+
+## ✅ Next Step Suggestions:
+
+Would you like me to dry run a **recursive tree for**:
+
+1. **Generating all subsets of a string/array?** (Backtracking)
+2. **Permutations of a string?**
+3. **Tower of Hanoi?**
+4. **Binary Tree traversals?**
+
+These show **how recursion unfolds in a tree-like pattern**, especially useful for interviews.
+
+Let me know which one you want next, and I’ll walk you through it visually!
+
 
 ### 📦 **How to Identify Recursive Problems**
 
