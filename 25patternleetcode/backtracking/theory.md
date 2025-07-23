@@ -155,49 +155,72 @@ Repeat...
 
 ## 🔁 Backtracking Template (Code)
 
-Let’s write the 4-Queens solution in a simple way (JavaScript-like pseudocode):
+import java.util.*;
 
-```js
-function solveNQueens(n) {
-  let board = Array(n).fill().map(() => Array(n).fill('.'));
-  let result = [];
+public class NQueens {
 
-  function isSafe(row, col) {
-    // Check column
-    for (let i = 0; i < row; i++)
-      if (board[i][col] === 'Q') return false;
+    public static List<List<String>> solveNQueens(int n) {
+        char[][] board = new char[n][n];
+        List<List<String>> result = new ArrayList<>();
 
-    // Check left diagonal
-    for (let i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
-      if (board[i][j] === 'Q') return false;
+        // Initialize the board with '.'
+        for (int i = 0; i < n; i++)
+            Arrays.fill(board[i], '.');
 
-    // Check right diagonal
-    for (let i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
-      if (board[i][j] === 'Q') return false;
-
-    return true;
-  }
-
-  function backtrack(row) {
-    if (row === n) {
-      // Copy the board and save solution
-      result.push(board.map(r => r.join('')));
-      return;
+        backtrack(board, 0, result);
+        return result;
     }
 
-    for (let col = 0; col < n; col++) {
-      if (isSafe(row, col)) {
-        board[row][col] = 'Q';    // Place queen
-        backtrack(row + 1);       // Go to next row
-        board[row][col] = '.';    // Backtrack (remove queen)
-      }
-    }
-  }
+    private static void backtrack(char[][] board, int row, List<List<String>> result) {
+        int n = board.length;
 
-  backtrack(0);
-  return result;
+        if (row == n) {
+            // Convert board to List<String> and add to result
+            List<String> solution = new ArrayList<>();
+            for (char[] r : board)
+                solution.add(new String(r));
+            result.add(solution);
+            return;
+        }
+
+        for (int col = 0; col < n; col++) {
+            if (isSafe(board, row, col)) {
+                board[row][col] = 'Q';         // Place queen
+                backtrack(board, row + 1, result);  // Move to next row
+                board[row][col] = '.';         // Backtrack (remove queen)
+            }
+        }
+    }
+
+    private static boolean isSafe(char[][] board, int row, int col) {
+        int n = board.length;
+
+        // Check same column
+        for (int i = 0; i < row; i++)
+            if (board[i][col] == 'Q') return false;
+
+        // Check left diagonal
+        for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+            if (board[i][j] == 'Q') return false;
+
+        // Check right diagonal
+        for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
+            if (board[i][j] == 'Q') return false;
+
+        return true;
+    }
+
+    // Optional: test for 4-Queens
+    public static void main(String[] args) {
+        List<List<String>> solutions = solveNQueens(4);
+        for (List<String> sol : solutions) {
+            for (String row : sol)
+                System.out.println(row);
+            System.out.println();
+        }
+    }
 }
-```
+
 
 ---
 
