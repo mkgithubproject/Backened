@@ -154,7 +154,7 @@ Repeat...
 ---
 
 ## 🔁 Backtracking Template (Code)
-
+```
 import java.util.*;
 
 public class NQueens {
@@ -221,7 +221,7 @@ public class NQueens {
     }
 }
 
-
+```
 ---
 
 ## 🔄 Dry Run Example: n = 4
