@@ -270,6 +270,84 @@ We start from row 0, try each column.
 * Rat in a Maze
 
 ---
+Great question — let's **clarify why we do `unmark(i, j)` during backtracking**.
+
+---
+
+## 🤔 What does `unmark(i, j)` mean?
+
+When we visit a cell `(i, j)` in the maze, we usually **mark it as visited** to avoid going in circles.
+But when we’re **backtracking**, we undo that choice because we want to **try a different path**.
+
+---
+
+## 🧠 Think of it like this:
+
+* You are **exploring** one possible path.
+* You **mark** cells as visited while going **forward** (to prevent revisiting).
+* When you reach a dead end or finish a path, you **backtrack** and need to **try other directions**.
+* So you **`unmark`** that cell to allow future paths to use it again.
+
+---
+
+## 🔁 Code with Explanation
+
+```java
+void solve(i, j):
+    if out of bounds OR visited OR blocked:
+        return
+
+    if (i, j) is the destination:
+        print path
+        return
+
+    mark (i, j) as visited ✅
+
+    solve(i+1, j) // go down
+    solve(i, j+1) // go right
+
+    unmark (i, j) ❗BACKTRACK ❗
+```
+
+---
+
+## 🧭 Without `unmark(i, j)`, what happens?
+
+Let’s say you found one path.
+Now you're trying another path — but you **can’t use** a cell you've already marked.
+
+That’s wrong because in **a different path**, that cell might still be part of a valid route!
+
+---
+
+## 🧪 Example
+
+```text
+1 1
+1 1
+```
+
+Two valid paths:
+
+* (0,0) → (0,1) → (1,1)
+* (0,0) → (1,0) → (1,1)
+
+If you **don’t unmark**, the second path can't be explored because the first path already visited `(1,1)`.
+
+---
+
+## 🔄 Summary
+
+| Step             | What You Do        | Why                       |
+| ---------------- | ------------------ | ------------------------- |
+| Go forward       | `mark(i, j)`       | Avoid loops               |
+| Hit end/dead end | `unmark(i, j)`     | Allow new paths to use it |
+| Try next         | Continue exploring |                           |
+
+---
+
+Let me know if you want a dry run with real values in a matrix 📋 — I can visually show the backtracking with `mark/unmark` steps.
+
 
 
 
