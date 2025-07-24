@@ -109,3 +109,34 @@ public void helper(int[] nums, int index, List<Integer> current, List<List<Integ
 ---
 
 Let me know if you'd like visual tree images or want to compare memory usage and performance!
+
+```
+import java.util.*;
+
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        helper(nums, 0, new ArrayList<>(), res);
+        return res;
+    }
+
+    // Pure recursive helper with no loops
+    public void helper(int[] nums, int index, List<Integer> current, List<List<Integer>> res) {
+        if (index == nums.length) {
+            res.add(new ArrayList<>(current)); // base case: reached end
+            return;
+        }
+
+        // ❌ Exclude nums[index]
+        helper(nums, index + 1, current, res);
+
+        // ✅ Include nums[index]
+        current.add(nums[index]);
+        helper(nums, index + 1, current, res);
+
+        // Backtrack
+        current.remove(current.size() - 1);
+    }
+
+}
+```
