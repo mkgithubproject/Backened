@@ -258,3 +258,163 @@ Time: O(m*n) | Space: O(m*n)
 
 ---
 
+Absolutely! Let's **clearly understand the difference** between:
+
+> 🔁 **Memoization (Top-Down)** vs 📥 **Tabulation (Bottom-Up)**
+
+These are two ways to apply **Dynamic Programming** — same goal, different direction.
+
+---
+
+## 🔁 Memoization (Top-Down)
+
+> You start from the **main problem** and **recursively** break it into subproblems, **caching** answers as you go.
+
+### 🔹 Characteristics:
+
+* Uses **recursion**
+* Uses a **cache** (HashMap or array)
+* Starts **from the top** (e.g., `fib(n)` → `fib(n-1)` → `fib(n-2)`...)
+
+---
+
+### ✅ Fibonacci Example – Top-Down (Memoization)
+
+```java
+import java.util.*;
+
+public class FibonacciMemo {
+    static Map<Integer, Integer> memo = new HashMap<>();
+
+    static int fib(int n) {
+        if (n <= 1) return n;
+        if (memo.containsKey(n)) return memo.get(n); // cached
+        int result = fib(n - 1) + fib(n - 2);         // recursive
+        memo.put(n, result);                          // store result
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fib(5));  // Output: 5
+    }
+}
+```
+
+---
+
+### 🧠 How it works (calls flow):
+
+```
+fib(5)
+├─ fib(4)
+│  ├─ fib(3)
+│  │  ├─ fib(2)
+│  │  ├─ fib(1)
+│  ├─ fib(2) [already computed]
+├─ fib(3) [already computed]
+```
+
+* Calls go **deep recursively**
+* Subresults are **memoized**
+* Avoids redundant calls
+
+---
+
+### ⏱ Time: O(n) | 📦 Space: O(n)
+
+* `n` unique values are computed once
+* Call stack depth = O(n)
+
+---
+
+## 📥 Tabulation (Bottom-Up)
+
+> You start from the **smallest subproblems**, and **build up** the answer in a table (usually an array).
+
+### 🔹 Characteristics:
+
+* Uses **loops** (not recursion)
+* Uses a **DP array** to store results
+* Solves problems in **order from smallest to largest**
+
+---
+
+### ✅ Fibonacci Example – Bottom-Up (Tabulation)
+
+```java
+public class FibonacciTab {
+    public static int fib(int n) {
+        if (n <= 1) return n;
+
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2]; // build up
+        }
+
+        return dp[n];
+    }
+
+    public static void main(String[] args) {
+        System.out.println(fib(5));  // Output: 5
+    }
+}
+```
+
+---
+
+### 🧠 How it works (values built step by step):
+
+```
+dp[0] = 0
+dp[1] = 1
+dp[2] = dp[1] + dp[0] = 1
+dp[3] = dp[2] + dp[1] = 2
+dp[4] = dp[3] + dp[2] = 3
+dp[5] = dp[4] + dp[3] = 5
+```
+
+---
+
+### ⏱ Time: O(n) | 📦 Space: O(n)
+
+* Just one loop, no recursion
+* Can reduce space to O(1) if only last 2 values needed
+
+---
+
+## 🆚 Summary Table
+
+| Feature             | Memoization (Top-Down)      | Tabulation (Bottom-Up)     |
+| ------------------- | --------------------------- | -------------------------- |
+| Approach            | Recursive (Top-Down)        | Iterative (Bottom-Up)      |
+| Subproblem Order    | On-demand                   | Precomputed in order       |
+| Caching             | Uses HashMap/Array          | Uses Array                 |
+| Call Stack Usage    | Yes (recursion)             | No recursion               |
+| Easier to write     | For recursive problems      | May need to figure order   |
+| Space Optimization  | Harder (uses stack + cache) | Easier (just reduce array) |
+| Speed (in practice) | Slightly slower             | Usually faster             |
+
+---
+
+## 🧪 When to Use What?
+
+| If problem is...                       | Use...      |
+| -------------------------------------- | ----------- |
+| Naturally recursive (tree/DFS-like)    | Memoization |
+| Can define exact order of computation  | Tabulation  |
+| You want to reduce call stack overhead | Tabulation  |
+
+---
+
+Would you like me to:
+
+* Insert this comparison + diagrams into your DP document?
+* Add an optimized **O(1) space** version of Fibonacci (bottom-up)?
+* Continue to the next topic (like `ClimbStairs` memoization vs tabulation)?
+
+Let me know!
+
+
