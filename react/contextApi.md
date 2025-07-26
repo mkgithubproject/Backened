@@ -115,6 +115,120 @@ export default Child;
 * `useContext(ThemeContext)` allows any nested component to **consume** the context directly.
 
 ---
+Great idea! Separating the **Context Provider** into its own file makes your code **cleaner**, **more reusable**, and **easier to manage** — especially as your app grows.
+
+---
+
+## ✅ Step-by-Step Refactor: Create a Separate `ThemeProvider`
+
+### 📁 File Structure:
+
+```
+src/
+├── App.js
+├── ThemeContext.js
+├── ThemeProvider.js  ✅ (new)
+├── Child.js
+```
+
+---
+
+### 🔹 1. `ThemeContext.js` (same as before)
+
+```js
+import React from 'react';
+
+const ThemeContext = React.createContext();
+
+export default ThemeContext;
+```
+
+---
+
+### 🔹 2. `ThemeProvider.js` (new file)
+
+```js
+import React, { useState } from 'react';
+import ThemeContext from './ThemeContext';
+
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light');
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};
+
+export default ThemeProvider;
+```
+
+* ✅ This is a **wrapper component** that encapsulates state + context logic
+* ✅ It accepts `children` and wraps them with the provider
+
+---
+
+### 🔹 3. Update `App.js` to use the new `ThemeProvider`
+
+```js
+import React from 'react';
+import ThemeProvider from './ThemeProvider';
+import Child from './Child';
+
+const App = () => {
+  return (
+    <ThemeProvider>
+      <Main />
+    </ThemeProvider>
+  );
+};
+
+// Optional: create a wrapper for app UI
+const Main = () => {
+  const { theme } = React.useContext(require('./ThemeContext').default);
+
+  return (
+    <div className={`app ${theme}`}>
+      <h1>Welcome to the {theme} theme</h1>
+      <Child />
+    </div>
+  );
+};
+
+export default App;
+```
+
+✅ Or simply keep the `<div>` and `<h1>` directly inside `App`, like:
+
+```js
+const App = () => {
+  const { theme } = React.useContext(require('./ThemeContext').default);
+
+  return (
+    <ThemeProvider>
+      <div className={`app ${theme}`}>
+        <h1>Welcome to the {theme} theme</h1>
+        <Child />
+      </div>
+    </ThemeProvider>
+  );
+};
+```
+
+---
+
+## ✅ Summary
+
+| File               | Responsibility                             |
+| ------------------ | ------------------------------------------ |
+| `ThemeContext.js`  | Creates the context                        |
+| `ThemeProvider.js` | Manages state and provides context         |
+| `App.js`           | Uses the provider and consumes the context |
+
+---
+
+Would you like me to insert this refactored structure and explanation into your existing document on wrappers and context?
 
 # 📘 Real-Life Use Cases
 
