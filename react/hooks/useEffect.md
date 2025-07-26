@@ -421,132 +421,143 @@ export default TimerWatch;
 ```
 
 ### custome hook , behind the scene
-Absolutely! Let's **build a custom `useEffect` hook from scratch**, understand how it works, and then **use it with a working example** — all step by step.
+
+Sure! Let's build a **custom `useEffect` hook** from scratch in React to understand how the **dependency array** behaves in different cases:
 
 ---
 
-## 🎯 Goal
+### ✅ What We're Doing
 
-Recreate a simple version of `useEffect(callback, deps)`:
+We'll create a **custom hook** that behaves like `useEffect`, and demonstrate:
 
-* Runs effect on **mount**
-* Runs again when **dependencies change**
-* Supports **cleanup function**
+1. `useEffect` with **no dependency array**
+2. `useEffect` with an **empty array `[]`**
+3. `useEffect` with a **value in the array** like `[count]`
+4. `useEffect` with a **cleanup function** (like `componentWillUnmount`)
 
 ---
 
-## 🔧 Step-by-Step: Build a Custom `useEffect`
+## 🔧 Step 1: Create a Custom useEffect Hook
 
-### ✅ 1. Basic Implementation
-
-We’ll simulate React’s behavior in a **very simplified environment**:
+This is for **learning purposes only** (not production), using `useRef` and `useState`.
 
 ```jsx
-// Tracks which effect is being run during the render cycle
-let effectIndex = 0;
+import { useEffect, useRef } from 'react';
 
-// Stores effect data (dependencies and cleanup functions)
-const effectStore = [];
-
+// Custom useEffect with cleanup support
 function useCustomEffect(callback, deps) {
-  const currentIndex = effectIndex;
+  const hasMounted = useRef(false);
+  const prevDeps = useRef([]);
+  const cleanupRef = useRef();
 
-  // Get previous dependencies
-  const prevDeps = effectStore[currentIndex]?.deps;
+  useEffect(() => {
+    let cleanup;
 
-  // Check if dependencies have changed (or if it's the first run)
-  const hasChanged = !prevDeps || deps.some((dep, i) => dep !== prevDeps[i]);
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+      cleanup = callback();
+    } else {
+      if (!deps || deps.length === 0) return;
 
-  if (hasChanged) {
-    // Call previous cleanup function if it exists
-    if (effectStore[currentIndex]?.cleanup) {
-      effectStore[currentIndex].cleanup();
+      const isChanged = deps.some((dep, i) => dep !== prevDeps.current[i]);
+
+      if (isChanged) {
+        if (typeof cleanupRef.current === 'function') {
+          cleanupRef.current();
+        }
+        cleanup = callback();
+        prevDeps.current = deps;
+      }
     }
 
-    // Run the effect and store the returned cleanup function
-    const cleanup = callback();
+    cleanupRef.current = cleanup;
 
-    // Save new dependencies and cleanup function
-    effectStore[currentIndex] = { deps, cleanup };
-  }
-
-  // Move to the next effect for the next hook call
-  effectIndex++;
-}
-```
-
-### 🔁 Reset index before each render:
-
-```js
-// Simulates a React render cycle
-function render() {
-  effectIndex = 0;
-  App(); // Re-run component
+    return () => {
+      if (typeof cleanupRef.current === 'function') {
+        cleanupRef.current();
+      }
+    };
+  }, deps);
 }
 ```
 
 ---
 
-## 💻 Example: Using `useCustomEffect`
-
-### 🔬 Simulate a simple component:
+## 🧪 Step 2: Demo Component
 
 ```jsx
-// Simulate a state variable
-let count = 0;
+import React, { useState } from 'react';
+import { useCustomEffect } from './useCustomEffect';
 
-// Simulate a component function using the custom hook
-function App() {
+function DemoComponent() {
+  const [count, setCount] = useState(0);
+
+  // 1️⃣ No Dependency Array (runs after every render)
   useCustomEffect(() => {
-    console.log("🌟 Effect ran. Count is:", count);
+    console.log('✅ Effect: No dependency array');
+    return () => console.log('🧹 Cleanup: No dependency array');
+  });
 
-    // Cleanup logic that runs before the effect re-runs or component unmounts
-    return () => {
-      console.log("🧹 Cleanup ran. Count was:", count);
-    };
+  // 2️⃣ Empty Dependency Array (runs only once)
+  useCustomEffect(() => {
+    console.log('✅ Effect: Empty dependency array []');
+    return () => console.log('🧹 Cleanup: Empty dependency array');
+  }, []);
+
+  // 3️⃣ With Dependency [count] (runs on mount and whenever count changes)
+  useCustomEffect(() => {
+    console.log('✅ Effect: count changed:', count);
+    return () => console.log('🧹 Cleanup: count was', count);
   }, [count]);
 
-  console.log("👀 Render with count:", count);
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={() => setCount((prev) => prev + 1)}>Increment</button>
+    </div>
+  );
 }
-
-// Simulate app running and updating
-render(); // First render
-count++;
-render(); // Simulates a state update
-count++;
-render(); // Another update
-```
-
-### 🧾 Output:
-
-```
-🌟 Effect ran. Count is: 0
-👀 Render with count: 0
-🧹 Cleanup ran. Count was: 0
-🌟 Effect ran. Count is: 1
-👀 Render with count: 1
-🧹 Cleanup ran. Count was: 1
-🌟 Effect ran. Count is: 2
-👀 Render with count: 2
 ```
 
 ---
 
-## 🧠 Explanation
+## 🧠 Output Explanation
 
-| Concept          | Behavior                                           |
-| ---------------- | -------------------------------------------------- |
-| `effectIndex`    | Tracks where each hook is called in order          |
-| `effectStore[]`  | Stores previous deps and cleanup for each effect   |
-| `deps.some(...)` | Compares new vs previous dependencies              |
-| `cleanup()`      | Called before the new effect runs, just like React |
-| `effect()`       | Called on mount and when dependencies change       |
+| Hook Case                               | When it Runs                                                                           |
+| --------------------------------------- | -------------------------------------------------------------------------------------- |
+| `useCustomEffect(() => {})`             | After **every render** (no dependency array means always run)                          |
+| `useCustomEffect(() => {}, [])`         | Only **once on mount** (acts like componentDidMount)                                   |
+| `useCustomEffect(() => {}, [count])`    | On **mount** and **whenever `count` changes** (dependency-based updates)               |
+| `useCustomEffect(() => { return ... })` | The returned function is called **on unmount** or **before next run** for changed deps |
 
 ---
 
-## ⚠️ Limitations (Because This Is Simplified)
+## 🔍 useEffect Features Recap
 
-\| Real `useEffect` Supports          | Our Version              |
-\|-----------------------------------|
+* `useEffect` runs **after render**, not during.
+* It can act like:
+
+  * `componentDidMount` → `useEffect(() => {}, [])`
+  * `componentDidUpdate` → `useEffect(() => {}, [dep])`
+  * `componentDidMount + Update` → `useEffect(() => {})`
+* It supports a **cleanup function**: `useEffect(() => { return () => {...} }, [dep])`
+
+  * This runs on:
+
+    * Component **unmount**
+    * **Before** next effect when dependencies change
+* Dependency array tells React **when to re-run** the effect.
+
+---
+
+## 📝 Summary
+
+* This **custom `useEffect`** lets you trace how the actual `useEffect` works.
+* Real `useEffect` handles this internally, but this helps you understand **render lifecycle, cleanup, and dependency comparison**.
+* This version now includes **cleanup support** for unmount and updates!
+
+---
+
+Would you like to see this implemented in a real small React app example?
 
 
