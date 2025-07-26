@@ -374,7 +374,51 @@ function Demo() {
 3. **On unmount** → Only `cleanup()` runs.
 
 ---
+## timer watch using useEffect
+```
+import React, { useEffect, useState } from 'react';
 
+function TimerWatch() {
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    let intervalId;
+
+    if (isRunning) {
+      // Start interval when timer is running
+      intervalId = setInterval(() => {
+        setSeconds(prev => prev + 1);
+      }, 1000);
+    }
+
+    // Cleanup: clear interval when component unmounts or isRunning changes
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isRunning]);
+
+  const handleStart = () => setIsRunning(true);
+  const handlePause = () => setIsRunning(false);
+  const handleReset = () => {
+    setIsRunning(false);
+    setSeconds(0);
+  };
+
+  return (
+    <div style={{ fontFamily: 'sans-serif', textAlign: 'center' }}>
+      <h2>⏱ Timer Watch</h2>
+      <h1>{seconds}s</h1>
+      <button onClick={handleStart} disabled={isRunning}>Start</button>
+      <button onClick={handlePause} disabled={!isRunning}>Pause</button>
+      <button onClick={handleReset}>Reset</button>
+    </div>
+  );
+}
+
+export default TimerWatch;
+
+```
 
 ### custome hook , behind the scene
 
