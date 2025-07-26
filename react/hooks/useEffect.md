@@ -421,4 +421,132 @@ export default TimerWatch;
 ```
 
 ### custome hook , behind the scene
+Absolutely! Let's **build a custom `useEffect` hook from scratch**, understand how it works, and then **use it with a working example** — all step by step.
+
+---
+
+## 🎯 Goal
+
+Recreate a simple version of `useEffect(callback, deps)`:
+
+* Runs effect on **mount**
+* Runs again when **dependencies change**
+* Supports **cleanup function**
+
+---
+
+## 🔧 Step-by-Step: Build a Custom `useEffect`
+
+### ✅ 1. Basic Implementation
+
+We’ll simulate React’s behavior in a **very simplified environment**:
+
+```jsx
+// Tracks which effect is being run during the render cycle
+let effectIndex = 0;
+
+// Stores effect data (dependencies and cleanup functions)
+const effectStore = [];
+
+function useCustomEffect(callback, deps) {
+  const currentIndex = effectIndex;
+
+  // Get previous dependencies
+  const prevDeps = effectStore[currentIndex]?.deps;
+
+  // Check if dependencies have changed (or if it's the first run)
+  const hasChanged = !prevDeps || deps.some((dep, i) => dep !== prevDeps[i]);
+
+  if (hasChanged) {
+    // Call previous cleanup function if it exists
+    if (effectStore[currentIndex]?.cleanup) {
+      effectStore[currentIndex].cleanup();
+    }
+
+    // Run the effect and store the returned cleanup function
+    const cleanup = callback();
+
+    // Save new dependencies and cleanup function
+    effectStore[currentIndex] = { deps, cleanup };
+  }
+
+  // Move to the next effect for the next hook call
+  effectIndex++;
+}
+```
+
+### 🔁 Reset index before each render:
+
+```js
+// Simulates a React render cycle
+function render() {
+  effectIndex = 0;
+  App(); // Re-run component
+}
+```
+
+---
+
+## 💻 Example: Using `useCustomEffect`
+
+### 🔬 Simulate a simple component:
+
+```jsx
+// Simulate a state variable
+let count = 0;
+
+// Simulate a component function using the custom hook
+function App() {
+  useCustomEffect(() => {
+    console.log("🌟 Effect ran. Count is:", count);
+
+    // Cleanup logic that runs before the effect re-runs or component unmounts
+    return () => {
+      console.log("🧹 Cleanup ran. Count was:", count);
+    };
+  }, [count]);
+
+  console.log("👀 Render with count:", count);
+}
+
+// Simulate app running and updating
+render(); // First render
+count++;
+render(); // Simulates a state update
+count++;
+render(); // Another update
+```
+
+### 🧾 Output:
+
+```
+🌟 Effect ran. Count is: 0
+👀 Render with count: 0
+🧹 Cleanup ran. Count was: 0
+🌟 Effect ran. Count is: 1
+👀 Render with count: 1
+🧹 Cleanup ran. Count was: 1
+🌟 Effect ran. Count is: 2
+👀 Render with count: 2
+```
+
+---
+
+## 🧠 Explanation
+
+| Concept          | Behavior                                           |
+| ---------------- | -------------------------------------------------- |
+| `effectIndex`    | Tracks where each hook is called in order          |
+| `effectStore[]`  | Stores previous deps and cleanup for each effect   |
+| `deps.some(...)` | Compares new vs previous dependencies              |
+| `cleanup()`      | Called before the new effect runs, just like React |
+| `effect()`       | Called on mount and when dependencies change       |
+
+---
+
+## ⚠️ Limitations (Because This Is Simplified)
+
+\| Real `useEffect` Supports          | Our Version              |
+\|-----------------------------------|
+
 
