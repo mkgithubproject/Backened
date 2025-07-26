@@ -327,5 +327,99 @@ function MyComponent() {
 | Maintainable | Easier testing and debugging                          |
 
 ---
+Great observation! You're absolutely right to be curious about how `dispatch` works when multiple reducers are involved.
 
-Would you like this entire multi-reducer example and explanation added to your canvas document?
+Let’s break it down clearly:
+
+---
+
+## ❓ How Does `dispatch` Know Which Reducer to Call?
+
+When you use `combineReducers()` in Redux:
+
+```js
+const rootReducer = combineReducers({
+  counter: counterReducer,
+  auth: authReducer
+});
+```
+
+Each sub-reducer (`counterReducer`, `authReducer`) is responsible **only** for its own **slice of state**.
+
+### 🔄 What Happens on `dispatch({ type: 'LOGIN' })`?
+
+* Redux **dispatches the action to *all* reducers**.
+* Each reducer receives the **same action**.
+* But **each reducer only handles it if it recognizes the `type`**.
+
+---
+
+### ✅ So This Works Safely:
+
+```jsx
+<button onClick={() => dispatch({ type: 'INCREMENT' })}>Increment</button>
+<button onClick={() => dispatch({ type: 'LOGIN' })}>Login</button>
+```
+
+* `counterReducer` handles `'INCREMENT'`
+* `authReducer` handles `'LOGIN'`
+
+They **ignore** action types they don’t recognize.
+
+---
+
+## 🔍 Example:
+
+### `counterReducer.js`
+
+```js
+const counterReducer = (state = { count: 0 }, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { count: state.count + 1 };
+    default:
+      return state; // returns unmodified state if type not matched
+  }
+};
+```
+
+### `authReducer.js`
+
+```js
+const authReducer = (state = { isAuthenticated: false }, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return { isAuthenticated: true };
+    default:
+      return state;
+  }
+};
+```
+
+When you call:
+
+```js
+dispatch({ type: 'LOGIN' });
+```
+
+* `authReducer` updates the auth state ✅
+* `counterReducer` returns the original state ⏩ (because it doesn't recognize `'LOGIN'`)
+
+---
+
+## ✅ Do Action Types Need to Be Globally Unique?
+
+* **Technically**: ❌ No, they don’t have to be unique.
+* **Practically**: ✅ Yes, they *should* be, to avoid confusion and bugs — especially in large apps.
+
+🔐 So to stay safe, **you should make action types unique** or **namespace them** like:
+
+```js
+'auth/LOGIN'
+'counter/INCREMENT'
+```
+
+---
+
+Would you like this clear explanation and example added to your canvas document?
+
