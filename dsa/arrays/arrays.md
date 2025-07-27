@@ -1,4 +1,7 @@
 ### 1. Find Missing and Repeating element
+nput: arr[] = [3, 1, 3]
+Output: [3, 2]
+Explanation: 3 is occurs twice and 2 is missing.
   ```
 class Solution {
     ArrayList<Integer> findTwoElement(int arr[]) {
@@ -341,6 +344,9 @@ class Solution {
 ```
 
 ### 5. Convert array into Zig-Zag fashion
+Input: N = 7, arr[] = [4, 3, 7, 8, 6, 2, 1]\
+ Output: [3, 7, 4, 8, 2, 6, 1]\
+ Explanation:  The given array is in zig-zag pattern as we can see 3 < 7 > 4 < 8 > 2 < 6 >1 
   ```
   
 class Solution {
@@ -379,6 +385,9 @@ Repeat the process till complete array is traversed.
 ```
 ```
 ### 6. Pair Sum in a Sorted and Rotated Array
+nput: arr[] = [11, 15, 6, 8, 9, 10], target = 16\
+Output: true\
+Explanation: There is a pair (6, 10) with sum 16.
   ```
 class Solution {
     static boolean pairInSortedRotated(int arr[], int target) {
@@ -461,6 +470,9 @@ class GfG {
 ```
 
 ### 7. Sort an array of 0s, 1s and 2s 
+Input: arr[] = {0, 1, 2, 0, 1, 2}\
+Output: {0, 0, 1, 1, 2, 2}\
+Explanation: {0, 0, 1, 1, 2, 2} has all 0s first, then all 1s and all 2s in last.
   ```
   class Solution {
     public static void sort012(int arr[], int n) {
@@ -492,6 +504,10 @@ class GfG {
 }
 ```
 ### 8. Rotate an Array by d - Counterclockwise or Left:
+Input: arr[] = {1, 2, 3, 4, 5, 6}, d = 2\
+Output: {3, 4, 5, 6, 1, 2}\
+Explanation: After first left rotation, arr[] becomes {2, 3, 4, 5, 6, 1} \
+and after the second rotation, arr[] becomes {3, 4, 5, 6, 1, 2}\
  m1: [Naive Approach] Rotate one by one - O(n * d) Time and O(1) Space\
  m2: [Better Approach] Using Temporary Array - O(n) Time and O(n) Space\
  m3:[Expected Approach 1] Using Juggling Algorithm - O(n) Time and O(1) Space\
@@ -528,6 +544,9 @@ Since rotating an array of length 5 by 7 positions counter-clockwise is the same
 ```
 ```
 ### 9. Majority Element
+Input: arr[] = [1, 1, 2, 1, 3, 5, 1]\
+Output: 1\
+Explanation: Element 1 appears 4 times. Since ⌊7/2⌋ = 3, and 4 > 3, it is the majority eleme
   m1: Naive Approach] Using Two Nested Loops - O(n^2) Time and O(1) Space\
   m2: [Better Approach 1] Using Sorting - O(n log n) Time and O(1) Space
   ```
@@ -663,6 +682,9 @@ class GfG {
 ```
 
 ### 10. Maximum Subarray Sum - Kadane's Algorithm
+nput: arr[] = [2, 3, -8, 7, -1, 2, 3]\
+Output: 11\
+Explanation: The subarray [7, -1, 2, 3] has the largest sum 11.\
   Method1: [Naive Approach] By iterating over all subarrays - O(n^2) Time and O(1) Space\
   Method2 : [Expected Approach] Using Kadane's Algorithm - O(n) Time and O(1) Space
   #### Kadane says: “As long as the path is helping me grow, I’ll keep going.If not, I’ll start again from the current position.”
@@ -711,7 +733,12 @@ class Solution {
     }
 }
 ```
-### 11. Stock Buy and Sell - Max one Transaction Allowed
+### 11. Stock Buy and Sell - Multiple Transaction Allowed
+Input: prices[] = {100, 180, 260, 310, 40, 535, 695}\
+Output: 865\
+Explanation: Buy the stock on day 0 and sell it on day 3 => 310 - 100 = 210\
+                       Buy the stock on day 4 and sell it on day 6 => 695 - 40 = 655\
+                       Maximum Profit  = 210 + 655 = 865
 ```
 // local minima / maxima
 class Solution {
@@ -864,6 +891,12 @@ function getPath(obj, keysPath){
 console.log(getPath(obj,'a.b.c'))
 ```
 ### 14. Product of Array Except Self
+Example 1:\
+Input: nums = [1,2,3,4]\
+Output: [24,12,8,6]\
+Example 2:\
+Input: nums = [-1,1,0,-3,3]\
+Output: [0,0,9,0,0]
 ```
 class Solution {
     public int[] productExceptSelf(int[] nums) {
@@ -896,6 +929,9 @@ class Solution {
 ```
 
 ### 14. Move Zeroes
+Example 1:\
+Input: nums = [0,1,0,3,12]\
+Output: [1,3,12,0,0]
 
 ```
 class Solution {
@@ -936,9 +972,9 @@ class Solution {
         }
         
     }
-}
-```
-### Next Permutation
+}```
+
+### 15 Next Permutation
 Here’s a clear explanation and implementation of **Leetcode 31. Next Permutation** in Java.
 
 ---
@@ -1071,6 +1107,8 @@ nums = [1, 3, 2]
    Result: `[2, 1, 3]` ✅
 
 ---
+
+### 16 .
 
 
 
