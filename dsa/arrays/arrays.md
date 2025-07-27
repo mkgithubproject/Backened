@@ -1108,7 +1108,184 @@ nums = [1, 3, 2]
 
 ---
 
-### 16 .
+### 16 . Minimum Size Subarray Sum (using prefix sum)
+Input: target = 7, nums = [2,3,1,2,4,3]\
+Output: 2\
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.\
+
+[Naive Approach] Using Two Nested Loops - O(n^2) Time and O(1) Space\
+take starting element and then try to pick from j =i and check given sum equal to target , update legth break ,\
+[Better Approach] - Prefix Sum and Binary Search - O(n Log n) Time and O(n) Space\
+```
+class Solution {
+    // public int minSubArrayLen(int target, int[] nums) {
+    //     /*
+    //     subArraySum(i,j) = ps(j) -ps(i-1);
+    //     example: a = [1,2,3,5]
+    //     ps = [1,3,6,11] // this is sorted array can apply binary search
+    //     subArraySum(1,3) = 11-1 = 10 ( calculed in O(1) time)
+    //     target = ps(j) -ps(i-1);
+    //     ps(i-1); = ps(j) - k // 
+
+    //     */
+    //      int[] prefixSum = int[nums.length];
+    //      prefixSum[0] = nums[0];
+    //      for(int i = 1; i<nums.length;i++){
+    //         prefixSum[i] = prefixSum[i-1]+nums[i];
+    //      }
+    // }
+
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+        int[] prefixSum = new int[n];
+        prefixSum[0] = nums[0];
+
+        // Step 1: Build prefix sum array
+        for (int i = 1; i < n; i++) {
+            prefixSum[i] = prefixSum[i - 1] + nums[i];
+        }
+
+        int minLen = Integer.MAX_VALUE;
+
+        // Step 2: For each j, find the longest i-1 such that:
+        // prefixSum[i-1] <= prefixSum[j] - target
+        for (int j = 0; j < n; j++) {
+            if (prefixSum[j] >= target) {
+                int required = prefixSum[j] - target;
+                int i = lowerBound(prefixSum, required);
+                if (i != -1) {
+                    minLen = Math.min(minLen, j - i);
+                } else {
+                    // No smaller prefix found, subarray starts from 0
+                    minLen = Math.min(minLen, j + 1);
+                }
+            }
+        }
+
+        return minLen == Integer.MAX_VALUE ? 0 : minLen;
+    }
+
+    // Binary search: find largest i where prefixSum[i] <= target
+    private int lowerBound(int[] prefixSum, int target) {
+        int left = 0, right = prefixSum.length - 1;
+        int ans = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (prefixSum[mid] <= target) {
+                ans = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+}
+```
+
+[Expected Approach] - Using Two Pointers - O(n) Time and O(1) Space (sliding window)\
+Perfect! Let's now solve **Leetcode 209. Minimum Size Subarray Sum** using the **Expected Approach** — the optimal **Two Pointers / Sliding Window** method.
+
+---
+
+### ✅ Approach: Two Pointers (Sliding Window)
+
+This is the **most efficient solution**:
+
+* **Time Complexity:** O(n) ✅
+* **Space Complexity:** O(1) ✅
+
+---
+
+### 🧠 Core Idea
+
+We use two pointers `start` and `end` to maintain a **sliding window**.
+
+* We expand the window to the right (`end++`) and keep adding to `sum`.
+* As soon as `sum >= target`, we try to **shrink the window from the left (`start++`)** to find the **minimum length** that still satisfies the condition.
+
+---
+
+### 📘 Example
+
+```text
+Input: nums = [2,3,1,2,4,3], target = 7
+Expected Output: 2 (subarray [4,3] or [3,4])
+```
+
+```java
+public class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n = nums.length;
+
+        int left = 0;                // Start of sliding window
+        int sum = 0;                 // Current sum of the window
+        int minLength = Integer.MAX_VALUE;
+
+        // Move right pointer through the array
+        for (int right = 0; right < n; right++) {
+            sum += nums[right];     // Expand the window by adding nums[right]
+
+            // Shrink window while sum >= target
+            while (sum >= target) {
+                // Update minLength if this window is smaller
+                minLength = Math.min(minLength, right - left + 1);
+
+                // Shrink the window from the left
+                sum -= nums[left];
+                left++;
+            }
+        }
+
+        // If no valid window was found, return 0
+        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+    }
+}
+```
+
+---
+
+### 🔍 Dry Run for Input `[2,3,1,2,4,3]`, target = 7
+
+| Step | left | right | sum | window     | minLength |
+| ---- | ---- | ----- | --- | ---------- | --------- |
+| 1    | 0    | 0     | 2   | \[2]       | ∞         |
+| 2    | 0    | 1     | 5   | \[2,3]     | ∞         |
+| 3    | 0    | 2     | 6   | \[2,3,1]   | ∞         |
+| 4    | 0    | 3     | 8   | \[2,3,1,2] | 4         |
+| 5    | 1    | 3     | 6   | \[3,1,2]   | 4         |
+| 6    | 1    | 4     | 10  | \[3,1,2,4] | 4 → 4     |
+| 7    | 2    | 4     | 7   | \[1,2,4]   | 4 → 3     |
+| 8    | 3    | 4     | 6   | \[2,4]     | 3         |
+| 9    | 3    | 5     | 9   | \[2,4,3]   | 3         |
+| 10   | 4    | 5     | 7   | \[4,3]     | ✅ 2       |
+| 11   | 5    | 5     | 3   | \[3]       | -         |
+
+Final `minLength = 2`
+
+---
+
+### ✅ Output: `2` ✅
+
+---
+
+### 🧠 Summary
+
+| Metric           | Value                         |
+| ---------------- | ----------------------------- |
+| Time Complexity  | O(n)                          |
+| Space Complexity | O(1)                          |
+| Best Approach    | Sliding Window (Two Pointers) |
+
+---
+
+Let me know if you want a **Python version**, or a **visual sliding window animation** too!
+
+
+
 
 
 
