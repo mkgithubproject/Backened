@@ -88,6 +88,7 @@ To solve this problem in **O(n)** time and **O(1)** space:
 ---
 
 ## ✅ Java Implementation
+### agar current price kam till min so far thne kharidta rahunga agar ni to aaj sell krke dekhte h agar profir max profit se jada h to update kr do
 
 ```java
 import java.util.*;
@@ -862,7 +863,82 @@ function getPath(obj, keysPath){
 
 console.log(getPath(obj,'a.b.c'))
 ```
-### 14. 
+### 14. Product of Array Except Self
+```
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int totalProduct = 1;
+        int zeroCount = 0;
+
+        for (int num : nums) {
+            if (num == 0) {
+                zeroCount++;
+                continue;
+            }
+            totalProduct *= num;
+        }
+
+        int[] res = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (zeroCount > 1) {
+                res[i] = 0;
+            } else if (zeroCount == 1) {
+                res[i] = nums[i] == 0 ? totalProduct : 0;
+            } else {
+                res[i] = totalProduct / nums[i];
+            }
+        }
+
+        return res;
+    }
+
+}
+```
+
+### 14. Move Zeroes
+
+```
+class Solution {
+    public void shift(int start, int end, int[] nums) {
+        for (int i = start; i < end; i++) {
+            nums[i] = nums[i + 1];
+        }
+    }
+
+    public void moveZeroes(int[] nums) {
+        // two pointer 
+        int left = 0;
+        int right = nums.length - 1;
+        while (left < right) {
+            if (nums[left] == 0) {
+                // shift all the elemnt to the left
+                shift(left, right, nums);
+                nums[right] = 0; // place zero at the end
+                right--;
+            } else {
+                left++;
+            }
+        }
+    }
+}```
+## m-2
+```
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=0){
+                nums[count++]=nums[i];
+            }
+        }
+        for(int i=count;i<nums.length;i++){
+            nums[i]=0;
+        }
+        
+    }
+}
+```
+### 
 
 
 
