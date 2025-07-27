@@ -938,7 +938,141 @@ class Solution {
     }
 }
 ```
-### 
+### Next Permutation
+Here’s a clear explanation and implementation of **Leetcode 31. Next Permutation** in Java.
+
+---
+
+## ✅ Problem Statement:
+
+Given an array of integers `nums`, **find the next lexicographically greater permutation** of numbers.
+
+If such an arrangement is not possible, rearrange it as the **lowest possible order** (i.e., sorted in ascending order).
+
+You must do this **in-place** (modify the array directly, no extra memory).
+
+---
+
+## 🚀 Example:
+
+### Input:
+
+```
+nums = [1, 2, 3]
+```
+
+### Output:
+
+```
+[1, 3, 2]
+```
+
+---
+
+### Input:
+
+```
+nums = [3, 2, 1]
+```
+
+### Output:
+
+```
+[1, 2, 3]
+```
+
+---
+
+## 🔍 Key Intuition:
+
+* We need to find the **next permutation** which is **just larger** than the current one.
+
+---
+
+## 🔧 Steps:
+
+1. **Find the first decreasing element from the right** (i.e., `i` such that `nums[i] < nums[i+1]`).
+
+   * This is the "breaking point".
+
+2. **Find the next larger number to the right of `nums[i]`**, say `nums[j]`, and **swap** them.
+
+3. **Reverse** the subarray after index `i` to get the smallest order.
+
+---
+
+### ⚠️ Edge Case:
+
+* If the entire array is non-increasing (e.g., `[5,4,3,2,1]`), then it's the **last** permutation → return the **first** by reversing the array.
+
+---
+
+## ✅ Java Code:
+
+```java
+public void nextPermutation(int[] nums) {
+    int n = nums.length;
+    int i = n - 2;
+
+    // Step 1: Find first decreasing element from right
+    while (i >= 0 && nums[i] >= nums[i + 1]) {
+        i--;
+    }
+
+    if (i >= 0) {
+        // Step 2: Find next greater element to the right
+        int j = n - 1;
+        while (j >= 0 && nums[j] <= nums[i]) {
+            j--;
+        }
+        // Swap nums[i] and nums[j]
+        swap(nums, i, j);
+    }
+
+    // Step 3: Reverse the right part
+    reverse(nums, i + 1, n - 1);
+}
+
+private void swap(int[] nums, int i, int j) {
+    int temp = nums[i];
+    nums[i] = nums[j];
+    nums[j] = temp;
+}
+
+private void reverse(int[] nums, int start, int end) {
+    while (start < end) {
+        swap(nums, start, end);
+        start++;
+        end--;
+    }
+}
+```
+
+---
+
+## 📊 Dry Run Example:
+
+### Input:
+
+```
+nums = [1, 3, 2]
+```
+
+1. Find `i` where `nums[i] < nums[i + 1]`:
+   `i = 0` because `1 < 3`
+
+2. Find `j` where `nums[j] > nums[i]`:
+   `j = 2` because `2 > 1`
+
+3. Swap `nums[i]` and `nums[j]`:
+   `[2, 3, 1]`
+
+4. Reverse from `i+1` to end:
+   Result: `[2, 1, 3]` ✅
+
+---
+
+
 
 
 
