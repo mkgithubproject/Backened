@@ -61,3 +61,88 @@ public List<Integer> findAnagramsBrute(String s, String p) {
 }
 
 ```
+## m-2 using hashing and sliding window
+```
+class Solution {
+    public List<Integer> findAnagrams(String s, String p) {
+        /*
+        cbaebabacd, pahle c se subtring nikalnege , jaise hi p ke size se badi hoti phir hum 
+        next char yani b se start krenge,
+        */
+        Map<Character, Integer> pMap = new HashMap<>();
+        Map<Character, Integer> wMap = new HashMap<>();
+        List<Integer> res = new ArrayList();
+        for (int i = 0; i < p.length(); i++) {
+            pMap.put(p.charAt(i), pMap.getOrDefault(p.charAt(i), 0) + 1);
+        }
+        int left = 0;
+        int right = 0;
+        int windowSize = p.length();
+        while (right < s.length()) {
+            // add the current ele to  wmap
+            char ch = s.charAt(right);
+            wMap.put(ch, wMap.getOrDefault(ch, 0) + 1);
+            // right is been greter than windowsize meas 
+            if (right - left + 1 > windowSize) {
+                char leftChar = s.charAt(left);
+                wMap.put(leftChar, wMap.get(leftChar) - 1);
+                if (wMap.get(leftChar) == 0) {
+                    wMap.remove(leftChar);
+                }
+                left++;
+            }
+            // here why we chgecking it a last first shrinking window( if i check first then -> c,b,a, add to resullt , now add e
+            // c,b,a,e , >4 baeb didi not check for bae so we will loos some results.
+            if (right - left + 1 == windowSize) {
+                // cehck both are same map
+                if (wMap.equals(pMap)) {
+                    res.add(left);
+                }
+            }
+            right++;
+        }
+        return res;
+
+    }
+}
+```
+
+### 3 Minimum Window Substring (done in patterns question)
+
+### 4  Longest Repeating Character Replacement
+```
+import java.util.*;
+
+class Solution {
+    public int characterReplacement(String s, int k) {
+        Map<Character, Integer> freqMap = new HashMap<>();
+        int left = 0;
+        int maxFreq = 0;
+        int maxLen = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char ch = s.charAt(right);
+            freqMap.put(ch, freqMap.getOrDefault(ch, 0) + 1);
+
+            // Update the maxFreq of any single character in the window
+            maxFreq = Math.max(maxFreq, freqMap.get(ch));
+
+            // If we need to replace more than k characters, shrink window
+            if ((right - left + 1) - maxFreq > k) {
+                char leftChar = s.charAt(left);
+                freqMap.put(leftChar, freqMap.get(leftChar) - 1);
+                if (freqMap.get(leftChar) == 0) {
+                    freqMap.remove(leftChar);
+                }
+                left++;
+            }
+
+            maxLen = Math.max(maxLen, right - left + 1);
+        }
+
+        return maxLen;
+    }
+}
+
+```
+
