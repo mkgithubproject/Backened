@@ -53,7 +53,76 @@ Before this, I worked as a **Subject Matter Expert** at **Course Hero** and **Ch
 
 
 
-### project 2 , b2b order creation module.
+### project 2 , Buyume Franchise CRM & Rider App
+
+---
+
+### ✅ **Project Name**: Buyume Franchise CRM & Rider App
+
+**Role**: Backend Developer
+**Duration**: \[Mention Duration – e.g., 6 months, Jan 2024–Jun 2024]
+**Tech Stack**: Node.js, Express.js, MongoDB, Google Maps API, Redis, JWT, Firebase, GitLab CI/CD
+
+---
+
+### 🧩 **Problem Statement**
+
+for making fast delivery ,( we said next day delivery), we opned fc's so anyone want to open this model i will provide the forecast 
+of the producst which are selling in ur region , partner will create a po first , we will deliver it , then after delivering po partner will 
+check and add thier in inventory with defected piece if any , and now if any order comes i will check this pin oce belongs to any fc or not if yes will check inventory of that fc if is it available i will assign it to fc,if not i will split the order if above 20 percent order is avaliable to fc will split , fc accept the order and will download the label and assign to rider,rider has rider which can see all the orders list , rider can mark order status can mark coordinate show next time they can go easily using coridnates in google maps,
+
+
+---
+
+### 🔧 **What I Built**
+
+I worked as a backend developer and helped build two main systems:
+
+---
+
+#### 🏢 **CRM System for Partners**
+
+* **Inventory**: Partners could manage product stock – what’s available, what’s sold, and what needs restocking.
+* **Orders & Deliveries**: APIs to place orders, assign riders, and track delivery steps.
+* **Settlements**: Automatically generated invoices and credit notes for each partner.
+* **Complaints**: Partners could raise tickets if they had any issues.
+
+---
+
+#### 🚴‍♂️ **Rider App Backend**
+
+* **Rider APIs**: Created APIs for login, getting orders, updating delivery status, and OTP-based confirmation.
+* **Location Tracking**: Used Google Maps API to show delivery locations, track rider movement, and suggest routes.
+
+---
+
+### 🤔 **Why Franchise Model? (In Simple Words)**
+
+* **Faster Delivery**: Having small local centers (franchisees) in each city allowed next-day delivery. No need to ship from far-away warehouses.
+* **Low Cost**: Local people (franchise partners) ran the centers, so the company saved money on setup.
+* **Better Reach**: Partners understood their area well – they knew the roads, language, and people.
+* **Quick Expansion**: Easy to grow to more cities by adding more partners instead of building our own centers.
+
+---
+
+### 🧠 **Challenges Solved**
+
+* Fast response time using optimized MongoDB queries.
+* Role-based access for Admins, Partners, and Riders.
+* Secure API communication using JWT tokens.
+* Redis cache used for quick data access.
+
+---
+
+### 📈 **Impact**
+
+* Added new franchise partners quickly.
+* Delivery became 30% faster.
+* Fewer support calls due to easy complaint system.
+
+---
+
+
         
         
       
