@@ -91,8 +91,11 @@ outer();
 #### ➤ Definition:
 A closure is created when a function is defined inside another function and accesses variables from the outer function.
 
-A **closure** is created when a function "remembers" variables from its **lexical scope**, even after the outer function has finished.
+A **closure** is created when a function "remembers" variables from its **lexical scope**, even after the outer function has finished.\
+🧠 Key Points:\
+A closure gives you access to an outer function’s scope from an inner function.
 
+Closures are created every time a function is created, at function creation time.
 #### 🧠 Example:
 
 ```js
