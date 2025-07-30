@@ -37,7 +37,29 @@ console.log("3. Script end");
 ```
 
 ---
+```
+// Online Javascript Editor for free
+// Write, Edit and Run your Javascript code using JS Online Compiler
+const promise = new Promise((resolve, reject)=>{
+    // "Producing Code" (May take some time)
+    setTimeout(()=>{
+        const gotTheResult = false;
+        if(gotTheResult){
+            resolve("got the result");
+        }
+        else{
+            reject("result not found");
+        }
+    }, 1000)
+    
+})
 
+// consumer code
+promise.then((result)=>{
+    console.log(result);
+}).catch((er)=>{
+    console.log(er)
+})```
 ## 🔍 Internal Flow of Execution Explained
 
 Let’s break this down in **chronological order**, including how the **JavaScript engine**, **call stack**, **Web APIs**, and **microtask queue** work behind the scenes.
