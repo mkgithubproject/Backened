@@ -112,7 +112,7 @@ const a = new Animal();
 The object `a` will **not have `speak` directly on it**, but will inherit it from the prototype:
 
 ```js
-console.log(a.hasOwnProperty("speak")); // false (it's on the prototype)
+console.log(a.hasOwnProperty("speak")); // false (it's on the prototype) // if u do a.speak first it will check in itself then go its prototype
 console.log(Animal.prototype.hasOwnProperty("speak")); // true
 ```
 
