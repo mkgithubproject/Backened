@@ -45,6 +45,34 @@ The Event Loop allows Node.js to perform non-blocking I/O by **delegating tasks 
 5. Check (`setImmediate`)
 6. Close callbacks
 
+┌────────────────────────────┐
+│    process.nextTick()      │ ← (Microtask Queue - very high priority)
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│      1. Timers Phase       │ ← setTimeout, setInterval
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│  2. Pending Callbacks      │ ← Internal I/O callbacks
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│   3. Idle, Prepare         │ ← Internal
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│      4. Poll Phase         │ ← Read files, sockets, etc.
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│     5. Check Phase         │ ← setImmediate()
+└────────────┬───────────────┘
+             ↓
+┌────────────────────────────┐
+│  6. Close Callbacks Phase  │ ← cleanup
+└────────────────────────────┘
+
 ---
 
 ### 4. **How is Node.js single-threaded but handles concurrency?**
