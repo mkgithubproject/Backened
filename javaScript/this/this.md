@@ -93,6 +93,11 @@ console.log(fn()); // undefined
 
 const boundFn = obj.getValue.bind(obj);
 console.log(boundFn()); // 42
+
+if i do this\
+const fn = obj.getValue()
+console.log(fn); // will get 42 because obj is caller then this refer to that object before this refer to window and there is now value
+inside window
 ```
 
 ## 🔍 `this` in Classes
