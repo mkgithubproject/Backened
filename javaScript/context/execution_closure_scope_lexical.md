@@ -89,6 +89,7 @@ outer();
 ### 🔹 4. Closures
 
 #### ➤ Definition:
+A closure is created when a function is defined inside another function and accesses variables from the outer function.
 
 A **closure** is created when a function "remembers" variables from its **lexical scope**, even after the outer function has finished.
 
