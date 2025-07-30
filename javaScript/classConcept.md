@@ -65,6 +65,76 @@ a.speak(); // Generic sound
 
 // Under the hood:
 console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
+
+✅ **Yes**, exactly!
+In your example:
+
+```js
+class Animal {
+  speak() {
+    console.log("Generic sound");
+  }
+}
+```
+
+The method `speak()` is **automatically added to the prototype** of the `Animal` class.
+
+---
+
+## 🧠 Behind the scenes:
+
+When you declare a class like this:
+
+```js
+class Animal {
+  speak() {
+    console.log("Generic sound");
+  }
+}
+```
+
+It is **internally equivalent** to this:
+
+```js
+function Animal() {}
+
+Animal.prototype.speak = function() {
+  console.log("Generic sound");
+};
+```
+
+So when you create an object like:
+
+```js
+const a = new Animal();
+```
+
+The object `a` will **not have `speak` directly on it**, but will inherit it from the prototype:
+
+```js
+console.log(a.hasOwnProperty("speak")); // false (it's on the prototype)
+console.log(Animal.prototype.hasOwnProperty("speak")); // true
+```
+
+And:
+
+```js
+console.log(Object.getPrototypeOf(a) === Animal.prototype); // true
+```
+
+---
+
+## ✅ Summary:
+
+| Code                                            | Where does it go?                   |
+| ----------------------------------------------- | ----------------------------------- |
+| `speak()` inside a `class`                      | 🔁 Goes to `Animal.prototype`       |
+| `this.speak = function() {}` inside constructor | ❌ Stays on each individual instance |
+
+---
+
+Would you like a diagram showing how class methods relate to prototype?
+
 --------------------------------------
 ```
 ### 🔁 What Actually Happens Under the Hood?
