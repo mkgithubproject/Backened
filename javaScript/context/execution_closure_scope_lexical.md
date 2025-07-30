@@ -43,11 +43,114 @@ show();
 
 **Scope** determines variable visibility — where a variable can be accessed.
 
-#### ✅ Types:
+In JavaScript, there are **five main types of scopes**, each defining how and where variables can be accessed:
 
-1. **Global Scope** – accessible anywhere.
-2. **Function Scope** – accessible only within that function.
-3. **Block Scope** – `let` and `const` inside `{}`.
+---
+
+## ✅ 1. **Global Scope**
+
+* Variables declared **outside any function or block**.
+* Accessible **anywhere** in the code.
+
+```js
+let x = 10; // Global scope
+
+function show() {
+  console.log(x); // Accessible here
+}
+```
+
+---
+
+## ✅ 2. **Function Scope**
+
+* Variables declared **inside a function** using `var`, `let`, or `const` are accessible **only within that function**.
+
+```js
+function test() {
+  let a = 5; // Function scope
+  console.log(a);
+}
+console.log(a); // ❌ Error: a is not defined
+```
+
+---
+
+## ✅ 3. **Block Scope**
+
+* Introduced with `let` and `const` (not `var`).
+* Any variable declared inside `{}` is **limited to that block**.
+
+```js
+if (true) {
+  let msg = "hello"; // Block scope
+}
+console.log(msg); // ❌ Error
+```
+
+> `var` is **not block-scoped**, which often causes confusion.
+
+---
+
+## ✅ 4. **Lexical Scope** (Static Scope)
+
+* Scope defined by **where variables and functions are written** in the code.
+* Functions have access to variables in their **outer lexical scope**.
+
+```js
+function outer() {
+  let x = "outer";
+  function inner() {
+    console.log(x); // Lexical access to x
+  }
+  inner();
+}
+```
+
+> This is what enables **closures** in JavaScript.
+
+---
+
+## ✅ 5. **Module Scope** (in ES6 Modules)
+
+* Each **ES6 module** has its **own scope**.
+* Variables declared in a module aren't accessible in other modules unless **explicitly exported/imported**.
+
+```js
+// file1.js
+let secret = "hidden"; // Module scope
+export const visible = "shown";
+
+// file2.js
+import { visible } from './file1.js';
+console.log(visible); // OK
+console.log(secret);  // ❌ Error
+```
+
+---
+
+### 🧠 Bonus: **Script Scope** (Browser-only)
+
+* In browsers, `<script>` tags without `type="module"` share the **same global scope**.
+* Variables declared in one `<script>` are accessible in another.
+
+---
+
+## 🔁 Summary Table
+
+| Scope Type | Where it's used                  | Visibility                                 |
+| ---------- | -------------------------------- | ------------------------------------------ |
+| Global     | Outside all functions/blocks     | Everywhere                                 |
+| Function   | Inside a function                | Only inside that function                  |
+| Block      | Inside `{}` with `let`/`const`   | Only inside that block                     |
+| Lexical    | Defined by source code structure | Functions access variables in outer scopes |
+| Module     | Inside ES6 module files          | Only in the module unless exported         |
+
+---
+
+Let me know if you'd like a **visual scope chain diagram** or a quiz to test this understanding!
+
+   
 
 #### 🧠 Example:
 
