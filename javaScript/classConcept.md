@@ -51,6 +51,92 @@ const p1 = new Person("Bob", 30);
 console.log(p1.sayHello());
 // Output: Hi, I'm Bob and I'm 30 years old
 ### ⚠️ Drawback: Every instance gets its own copy of the method (more memory usage).
+
+Great follow-up!
+
+Let’s **clearly explain** what “inside the constructor” means in JavaScript 👇
+
+---
+
+## 🔍 What is a Constructor in JavaScript?
+
+A **constructor function** is a regular function used with the `new` keyword to create objects.
+
+Example:
+
+```js
+function Person(name, age) {
+  // constructor body
+}
+```
+
+When you call:
+
+```js
+const p1 = new Person("Bob", 30);
+```
+
+JavaScript does 3 things:
+
+1. Creates a **new empty object** `{}`.
+2. Sets `this` to point to that new object.
+3. Runs the `Person` function body — that’s the **constructor code**.
+
+---
+
+## 🧠 So what does "inside the constructor" mean?
+
+It means any code you write **inside** the `function Person(...) { ... }` block — like this:
+
+```js
+function Person(name, age) {
+  this.name = name;         // property attached to instance
+  this.age = age;
+
+  // 👇 This method is ALSO being attached directly to the instance
+  this.sayHello = function() {
+    return `Hi, I'm ${this.name} and I'm ${this.age} years old.`;
+  };
+}
+```
+
+### 🔸 This line:
+
+```js
+this.sayHello = function() { ... };
+```
+
+means:
+
+* Every time you create a new `Person`, you're adding a **new copy** of this function to that specific instance object.
+* It lives on the object itself, **not** on the `Person.prototype`.
+
+---
+
+### 🔁 Example:
+
+```js
+const p1 = new Person("Alice", 25);
+const p2 = new Person("Bob", 30);
+
+console.log(p1.sayHello === p2.sayHello); // ❌ false (two separate copies)
+```
+
+Each object gets **its own function**. That’s **more memory usage**, especially if you're creating many objects.
+
+---
+
+## ✅ Summary
+
+| Defined Inside Constructor                  | Result                                                              |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| `this.sayHello = function() {}`             | Every object gets its **own copy** of the method (not on prototype) |
+| `Person.prototype.sayHello = function() {}` | All objects **share** one function from the prototype               |
+
+---
+
+Would you like a visual comparison between constructor method vs prototype method?
+
 ###########################################
 
 --------------------------------
