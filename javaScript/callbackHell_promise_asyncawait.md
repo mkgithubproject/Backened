@@ -23,6 +23,28 @@ function processData() {
 }
 
 fetchData(processData);
+
+
+function fetchDataWithCallback(callback) {
+  setTimeout(() => {
+    const success = true;
+    if (success) {
+      callback(null, "Data fetched"); // null = no error
+    } else {
+      callback("Failed to fetch", null);
+    }
+  }, 1000);
+}
+
+// Usage
+fetchDataWithCallback((err, data) => {
+  if (err) {
+    console.error("ERROR:", err);   // ❌ handle error
+  } else {
+    console.log("SUCCESS:", data);  // ✅ handle data
+  }
+});
+
 ```
 
 ---
