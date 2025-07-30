@@ -218,11 +218,10 @@ function displayData(user, posts) {
   console.log("Posts:", posts);
 }
 
-getUser(user => {
-  getPostsByUser(user.id, posts => {
+getUser((user) => {
+  getPostsByUser(user.id, (posts) => {
     displayData(user, posts);
   });
-});
 ```
 
 ---
