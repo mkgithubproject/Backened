@@ -109,6 +109,40 @@ handleData();
 ```
 
 ---
+```
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+        const fetched = true;
+        if(fetched){
+            resolve("Data fetched");
+        }else{
+            reject("not found");
+        }
+    }, 1000);
+  });
+}
+
+async function handleData() {
+  try{
+      const data = await fetchData(); // wait for promise t0 resolve
+      console.log(data);
+  }catch(err){
+      console.log(err)
+  }
+  
+}
+
+// handleData();
+
+//    or.  using promises  
+fetchData().then((data)=>{
+    console.log("from then data found")
+}).catch((err)=>{
+    console.log("from catch not found.")
+})
+
+```
 
 ## 🔁 Full Comparison Table:
 
