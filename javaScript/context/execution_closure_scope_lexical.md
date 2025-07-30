@@ -69,7 +69,10 @@ function test() {
 
 #### ➤ Definition:
 
-**Lexical Scope** means scope is determined by the position of code **in the source**. Inner functions have access to their outer scope.
+**Lexical Scope** means scope is determined by the position of code **in the source**. Inner functions have access to their outer scope.\
+
+🔍 So, Why "Lexical Scope"?\
+Lexical scope means that scope is determined by the position of code in the source file — i.e., where functions and blocks are written (at coding time), not where they are called (at runtime).
 
 #### 🧠 Example:
 
