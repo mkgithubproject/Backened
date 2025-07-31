@@ -1,3 +1,103 @@
+Here's a quick **DevOps Basics Q\&A Sheet** for your Node.js backend interviews, covering the core topics you mentioned:
+
+---
+
+## 🧰 8. DevOps Basics (for Interviews)
+
+### 🔹 **Topic: Docker**
+
+> **Q: How to Dockerize a Node.js app?**
+> **A:**
+> To Dockerize a Node.js app:
+
+1. Create a `Dockerfile`:
+
+   ```dockerfile
+   FROM node:18
+   WORKDIR /app
+   COPY package*.json ./
+   RUN npm install
+   COPY . .
+   EXPOSE 3000
+   CMD ["node", "server.js"]
+   ```
+2. Build the image:
+
+   ```bash
+   docker build -t my-node-app .
+   ```
+3. Run the container:
+
+   ```bash
+   docker run -p 3000:3000 my-node-app
+   ```
+
+✅ Tip: Use `.dockerignore` to avoid copying `node_modules`.
+
+---
+
+### 🔹 **Topic: CI/CD**
+
+> **Q: What is a typical CI/CD flow?**
+> **A:**
+> A typical CI/CD pipeline for a Node.js app includes:
+
+1. **Continuous Integration (CI)**:
+
+   * Code pushed to GitHub triggers the pipeline
+   * Steps:
+
+     * Install dependencies
+     * Run unit tests (e.g., with Jest)
+     * Linting / Code formatting checks
+     * Build the app
+
+2. **Continuous Deployment (CD)**:
+
+   * If CI passes:
+
+     * Build Docker image
+     * Push to Docker Hub or ECR
+     * Deploy to server (e.g., EC2, Kubernetes, etc.)
+     * Run health checks
+
+**Tools:** GitHub Actions, GitLab CI, Jenkins, CircleCI, etc.
+
+✅ Tip: Use `.env` and secret managers for sensitive configs.
+
+---
+
+### 🔹 **Topic: Load Balancer**
+
+> **Q: How do you scale a Node.js app?**
+> **A:**
+> To scale a Node.js app horizontally:
+
+1. **Multiple Instances**:
+
+   * Run multiple Node.js instances (Docker containers, PM2 cluster mode, etc.)
+
+2. **Use a Load Balancer**:
+
+   * Example: Nginx, HAProxy, or AWS ELB
+   * Distributes traffic across Node.js instances
+
+3. **Stateless Design**:
+
+   * Store sessions in Redis or DB (not in-memory)
+
+4. **Horizontal Scaling**:
+
+   * Use container orchestration like **Kubernetes** or **Docker Swarm** to scale automatically
+
+✅ Tip: Monitor CPU/Memory and set auto-scaling policies.
+
+---
+
+Let me know if you want more topics like **Monitoring, Logging, Terraform, or Kubernetes** added to this list.
+
+
+
 ### github runner :
 ```
 A GitHub Runner is a server or a virtual machine that runs your GitHub Actions workflows.
