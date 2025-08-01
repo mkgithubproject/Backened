@@ -1,4 +1,112 @@
-Absolutely! Here's a **very simple version** of Mini Express with **line-by-line explanation**, perfect if you're learning how Express.js works under the hood.
+Let’s break down a **mini Express.js custom app** using `Router`, and explain **line by line** how your `app.js` connects to route files like `userRoutes.js`.
+
+---
+
+### 🧠 Key Concept First:
+
+* `app.use('/users', userRoutes)` → mounts all routes defined in `userRoutes` with `/users` prefix.
+* Inside `userRoutes`, you define route **paths relative to `/users`**.
+
+---
+
+### ✅ 1. Project Structure:
+
+```
+mini-express-app/
+├── app.js
+└── routes/
+    └── userRoutes.js
+```
+
+---
+
+### ✅ 2. app.js (Main Entry File)
+
+```js
+const express = require('express'); // Import Express framework
+const app = express();              // Create an Express app instance
+
+const userRoutes = require('./routes/userRoutes'); // Import user-defined routes
+
+app.use(express.json()); // Middleware to parse JSON in request body
+
+app.use('/users', userRoutes); 
+// Mounts all routes from userRoutes.js under the '/users' base path
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
+});
+```
+
+---
+
+### ✅ 3. routes/userRoutes.js
+
+```js
+const express = require('express'); 
+const router = express.Router();  // Create a router instance
+
+// Define GET /users/
+router.get('/', (req, res) => {
+  res.send('List of users');
+});
+
+// Define GET /users/profile
+router.get('/profile', (req, res) => {
+  res.send('User profile');
+});
+
+module.exports = router; // Export the router to be used in app.js
+```
+
+---
+
+### 💡 How it Connects:
+
+| File            | Line                              | What it Does                                                                 |
+| --------------- | --------------------------------- | ---------------------------------------------------------------------------- |
+| `app.js`        | `const userRoutes = require(...)` | Imports router from `userRoutes.js`                                          |
+| `app.js`        | `app.use('/users', userRoutes)`   | Tells Express: any route that starts with `/users` → go to `userRoutes` file |
+| `userRoutes.js` | `router.get('/')`                 | This means GET `/users/` (because `/users` is the base path)                 |
+| `userRoutes.js` | `router.get('/profile')`          | This means GET `/users/profile`                                              |
+
+---
+
+### ✅ Testing Routes:
+
+| Request URL          | Route Called             | Response        |
+| -------------------- | ------------------------ | --------------- |
+| `GET /users`         | `router.get('/')`        | `List of users` |
+| `GET /users/profile` | `router.get('/profile')` | `User profile`  |
+
+---
+
+### 🔁 Why We Use Routers?
+
+Routers help **split routes into separate files**:
+
+* `userRoutes` → handles user-related routes.
+* You can have `productRoutes`, `authRoutes`, etc.
+
+It keeps the app modular and organized.
+
+---
+
+### ✅ Summary:
+
+```js
+// app.js
+app.use('/users', userRoutes)
+```
+
+means:
+
+> “Hey Express, for any route that starts with `/users`, go check inside `userRoutes` and match the remaining path.”
+
+---
+
+Would you like a version with `POST`, `PUT`, and `DELETE` too?
+
 
 ---
 
