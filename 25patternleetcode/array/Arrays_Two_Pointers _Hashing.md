@@ -222,8 +222,9 @@ class Solution {
 ```
 
 ### 3. Longest Consecutive Sequence
-## using sorting
-## using hashmap
+## using sorting [Naive Approach] Using Sorting - O(n*log n) Time and O(1) Space
+## using hashmap [Expected Approach] Using Hashing - O(n) Time and O(n) Space
+
 ```
 class Solution {
     public int longestConsecutive(int[] nums) {
