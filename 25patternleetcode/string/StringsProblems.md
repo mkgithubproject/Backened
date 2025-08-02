@@ -72,6 +72,29 @@ class Solution {
         
     }
 }
+
+or
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+         int[] arr = new int[128];
+        int n = s.length();
+        int len = 0;
+        for(int i = 0, j = 0; j < n; j++){
+            int c = s.charAt(j);
+            // acquire
+            arr[c]++;
+            // release
+            if(arr[c] > 1){
+                while(arr[c] > 1){
+                    arr[s.charAt(i)]--;
+                    i++;
+                }
+            }
+            len = Math.max(len, j - i + 1);
+        }
+        return len;
+    }
+}
 ```
 ### [Expected Approach 1] Using Sliding Window - O(n) Time and O(1) Space (aquire and release technique)
 Input: s = "abcbadbd" (window me a,b,c then now a again b aya matlab a se ab sequnce ni ban sakti ab start window pahle mila h usse age se krenege kyonki a ke next character se jo bhi sequence hongi like bc vo pahle wali window se chhoti hi hongi hamesha , hum map me current window rakh rahe h
