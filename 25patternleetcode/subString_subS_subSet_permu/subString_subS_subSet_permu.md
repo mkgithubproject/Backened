@@ -398,7 +398,84 @@ Here’s a **clean Java implementation** to generate **all permutations using re
 
 ---
 
-Here’s a **clean Java implementation** to generate **all permutations using recursion only** (no libraries like `Collections.permute`, etc.).
+## ✅ Permutations Using Recursion (Backtracking)
+
+### 🔧 Java Code (String Version):
+
+```java
+public class PermutationsOfString {
+
+    public static void main(String[] args) {
+        String str = "abc";
+        generatePermutations("", str);
+    }
+
+    public static void generatePermutations(String prefix, String remaining) {
+        if (remaining.length() == 0) {
+            System.out.println(prefix);
+            return;
+        }
+
+        for (int i = 0; i < remaining.length(); i++) {
+            char ch = remaining.charAt(i);
+            String newPrefix = prefix + ch;
+            String newRemaining = remaining.substring(0, i) + remaining.substring(i + 1);
+            generatePermutations(newPrefix, newRemaining);
+        }
+    }
+}
+```
 
 ---
 
+### 🧾 Output for `abc`:
+```
+abc
+acb
+bac
+bca
+cab
+cba
+```
+
+---
+
+### 🌳 Dry Run (Tree for "abc"):
+
+Each level chooses 1 character and recurses with the remaining:
+
+```
+Level 0:
+            "" (prefix="", remaining="abc")
+           /     |     \
+Level 1:  a       b       c
+        / |       |       | \
+Level 2:ab ac    ba bc    ca cb
+        |  |      |  |     |  |
+Level 3:abc acb  bac bca  cab cba
+```
+
+Each path from root to leaf is a valid permutation.
+
+---
+
+### 🔁 Time & Space Complexity:
+
+| Aspect       | Complexity |
+|--------------|------------|
+| Time         | O(n!)      |
+| Space        | O(n) recursion stack |
+
+---
+
+## ✅ Summary:
+
+| Topic        | Permutations of String         |
+|--------------|-------------------------------|
+| Strategy     | Backtracking + Recursion      |
+| Result Count | `n!`                          |
+| Use Case     | Anagrams, string generation   |
+
+---
+
+Would you like to **store results in a list**, **count them**, or **find only unique permutations** (if input has duplicates)?
