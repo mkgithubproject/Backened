@@ -100,9 +100,10 @@ class Bird {
 class Sparrow extends Bird { }
 
 class Ostrich extends Bird {
-    // ❌ Violates LSP - Ostrich can't fly
+    // ❌ Violates LSP - Ostrich can't fly, So even though you didn’t throw an exception, you’ve changed the expected behavior of the superclass (Bird.fly()), which breaks the assumption of substitutability.
     @Override
     public void fly() {
+       // if you prtint like not fly, still silnetly u changed the expected behavior
         throw new UnsupportedOperationException("Ostrich can't fly!");
     }
 }
