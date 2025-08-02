@@ -398,6 +398,10 @@ Here’s a **clean Java implementation** to generate **all permutations using re
 
 ---
 
+Here’s a **clean Java implementation** to generate **all permutations using recursion only** (no libraries like `Collections.permute`, etc.).
+
+---
+
 ## ✅ Permutations Using Recursion (Backtracking)
 
 ### 🔧 Java Code:
@@ -481,5 +485,60 @@ public class PermutationsRecursive {
 
 ---
 
+## 🌳 Permutation Tree for `{1, 2, 3}`
 
+Each level of the tree represents one recursive level (one position in the permutation). Each node chooses a new number not used before.
 
+```
+Level 0:
+             []
+           /  |  \
+Level 1:  1   2   3
+        / \   |   | \
+Level 2:2  3 1  3 1  2
+       |   |  |  | |  |
+Level 3:3  2 3  1 2  1
+
+Final Paths (Leaves):
+[1,2,3]
+[1,3,2]
+[2,1,3]
+[2,3,1]
+[3,1,2]
+[3,2,1]
+```
+
+---
+
+### 🔁 Recursive Stack Flow for `[1, 2, 3]`
+
+Let's walk through just one full path: **[1, 2, 3]**
+
+1. `current = []`  
+   → try 1 → `current = [1]`, `used[0] = true`
+
+2. `current = [1]`  
+   → try 2 → `current = [1, 2]`, `used[1] = true`
+
+3. `current = [1, 2]`  
+   → try 3 → `current = [1, 2, 3]`, `used[2] = true`
+
+4. Size == nums.length → print `[1, 2, 3]`
+
+5. Backtrack: remove 3 → `current = [1, 2]`, `used[2] = false`
+
+6. Backtrack: remove 2 → `current = [1]`, `used[1] = false`
+
+7. Try next: 3 → `current = [1, 3]`, repeat...
+
+---
+
+### ✅ Key Concepts in the Tree
+
+- Each level adds one new number (depth-first).
+- No duplicates due to `used[]`.
+- Backtracking unwinds choices and tries alternatives.
+
+---
+
+Would you like me to draw this visually with proper tree formatting or explain another path (like `[2, 3, 1]`)?
