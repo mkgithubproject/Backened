@@ -286,7 +286,136 @@ public class Main {
 
 ---
 
-Would you like a visual diagram or want me to explain **LSP violations in your own code** if you share any?
+Ah! You’re focusing on an example around **“number of wheels”**, not just whether something *has* wheels. Let’s look at this from an **LSP perspective**.
+
+---
+
+## ✅ Goal
+
+Build a class hierarchy that models vehicles, where:
+
+* Some vehicles have wheels (e.g., Car, Bike).
+* Some vehicles don’t (e.g., Boat, Helicopter).
+* We want to avoid violating the **Liskov Substitution Principle**.
+
+---
+
+## ❌ Incorrect Design (LSP Violation)
+
+```java
+class Vehicle {
+    public int getNumberOfWheels() {
+        return 4; // Assumes every vehicle has 4 wheels ❌
+    }
+}
+
+class Car extends Vehicle {
+    // Inherits getNumberOfWheels() -> 4 ✅
+}
+
+class Bike extends Vehicle {
+    @Override
+    public int getNumberOfWheels() {
+        return 2; // ✅ OK
+    }
+}
+
+class Boat extends Vehicle {
+    @Override
+    public int getNumberOfWheels() {
+        return 0; // ❌ Violates LSP — boat is not a wheeled vehicle
+    }
+}
+```
+
+### 🚨 Problem:
+
+If some method expects all `Vehicle`s to have wheels:
+
+```java
+public void printWheels(Vehicle vehicle) {
+    System.out.println("Number of wheels: " + vehicle.getNumberOfWheels());
+}
+```
+
+Calling `printWheels(new Boat())` gives `0`, which **violates expectations** if the program assumes **every vehicle has wheels**.
+
+---
+
+## ✅ Correct Design (Respects LSP)
+
+Separate "wheeled" and "non-wheeled" vehicles:
+
+```java
+interface Vehicle {
+    void move();
+}
+
+interface WheeledVehicle extends Vehicle {
+    int getNumberOfWheels();
+}
+```
+
+### Now define classes:
+
+```java
+class Car implements WheeledVehicle {
+    public void move() {
+        System.out.println("Car is moving");
+    }
+
+    public int getNumberOfWheels() {
+        return 4;
+    }
+}
+
+class Bike implements WheeledVehicle {
+    public void move() {
+        System.out.println("Bike is moving");
+    }
+
+    public int getNumberOfWheels() {
+        return 2;
+    }
+}
+
+class Boat implements Vehicle {
+    public void move() {
+        System.out.println("Boat is sailing");
+    }
+
+    // ❌ No getNumberOfWheels() — avoids misuse
+}
+```
+
+---
+
+### ✅ Now the code using `getNumberOfWheels()` is safe:
+
+```java
+public void printWheels(WheeledVehicle vehicle) {
+    System.out.println("Number of wheels: " + vehicle.getNumberOfWheels());
+}
+
+printWheels(new Car()); // ✅ 4
+printWheels(new Bike()); // ✅ 2
+// printWheels(new Boat()); ❌ Compile error (as expected)
+```
+
+---
+
+### ✅ Summary Table
+
+| Vehicle | Has Wheels? | Interface Implemented | Violates LSP? |
+| ------- | ----------- | --------------------- | ------------- |
+| Car     | Yes         | WheeledVehicle        | No            |
+| Bike    | Yes         | WheeledVehicle        | No            |
+| Boat    | No          | Vehicle               | No            |
+
+---
+
+Would you like a visual diagram or UML chart for this example?
+
 
 ---
 
