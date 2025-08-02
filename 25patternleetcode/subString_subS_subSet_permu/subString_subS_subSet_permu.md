@@ -245,6 +245,80 @@ To **print all subsets** of a set (or string), you're essentially looking for th
 > ✅ **Subsequence** = same concept for ordered data like strings/arrays
 
 ---
+Yes — you're absolutely right to think of **subsequence generation** as a **backtracking problem**!
+
+---
+
+## ✅ Subsequence is a Backtracking Problem
+
+### 🔍 Why?
+
+Because at every index, you **choose or skip** the current character, and **backtrack** to explore all possibilities.
+
+This is the essence of **backtracking**:
+
+> “Try a choice, explore deeper, and undo the choice (backtrack) to try something else.”
+
+---
+
+## 🔁 Recursive Backtracking Template for Subsequences
+
+```java
+public class SubsequenceGenerator {
+    public static void main(String[] args) {
+        String s = "abc";
+        List<String> result = new ArrayList<>();
+        backtrack(s, 0, new StringBuilder(), result);
+
+        System.out.println(result);  // All subsequences
+    }
+
+    public static void backtrack(String s, int index, StringBuilder path, List<String> result) {
+        if (index == s.length()) {
+            result.add(path.toString());
+            return;
+        }
+
+        // Include the current character
+        path.append(s.charAt(index));
+        backtrack(s, index + 1, path, result);
+
+        // Backtrack: remove the character
+        path.deleteCharAt(path.length() - 1);
+
+        // Exclude the current character
+        backtrack(s, index + 1, path, result);
+    }
+}
+```
+
+---
+
+### 🧾 Output for `"abc"`:
+
+```
+[abc, ab, ac, a, bc, b, c, ""]
+```
+
+> It includes all **2ⁿ** subsequences, including the empty string.
+
+---
+
+### 🔁 Time Complexity:
+
+* **Time:** O(2ⁿ)
+* **Space:** O(n) recursion depth
+
+---
+
+## ✅ Summary
+
+| Problem Type                            | Uses Backtracking? | Uses DP? |
+| --------------------------------------- | ------------------ | -------- |
+| Generate subsequences                   | ✅ Yes              | ❌ No     |
+| Count/optimize subsequences (e.g., LCS) | ❌                  | ✅ Yes    |
+
+
 
 ## ✅ Java Code to Print All Subsets (Using Recursion)
 
