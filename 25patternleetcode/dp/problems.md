@@ -37,4 +37,50 @@ Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).\
 Total amount you can rob = 1 + 3 = 4.
 ## kya lag raha h subsequenc eproblem lag ri h, pick it not pick it(but constraint) , if pick it 0th then give me\
 ## the solution of n-2 or not pick it then solution of n-1
+```
+class Solution {
+    public int rob(int[] nums) {
+        
+        return helperRob(nums, nums.length-1);
+
+    }
+
+    public int helperRob(int[] nums , int index) {
+        if(index<0){
+            return 0;
+        }
+        int res1 = nums[index] + helperRob(nums, index-2);
+        int res2 = 0 + helperRob(nums, index-1);
+        return Math.max(res1,res2);
+
+
+    }
+    
+}
+```
+```
+using memoization
+class Solution {
+    public int rob(int[] nums) {
+         Map<Integer, Integer> memo = new HashMap<>();
+        return helperRob(nums, nums.length - 1 , memo);
+
+    }
+
+    public int helperRob(int[] nums, int index ,Map<Integer, Integer> memo) {
+        if (index < 0) {
+            return 0;
+        }
+        if (memo.containsKey(index)) {
+            return memo.get(index);
+        }
+        int res1 = nums[index] + helperRob(nums, index - 2 , memo);
+        int res2 = 0 + helperRob(nums, index - 1 , memo);
+        memo.put(index,Math.max(res1, res2));
+        return Math.max(res1, res2);
+
+    }
+
+}
+```
 
