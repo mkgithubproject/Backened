@@ -169,70 +169,7 @@ public class GFG {
 ### s = "ADOBECODEBANC", t = "ABC" , first char se us char tak jayenge jab tak t ke legthg cover ni ho jaye , jaise hi ho gai ab release krenege 
 ### next char se dekhenege kya pata chhoti substring mil jaye jab tak release krenege jab tak t ke chars na hile min update krte rahenge , agar hil gayi phir se acquire kro
 ```
-import java.util.*;
 
-class Solution {
-    public String minWindow(String s, String t) {
-        // Edge case: if s is shorter than t, it's impossible
-        if (s == null || t == null || s.length() < t.length()) return "";
-
-        // Map to store character frequencies of string t
-        Map<Character, Integer> tMap = new HashMap<>();
-        for (int i = 0; i < t.length(); i++) {
-            char c = t.charAt(i);
-            tMap.put(c, tMap.getOrDefault(c, 0) + 1); // count each character
-        }
-
-        // Map to track characters in the current sliding window of s
-        Map<Character, Integer> window = new HashMap<>();
-
-        // Counters to track how many required characters are matched
-        int have = 0;                 // how many characters from t are satisfied in current window
-        int need = tMap.size();       // total unique characters needed from t
-
-        // Pointers for sliding window and tracking minimum window
-        int left = 0;
-        int minLen = Integer.MAX_VALUE;
-        int start = 0;                // start index of the best (smallest) window found
-
-        // Expand the window using right pointer
-        for (int right = 0; right < s.length(); right++) {
-            char c = s.charAt(right); // current character
-
-            // Add character to window map, acquire window
-            window.put(c, window.getOrDefault(c, 0) + 1);
-
-            // If this character is in t and its count matches, increment 'have'
-            if (tMap.containsKey(c) && window.get(c) == tMap.get(c).intValue()) {
-                have++;
-            }
-
-            // When all required characters are matched, try to shrink the window, release window
-            while (have == need) {
-                // Update minimum window if smaller one is found
-                if ((right - left + 1) < minLen) {
-                    minLen = right - left + 1;
-                    start = left;
-                }
-
-                // Try to shrink window from the left
-                char leftChar = s.charAt(left);
-                window.put(leftChar, window.get(leftChar) - 1);
-
-                // If this character was needed and now below required count, reduce 'have'
-                if (tMap.containsKey(leftChar) && window.get(leftChar).intValue() < tMap.get(leftChar).intValue()) {
-                    have--;
-                }
-
-                // Move left pointer forward
-                left++;
-            }
-        }
-
-        // If no window found, return ""
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
-    }
-}
 
 ```
 
