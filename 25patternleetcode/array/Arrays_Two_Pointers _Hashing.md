@@ -42,7 +42,7 @@ class GfG {
 }
 ```
 ```
-if array is sorted
+if array is sorted O(n2)
 hint:1 So, we essentially need to find three numbers x, y, and z such that they add up to the given value. 
 If we fix one of the numbers say x, we are left with the two-sum problem at hand!
 
