@@ -12,7 +12,9 @@ Object-Oriented Programming (OOP) is a programming paradigm where everything is 
 
 ---
 
-### 1. 🛡️ Encapsulation
+### 1. 🛡️ Encapsulation(also known as data-hiding)
+declare varaiable as private and provide getter and setter public for modifying and view the value.\
+so i can have control over who can see and who can not , whoc can update who can not \
 
 **Definition:**
 Encapsulation is the process of binding data and methods together and restricting direct access to some components.
@@ -48,10 +50,13 @@ class BankAccount {
 
 ---
 
-### 2. 🧰 Abstraction
+### 2. 🧰 data Abstraction
 
 **Definition:**
-Abstraction hides complex implementation details and only exposes necessary parts.
+Abstraction hides complex implementation details and only exposes necessary parts.\
+example car break padal example\
+it can be acheived throgh abstract clases and interface.\
+advatage: increase security and confidentiality.
 
 #### ✅ Real-Life Analogy: Driving a Car
 
