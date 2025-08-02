@@ -122,6 +122,170 @@ class Ostrich implements Bird {
     // No fly() method, adheres to LSP
 }
 ```
+Absolutely! Let’s understand **Liskov Substitution Principle (LSP)** in a **very simple way**, with real-world examples and **Java code**, step by step.
+
+---
+
+## 🔍 What is Liskov Substitution Principle (LSP)?
+
+**Definition (Easy Version):**
+
+> You should be able to use a subclass **wherever its parent class is expected**, **without breaking the program** or changing behavior.
+
+---
+
+## 💡 Real-World Analogy
+
+Imagine you have a class `Bird`, and you write a function to make any bird fly. Now, someone adds an `Ostrich` class that **extends `Bird`**, but ostriches **can’t fly**.
+
+So, if your `Bird`-handling code tries to make the `Ostrich` fly... ❌ **Boom! Error!**
+This means the subclass (`Ostrich`) **violated** the expectations of the parent class (`Bird`), thus **violating LSP**.
+
+---
+
+## ❌ BAD EXAMPLE – Violating LSP
+
+```java
+class Bird {
+    public void fly() {
+        System.out.println("Bird is flying...");
+    }
+}
+
+class Sparrow extends Bird {
+    // All good
+}
+
+class Ostrich extends Bird {
+    @Override
+    public void fly() {
+        // Ostrich can't fly, so throws error!
+        throw new UnsupportedOperationException("Ostrich can't fly!");
+    }
+}
+
+public class Main {
+    public static void makeBirdFly(Bird bird) {
+        bird.fly();  // Expected all birds to fly
+    }
+
+    public static void main(String[] args) {
+        Bird sparrow = new Sparrow();
+        makeBirdFly(sparrow); // ✅ Works
+
+        Bird ostrich = new Ostrich();
+        makeBirdFly(ostrich); // ❌ Crash: UnsupportedOperationException
+    }
+}
+```
+
+🔴 **Problem**: You trusted that `Bird.fly()` would always work, but `Ostrich` breaks that trust.
+
+---
+
+## ✅ GOOD EXAMPLE – Following LSP
+
+We fix this by **not forcing Ostrich to have `fly()`** if it can't.
+
+### ✅ Solution: Use proper interfaces or inheritance hierarchy
+
+```java
+interface Bird { }
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void fly() {
+        System.out.println("Sparrow is flying...");
+    }
+}
+
+class Ostrich implements Bird {
+    // Doesn't implement fly(), because it can't
+}
+
+public class Main {
+    public static void makeFlyingBirdFly(FlyingBird bird) {
+        bird.fly(); // Safe! Only flying birds are passed
+    }
+
+    public static void main(String[] args) {
+        FlyingBird sparrow = new Sparrow();
+        makeFlyingBirdFly(sparrow); // ✅ Works
+
+        // Ostrich doesn't implement fly, so we never call fly() on it
+        Bird ostrich = new Ostrich();
+        // makeFlyingBirdFly(ostrich); // ❌ Not allowed at compile time - safe!
+    }
+}
+```
+
+✅ **Now:**
+
+* We never try to fly an Ostrich.
+* We call `fly()` only on objects that **can** fly.
+* We follow **LSP** — subclasses behave as expected when treated like their parent.
+
+---
+
+## 🔑 Key Rule to Remember:
+
+> **If your subclass changes or breaks the behavior expected by the parent class, you're violating LSP.**
+
+---
+
+## ✅ Another Simple Example (Math Shapes):
+
+### ❌ LSP Violation:
+
+```java
+class Rectangle {
+    protected int width, height;
+
+    public void setWidth(int w) { width = w; }
+    public void setHeight(int h) { height = h; }
+
+    public int getArea() { return width * height; }
+}
+
+class Square extends Rectangle {
+    @Override
+    public void setWidth(int w) {
+        width = height = w; // 👎 changes behavior
+    }
+
+    @Override
+    public void setHeight(int h) {
+        width = height = h; // 👎 changes behavior
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Rectangle r = new Square(); // 👈 Looks like rectangle
+        r.setWidth(5);
+        r.setHeight(10);
+        System.out.println(r.getArea()); // 🤯 Outputs 100, not 50! Broken!
+    }
+}
+```
+
+### ✅ Fix: Don’t force Square to inherit from Rectangle. Model separately.
+
+---
+
+## ✅ Summary
+
+| Rule                                      | Bad                          | Good                    |
+| ----------------------------------------- | ---------------------------- | ----------------------- |
+| Subclasses must not break parent behavior | Ostrich flying               | Ostrich without fly()   |
+| Replace base class with subclass safely   | `Rectangle r = new Square()` | Separate `Square` logic |
+
+---
+
+Would you like a visual diagram or want me to explain **LSP violations in your own code** if you share any?
 
 ---
 
