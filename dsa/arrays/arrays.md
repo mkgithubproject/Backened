@@ -73,7 +73,9 @@ class Solution {
 
 ## 📝 Problem Statement
 
-Given an array of stock prices, where the `i-th` element represents the price of the stock on day `i`, find the **maximum profit** you can achieve from **one** buy and **one** sell operation.
+Given an array of stock prices, where the `i-th` element represents the price of the stock on day `i`, find the **maximum profit** you can achieve from **one** buy and **one** sell operation.\
+. trick , mujhe aaj bechna h max profit kamana h to time machine do mai pichhe jake minum pr buy kr lunga jake then aaj sell kr dunga, means \
+minimum ko maintain krke rakho
 
 - You **must** buy before you sell.
 - If no profit is possible, return `0`.
