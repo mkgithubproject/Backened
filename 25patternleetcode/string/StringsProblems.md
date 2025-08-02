@@ -58,11 +58,14 @@ class Solution {
         int max=0;
         int start=0;
         int end=0;
+       // acquire release silidning window ,(writing while code first write conditon for releasing) 
         while(start<s.length()){
             if(hs.contains(s.charAt(start))){
+                // releasing
                 hs.remove(s.charAt(end));
                 end++;
             }else{
+                // acquireing
                 hs.add(s.charAt(start));
                 max=Math.max(max,start-end+1);
                 start++;
