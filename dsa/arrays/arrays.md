@@ -108,12 +108,11 @@ public class StockProfit {
         for (int i = 1; i < prices.length; i++) {
             if (prices[i] < minPrice) {
                 minPrice = prices[i];     // 🔽 Found a new lower buying price
-            } else {
-                int profit = prices[i] - minPrice;   // 💰 Potential profit
+            }
+            int profit = prices[i] - minPrice;   // 💰 Potential profit
                 if (profit > maxProfit) {
                     maxProfit = profit;   // 🆙 Update max profit if better
-                }
-            }
+                 }
         }
 
         return maxProfit;
