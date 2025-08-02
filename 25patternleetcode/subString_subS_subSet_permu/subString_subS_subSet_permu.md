@@ -394,6 +394,92 @@ Let me know if you want to:
 - Avoid duplicates (for input with repeating elements).
 - Return only subsets of a certain size `k`.
 
-I can adjust the code to match any of these!
+Here’s a **clean Java implementation** to generate **all permutations using recursion only** (no libraries like `Collections.permute`, etc.).
+
+---
+
+## ✅ Permutations Using Recursion (Backtracking)
+
+### 🔧 Java Code:
+
+```java
+import java.util.*;
+
+public class PermutationsRecursive {
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        List<Integer> current = new ArrayList<>();
+        boolean[] used = new boolean[nums.length];
+        generatePermutations(nums, current, used);
+    }
+
+    public static void generatePermutations(int[] nums, List<Integer> current, boolean[] used) {
+        if (current.size() == nums.length) {
+            System.out.println(current);  // or store in a list
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (used[i]) continue; // skip used elements
+
+            // Choose
+            current.add(nums[i]);
+            used[i] = true;
+
+            // Explore
+            generatePermutations(nums, current, used);
+
+            // Backtrack
+            current.remove(current.size() - 1);
+            used[i] = false;
+        }
+    }
+}
+```
+
+---
+
+### 🧾 Output for `{1, 2, 3}`:
+
+```
+[1, 2, 3]
+[1, 3, 2]
+[2, 1, 3]
+[2, 3, 1]
+[3, 1, 2]
+[3, 2, 1]
+```
+
+---
+
+## 🔁 How It Works (Backtracking):
+
+1. **Choose** an element not already used.
+2. **Recurse** with it included.
+3. **Unchoose** it to explore other paths.
+
+---
+
+### ⏱ Time and Space Complexity:
+
+| Aspect       | Complexity |
+|--------------|------------|
+| Time         | O(n!)      |
+| Space        | O(n) stack + O(n) used array |
+
+---
+
+## ✅ Summary:
+
+| Topic        | Permutations               |
+|--------------|----------------------------|
+| Strategy     | Backtracking + recursion   |
+| # of results | `n!`                       |
+| Allow repeat? | No (use `used[]` array)    |
+| Use case     | Anagrams, shuffling, paths |
+
+---
+
 
 
