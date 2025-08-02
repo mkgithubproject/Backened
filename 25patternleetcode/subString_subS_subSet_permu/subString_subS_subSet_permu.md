@@ -166,4 +166,160 @@ public class SubstringRecursion {
 
 ---
 
+To print **all subsequences** of a string using **recursion and an array**, we can think of it as a **combinatorial problem** where, at each index, we have two choices:
+
+1. **Include** the current character in the subsequence.
+2. **Exclude** the current character.
+
+This results in **2ⁿ** total subsequences for a string of length `n`.
+
+---
+
+## ✅ Java Code: Print All Subsequences Using Array and Recursion
+
+```java
+public class SubsequenceGenerator {
+
+    public static void main(String[] args) {
+        String s = "abc";
+        char[] arr = s.toCharArray();
+        generateSubsequences(arr, 0, "");
+    }
+
+    public static void generateSubsequences(char[] arr, int index, String current) {
+        // Base case: reached end of array
+        if (index == arr.length) {
+            System.out.println(current);
+            return;
+        }
+
+        // Choice 1: Include current character
+        generateSubsequences(arr, index + 1, current + arr[index]);
+
+        // Choice 2: Exclude current character
+        generateSubsequences(arr, index + 1, current);
+    }
+}
+```
+
+---
+
+### 🔍 Output for `"abc"`: /// think from bottom , c can take it or ignore (two possibility) ,ab b c ke sath aaye ya na aaye yani bc,b
+
+```
+abc
+ab
+ac
+a
+bc
+b
+c
+```
+(empty string not shown, but can be printed if needed)
+
+---
+
+### 🧠 How It Works:
+
+At each index:
+- Include the character → move to next with `current + arr[index]`
+- Exclude the character → move to next with `current`
+
+---
+
+### ⏱ Time Complexity:
+
+- **Time:** O(2ⁿ) — since each character can either be included or excluded
+- **Space:** O(n) — max recursion depth and size of `current` string
+
+---
+
+Would you like to:
+- Store all subsequences in a `List<String>`?
+- Filter only palindromic subsequences?
+- Avoid duplicates (for inputs with repeating characters)?
+
+To **print all subsets** of a set (or string), you're essentially looking for the same idea as printing all **subsequences** — they are conceptually identical:
+
+> ✅ **Subset** = any combination of elements (including empty set)  
+> ✅ **Subsequence** = same concept for ordered data like strings/arrays
+
+---
+
+## ✅ Java Code to Print All Subsets (Using Recursion)
+
+Here’s a clean Java example that prints all subsets of a set represented as a character array:
+
+```java
+public class SubsetGenerator {
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        generateSubsets(nums, 0, new ArrayList<>());
+    }
+
+    public static void generateSubsets(int[] nums, int index, List<Integer> current) {
+        if (index == nums.length) {
+            System.out.println(current); // Print the current subset
+            return;
+        }
+
+        // Include the current element
+        current.add(nums[index]);
+        generateSubsets(nums, index + 1, current);
+
+        // Exclude the current element (backtrack)
+        current.remove(current.size() - 1);
+        generateSubsets(nums, index + 1, current);
+    }
+}
+```
+
+---
+
+### 🧾 Output for `[1, 2, 3]`:
+
+```
+[1, 2, 3]
+[1, 2]
+[1, 3]
+[1]
+[2, 3]
+[2]
+[3]
+[]
+```
+
+---
+
+### ⏱ Time & Space Complexity:
+
+| Aspect        | Complexity |
+|---------------|------------|
+| Time          | O(2ⁿ)      |
+| Space (stack) | O(n)       |
+| Output space  | O(2ⁿ × n)  |
+
+---
+
+### 🔁 Recursion Strategy:
+
+At each index, we make two choices:
+1. **Include** the current number in the subset.
+2. **Exclude** the current number.
+
+This leads to **2ⁿ total subsets**.
+
+---
+
+### Want to Extend This?
+
+Let me know if you want to:
+- Store subsets in a list of lists.
+- Work with strings instead of integers.
+- Avoid duplicates (for input with repeating elements).
+- Return only subsets of a certain size `k`.
+
+I can adjust the code to match any of these!
+
 
