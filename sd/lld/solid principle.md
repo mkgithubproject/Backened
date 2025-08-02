@@ -372,6 +372,159 @@ class Computer {
 
 **Now, we can inject any kind of keyboard without changing the `Computer` class.**
 
+
+
+
+Great! Let's understand the **Dependency Inversion Principle (DIP)** with a **real-world example in Java**.
+
+---
+
+## 🔍 What is Dependency Inversion Principle (DIP)?
+
+**Definition (Simplified):**
+
+> **High-level modules should not depend on low-level modules. Both should depend on abstractions (interfaces).**
+> Also, abstractions should not depend on details; details (implementations) should depend on abstractions.
+
+---
+
+## 🎯 Why DIP?
+
+Without DIP, your classes become **tightly coupled** — any change in low-level modules requires changes in high-level modules too.
+
+With DIP, your system becomes:
+
+* Loosely coupled
+* More testable
+* Easier to change or extend
+
+---
+
+## 💡 Real-World Example: Keyboard Input to a Computer
+
+Let’s say you’re building a `Computer` class that needs input from a keyboard.
+
+---
+
+### ❌ Without DIP (Tightly Coupled)
+
+```java
+class MechanicalKeyboard {
+    public String getInput() {
+        return "Mechanical Keyboard Input";
+    }
+}
+
+class Computer {
+    private MechanicalKeyboard keyboard = new MechanicalKeyboard(); // 👎 tight coupling
+
+    public void readInput() {
+        System.out.println("Reading: " + keyboard.getInput());
+    }
+}
+```
+
+### 🔴 Problem:
+
+* Computer depends **directly** on `MechanicalKeyboard`.
+* What if we want to use a `WirelessKeyboard`?
+* We'd have to **modify the `Computer` class** → this violates Open/Closed Principle too.
+
+---
+
+### ✅ With DIP (Loosely Coupled using Interface)
+
+### 1. Create an abstraction (interface):
+
+```java
+interface Keyboard {
+    String getInput();
+}
+```
+
+### 2. Implement different types of keyboards:
+
+```java
+class MechanicalKeyboard implements Keyboard {
+    public String getInput() {
+        return "Mechanical Keyboard Input";
+    }
+}
+
+class WirelessKeyboard implements Keyboard {
+    public String getInput() {
+        return "Wireless Keyboard Input";
+    }
+}
+```
+
+### 3. High-level module depends on abstraction:
+
+```java
+class Computer {
+    private Keyboard keyboard; // 👈 depends on interface, not implementation
+
+    public Computer(Keyboard keyboard) {
+        this.keyboard = keyboard;
+    }
+
+    public void readInput() {
+        System.out.println("Reading: " + keyboard.getInput());
+    }
+}
+```
+
+### 4. Use it:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Keyboard keyboard = new WirelessKeyboard(); // Or new MechanicalKeyboard();
+        Computer computer = new Computer(keyboard);
+        computer.readInput(); // Output: Wireless Keyboard Input
+    }
+}
+```
+
+---
+
+## ✅ Benefits of Using DIP
+
+| Without DIP (bad)                                    | With DIP (good)                                 |
+| ---------------------------------------------------- | ----------------------------------------------- |
+| `Computer` knows about `MechanicalKeyboard` directly | `Computer` depends only on `Keyboard` interface |
+| Hard to replace or test                              | Easy to mock in tests                           |
+| Code breaks if low-level class changes               | Code is stable and flexible                     |
+
+---
+
+## 🧪 For Unit Testing Example:
+
+You can now easily mock the keyboard:
+
+```java
+class MockKeyboard implements Keyboard {
+    public String getInput() {
+        return "Test Input";
+    }
+}
+```
+
+And test your `Computer` class without real keyboard logic.
+
+---
+
+## ✅ Summary
+
+* Use **interfaces** to define behavior.
+* **Inject** dependencies via constructor (constructor injection).
+* Let **low-level classes implement interfaces**, and **high-level classes use those interfaces**.
+
+---
+
+Would you like a **Spring-based real-world DIP example** using dependency injection via annotations (`@Autowired`)?
+
+
 ---
 
 ## 💡 Summary Table
