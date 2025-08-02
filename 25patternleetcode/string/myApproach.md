@@ -193,9 +193,8 @@ class Solution {
 
         // Pointers for sliding window and tracking minimum window
         int left = 0;
-        int minLen = Integer.MAX_VALUE;
-        int start = 0;                // start index of the best (smallest) window found
-
+        String minWin = "";
+        int minLength = Integer.MAX_VALUE;
         // Expand the window using right pointer
         for (int right = 0; right < s.length(); right++) {
             char c = s.charAt(right); // current character
@@ -211,9 +210,9 @@ class Solution {
             // When all required characters are matched, try to shrink the window, release
             while (have == need) {
                 // Update minimum window if smaller one is found
-                if ((right - left + 1) < minLen) {
-                    minLen = right - left + 1;
-                    start = left;
+                if ((right - left + 1) < minLength) {
+                    minWin = s.substring(left, right+1);
+                    minLength = minWin.length();
                 }
 
                 // Try to shrink window from the left
@@ -229,11 +228,10 @@ class Solution {
                 left++;
             }
         }
-
-        // If no window found, return ""
-        return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+        return minWin;
     }
 }
+
 
 
 ```
