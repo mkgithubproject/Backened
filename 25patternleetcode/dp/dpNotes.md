@@ -52,6 +52,7 @@ import java.util.*;
 
 public class FibonacciMemo {
     static Map<Integer, Integer> memo = new HashMap<>();
+   // or can take array of size n+1 because , 0-n tak answer save krna h to n+1 size ka array hoga
 
     static int fib(int n) {
         if (n <= 1) return n;
@@ -65,6 +66,29 @@ public class FibonacciMemo {
         System.out.println(fib(10));  // Output: 55
     }
 }
+// trick to remember , paas  a question bank , if question bank has anwer use it else put it
+public class Main {
+    public static void main(String[] args) {
+        int n = 10; // Example: get 10th Fibonacci number
+        int[] qb = new int[n + 1]; // qb = "question bank" (memoization array)
+
+        int result = fib(n, qb);
+        System.out.println("Fibonacci(" + n + ") = " + result);
+    }
+
+    public static int fib(int n, int[] qb) {
+        // Base cases
+        if (n == 0 || n == 1) return n;
+
+        // If already calculated, return from qb
+        if (qb[n] != 0) return qb[n];
+
+        // Otherwise, calculate and store in qb
+        qb[n] = fib(n - 1, qb) + fib(n - 2, qb);
+        return qb[n];
+    }
+}
+
 ```
 
 Time: O(n) | Space: O(n)
