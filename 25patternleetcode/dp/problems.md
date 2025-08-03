@@ -83,4 +83,81 @@ class Solution {
 
 }
 ```
+### Longest Palindromic Substring
+Example 1:\
+Input: s = "babad"\
+Output: "bab"\
+Explanation: "aba" is also a valid answer.\
+ ## recursive approach
+i will check first and last char of babad if it is return else check left part and right part means \
+recursive give me from abad or baba because length is same 
+```
+
+
+class Solution {
+    public String longestPalindrome(String s) {
+        return longestPalindrome(s,0,s.length()-1);
+    }
+    // Helper function to check if a substring is a palindrome
+    public static boolean isPalindrome(String s, int left, int right) {
+        if (left >= right)
+            return true;
+        if (s.charAt(left) != s.charAt(right))
+            return false;
+        return isPalindrome(s, left + 1, right - 1);
+    }
+
+    // Recursive function to find the longest palindromic substring
+    public static String longestPalindrome(String s, int start, int end) {
+        if (start > end)
+            return "";
+        if (isPalindrome(s, start, end)) {
+            return s.substring(start, end + 1);
+        }
+
+        // Recur for two substrings: (start+1, end) and (start, end-1)
+        String left = longestPalindrome(s, start + 1, end);
+        String right = longestPalindrome(s, start, end - 1);
+
+        return left.length() > right.length() ? left : right;
+    }
+}
+
+```
+## dp using 2-d matrix
+```
+class Solution {
+    public String longestPalindrome(String s) {
+        boolean[][] dp = new boolean[s.length()][s.length()];
+        int l = 0;
+        String res = "";
+        for (int g = 0; g < s.length(); g++) {
+                // diagonal starts from 0, gap, and hota h last couloum pe
+                for (int i = 0, j = g; j < s.length(); i++, j++) {
+                    if (g == 0) {
+                        dp[i][j] = true;
+                    } else if (g == 1) {
+                        if (s.charAt(i) == s.charAt(j)) {
+                            dp[i][j] = true;
+                        } else {
+                            dp[i][j] = false;
+                        }
+                    } else {
+                        if (s.charAt(i) == s.charAt(j) && dp[i +1][j - 1] == true) {
+                            dp[i][j] = true;
+                        }else{
+                            dp[i][j] = false;
+                        }
+                    }
+
+                    if(dp[i][j]){
+                        l = g+1;
+                        res = s.substring(i,j+1);
+                    }
+                    
+                }
+        }
+        return res;
+    }
+}```
 
