@@ -1,7 +1,3 @@
-Here's a **complete breakdown of all Graph Data Structure (DSA) concepts**, including definitions, diagrams, theory, and Java code examples.
-
----
-
 ## 📌 1. What is a Graph?
 
 A **graph** is a non-linear data structure consisting of:
@@ -51,6 +47,68 @@ adjMatrix[0][1] = 1;
 adjMatrix[1][0] = 1; // undirected
 ```
 
+### 🔷 Example with 2D Array in Java (Undirected Graph)
+
+Graph:
+
+* 0 — 1
+* 0 — 2
+* 1 — 2
+* 2 — 3
+
+Visual:
+
+```
+    0
+   / \
+  1---2
+       \
+        3
+```
+
+Adjacency Matrix:
+
+```
+    0 1 2 3
+  ----------
+0|  0 1 1 0
+1|  1 0 1 0
+2|  1 1 0 1
+3|  0 0 1 0
+```
+
+```java
+public class AdjacencyMatrixExample {
+    public static void main(String[] args) {
+        int V = 4; // number of vertices
+        int[][] adjMatrix = new int[V][V];
+
+        // Adding undirected edges
+        addEdge(adjMatrix, 0, 1);
+        addEdge(adjMatrix, 0, 2);
+        addEdge(adjMatrix, 1, 2);
+        addEdge(adjMatrix, 2, 3);
+
+        // Print the matrix
+        printMatrix(adjMatrix);
+    }
+
+    static void addEdge(int[][] matrix, int u, int v) {
+        matrix[u][v] = 1;
+        matrix[v][u] = 1; // for undirected graph
+    }
+
+    static void printMatrix(int[][] matrix) {
+        for (int[] row : matrix) {
+            for (int val : row) {
+                System.out.print(val + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
 ### ✅ Adjacency List
 
 Better for sparse graphs. Uses `List<List<Integer>>`.
@@ -60,6 +118,71 @@ List<List<Integer>> adjList = new ArrayList<>();
 for (int i = 0; i < V; i++) adjList.add(new ArrayList<>());
 adjList.get(0).add(1); // edge 0-1
 adjList.get(1).add(0); // undirected
+```
+
+### 🔷 Example with Adjacency List in Java (Undirected Graph)
+
+Graph:
+
+* 0 — 1
+* 0 — 2
+* 1 — 2
+* 2 — 3
+
+Visual:
+
+```
+    0
+   / \
+  1---2
+       \
+        3
+```
+
+Adjacency List:
+
+```
+0 → 1, 2
+1 → 0, 2
+2 → 0, 1, 3
+3 → 2
+```
+
+```java
+import java.util.*;
+
+public class AdjacencyListExample {
+    public static void main(String[] args) {
+        int V = 4;
+        List<List<Integer>> adjList = new ArrayList<>();
+
+        for (int i = 0; i < V; i++) {
+            adjList.add(new ArrayList<>());
+        }
+
+        addEdge(adjList, 0, 1);
+        addEdge(adjList, 0, 2);
+        addEdge(adjList, 1, 2);
+        addEdge(adjList, 2, 3);
+
+        printGraph(adjList);
+    }
+
+    static void addEdge(List<List<Integer>> adjList, int u, int v) {
+        adjList.get(u).add(v);
+        adjList.get(v).add(u); // undirected
+    }
+
+    static void printGraph(List<List<Integer>> adjList) {
+        for (int i = 0; i < adjList.size(); i++) {
+            System.out.print(i + " → ");
+            for (int neighbor : adjList.get(i)) {
+                System.out.print(neighbor + " ");
+            }
+            System.out.println();
+        }
+    }
+}
 ```
 
 ---
@@ -278,8 +401,3 @@ boolean isBipartite(List<List<Integer>> graph, int V) {
 | Course Schedule (LeetCode 207)            | Topo sort            |
 | Dijkstra’s shortest path                  | Greedy               |
 | Minimum Cost to Connect All Cities        | MST                  |
-
----
-
-If you'd like **PDF notes**, **dry run diagrams**, or **Java practice questions** on any specific graph algorithm, let me know — I’ll generate those for you!
-
