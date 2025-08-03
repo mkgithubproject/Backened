@@ -1,5 +1,7 @@
 Great question! Let's break down the **difference between the two subset generation approaches**:
 
+result ke liye refrence use kiya h to backtrack krna padega , ni to new string ya list banao har call pe
+
 ---
 
 ## ✅ 1. **With `for` loop (Backtracking style)**
