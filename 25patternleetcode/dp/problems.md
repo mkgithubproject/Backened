@@ -160,4 +160,44 @@ class Solution {
         return res;
     }
 }```
+```
+### Longest Common Subsequence
+Example 1:\
+
+Input: text1 = "abcde", text2 = "ace" \
+Output: 3  \
+Explanation: The longest common subsequence is "ace" and its length is 3.\
+```
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int longestCommonSubsequence(String text1, String text2) {
+        Map<String, Integer> memo = new HashMap<>(); // or can use 2d array of size n*m where n = text1.length
+        return lcsHelper(text1, text2, 0, 0, memo);
+    }
+
+    private int lcsHelper(String text1, String text2, int i, int j, Map<String, Integer> memo) {
+        if (i == text1.length() || j == text2.length()) return 0;
+
+        String key = i + "," + j;
+        if (memo.containsKey(key)) return memo.get(key);
+
+        int result;
+        if (text1.charAt(i) == text2.charAt(j)) {
+            result = 1 + lcsHelper(text1, text2, i + 1, j + 1, memo);
+        } else {
+            result = Math.max(
+                lcsHelper(text1, text2, i + 1, j, memo),
+                lcsHelper(text1, text2, i, j + 1, memo)
+            );
+        }
+
+        memo.put(key, result);
+        return result;
+    }
+}
+
+```
+
 
