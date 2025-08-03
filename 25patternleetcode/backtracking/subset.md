@@ -202,3 +202,43 @@ public class Solution {
 
 }
 ```
+
+### 39. Combination Sum
+Example 1:\
+
+Input: candidates = [2,3,6,7], target = 7\
+Output: [[2,2,3],[7]]\
+Explanation:\
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.\
+7 is a candidate, and 7 = 7.\
+These are the only two combinations.\
+```
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        combinationSumHelper(candidates, 0, target, res, new ArrayList<>());
+        return res;
+    }
+
+    Set<List<Integer>> set = new HashSet<>();
+
+    public void combinationSumHelper(int[] candidates, int index, int target,
+            List<List<Integer>> res, List<Integer> current) {
+        if (index == candidates.length || target < 0) {
+            return;
+        }
+        if (target == 0) {
+            if (!set.contains(current)) {
+                res.add(new ArrayList<>(current));
+                set.add(new ArrayList<>(current));
+            }
+        }
+        current.add(candidates[index]);
+        combinationSumHelper(candidates, index + 1, target - candidates[index], res, current);
+        combinationSumHelper(candidates, index, target - candidates[index], res, current);
+        current.remove(current.size()-1);
+        combinationSumHelper(candidates, index + 1, target, res, current);
+
+    }
+}
+```
