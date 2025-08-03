@@ -108,7 +108,67 @@ public void helper(int[] nums, int index, List<Integer> current, List<List<Integ
 
 ---
 
-Let me know if you'd like visual tree images or want to compare memory usage and performance!
+You're asking for the **same logic to generate all subsets**, but **without backtracking** — meaning **no `current.remove()` or mutation reversal** after recursive calls.
+
+Yes, you can do that by **not mutating the same list**, but instead **passing a *new copy* at each step** when including an element.
+
+---
+
+### ✅ Modified Code – Without Backtracking
+
+```java
+public void helper(int[] nums, int index, List<Integer> current, List<List<Integer>> res) {
+    if (index == nums.length) {
+        res.add(current);  // Add the current subset
+        return;
+    }
+
+    // ❌ Exclude nums[index] — pass the same list
+    helper(nums, index + 1, new ArrayList<>(current), res);
+
+    // ✅ Include nums[index] — pass a new list with the element added
+    List<Integer> withElement = new ArrayList<>(current);
+    withElement.add(nums[index]);
+    helper(nums, index + 1, withElement, res);
+}
+```
+
+---
+
+### 🔍 Key Differences from Backtracking Version:
+
+| Backtracking Version       | No Backtracking Version               |
+| -------------------------- | ------------------------------------- |
+| Reuses same `current` list | Creates a **new list copy** each time |
+| Needs explicit `.remove()` | No mutation reversal needed           |
+| More memory efficient      | Uses more memory (more copies)        |
+| Slightly faster (less GC)  | Slightly slower (more allocations)    |
+| Harder to misuse           | Safer, easier to reason               |
+
+---
+
+### ✅ Example Call
+
+```java
+public static void main(String[] args) {
+    int[] nums = {1, 2, 3};
+    List<List<Integer>> res = new ArrayList<>();
+    helper(nums, 0, new ArrayList<>(), res);
+    System.out.println(res);
+}
+```
+
+---
+
+### 🧠 Summary
+
+* **With backtracking**: reuses the same list → must undo mutations.
+* **Without backtracking**: avoid undoing by creating new lists at each step.
+
+Both work fine; the non-backtracking version is **easier to follow**, but backtracking is more **memory-efficient and optimal**.
+
+Let me know if you'd like this version implemented using **bit masking** or **iterative style** as well.
+
 
 ```
 import java.util.*;
