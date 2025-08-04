@@ -37,6 +37,13 @@ class Solution {
 }
 ```
 ### 2 Find All Anagrams in a String
+Input: s = "cbaebabacd", p = "abc"\
+Output: [0,6]\
+Explanation:\
+The substring with start index = 0 is "cba", which is an anagram of "abc".\
+The substring with start index = 6 is "bac", which is an anagram of "abc".\
+
+
 1. Brute Force Approach (Generate All Substrings)\
 📦 Time Complexity:\
 Sorting a string of length k takes O(k log k)\
@@ -110,6 +117,9 @@ class Solution {
 ### 3 Minimum Window Substring (done in patterns question)
 
 ### 4  Longest Repeating Character Replacement
+Input: s = "ABAB", k = 2\
+Output: 4\
+Explanation: Replace the two 'A's with two 'B's or vice versa.\
 ```
 import java.util.*;
 
@@ -147,6 +157,11 @@ class Solution {
 ```
 
 ### Group Anagrams
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+
 ```
 class Solution {
     public List<List<String>> groupAnagrams(String[] strs) {
@@ -171,6 +186,16 @@ class Solution {
 ```
 
 ### Roman to Integer
+Input: s = "III"\
+Output: 3\
+Explanation: III = 3.\
+
+Example 3:\
+
+Input: s = "MCMXCIV"\
+Output: 1994\
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.\
+
 ```
 class Solution {
     public int romanToInt(String s) {
@@ -200,3 +225,34 @@ class Solution {
 }
 
 ```
+
+### Sort Characters By Frequency
+Input: s = "tree"\
+Output: "eert"\
+Explanation: 'e' appears twice while 'r' and 't' both appear once.\
+So 'e' must appear before both 'r' and 't'. Therefore "eetr" is also a valid answer.\
+```
+class Solution {
+    public String frequencySort(String s) {
+        // Step 1: Count frequency of each character
+        Map<Character, Integer> freq = new HashMap<>();
+        for (char c : s.toCharArray()) {
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
+        }
+
+        // Step 2: Convert to list and sort by frequency
+        List<Character> chars = new ArrayList<>(freq.keySet());
+        chars.sort((a, b) -> freq.get(b) - freq.get(a)); // descending
+
+        // Step 3: Build result string
+        String result = "";
+        for (char c : chars) {
+            result += (""+c).repeat(freq.get(c));
+        }
+
+        return result;
+    }
+}
+
+```
+
