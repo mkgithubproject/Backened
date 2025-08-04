@@ -574,14 +574,128 @@ Each path from root to leaf is a valid permutation.
 
 ---
 
-## ✅ Summary:
+To generate **permutations using recursion in O(1) extra space**, you can:
 
-| Topic        | Permutations of String         |
-|--------------|-------------------------------|
-| Strategy     | Backtracking + Recursion      |
-| Result Count | `n!`                          |
-| Use Case     | Anagrams, string generation   |
+* Use **backtracking** with **in-place swapping**.
+* Avoid auxiliary space like visited arrays or new lists for holding permutations.
+
+This way, the only space used is for **function call stack** (which is necessary for recursion), but **no extra space is used for holding intermediate states**.
 
 ---
 
-Would you like to **store results in a list**, **count them**, or **find only unique permutations** (if input has duplicates)?
+## ✅ Problem: Permutations using Recursion and O(1) space
+
+> Given an array of `n` elements, generate all permutations using recursion and **constant extra space** (excluding the output list).
+
+---
+
+### 💡 Key Idea:
+
+* Fix one character at each position.
+* Swap it with the rest to generate all possibilities.
+* Backtrack (undo the swap) after recursion.
+
+---
+
+### ✅ Java Code (In-place Permutation)
+
+```java
+public class Permutations {
+    public static void permute(int[] arr, int index) {
+        if (index == arr.length) {
+            printArray(arr);
+            return;
+        }
+
+        for (int i = index; i < arr.length; i++) {
+            swap(arr, i, index);               // Choose
+            permute(arr, index + 1);           // Explore
+            swap(arr, i, index);               // Backtrack
+        }
+    }
+
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+    }
+
+    private static void printArray(int[] arr) {
+        for (int num : arr) System.out.print(num + " ");
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        permute(nums, 0);
+    }
+}
+```
+
+---
+
+### 🧠 Dry Run for `[1, 2, 3]`
+
+**Call Tree:**
+
+```
+permute([1, 2, 3], 0)
+├── swap(0,0): [1,2,3]
+│   └── permute(1)
+│       ├── swap(1,1): [1,2,3]
+│       │   └── permute(2)
+│       │       ├── swap(2,2): [1,2,3] → print
+│       │       └── backtrack
+│       └── swap(1,2): [1,3,2]
+│           └── permute(2)
+│               ├── swap(2,2): [1,3,2] → print
+│               └── backtrack
+├── swap(0,1): [2,1,3]
+│   └── permute(1)
+│       ├── swap(1,1): [2,1,3]
+│       │   └── permute(2)
+│       │       ├── swap(2,2): [2,1,3] → print
+│       │       └── backtrack
+│       └── swap(1,2): [2,3,1]
+│           └── permute(2)
+│               ├── swap(2,2): [2,3,1] → print
+│               └── backtrack
+└── swap(0,2): [3,2,1]
+    └── permute(1)
+        ├── swap(1,1): [3,2,1]
+        │   └── permute(2)
+        │       ├── swap(2,2): [3,2,1] → print
+        │       └── backtrack
+        └── swap(1,2): [3,1,2]
+            └── permute(2)
+                ├── swap(2,2): [3,1,2] → print
+                └── backtrack
+```
+
+---
+
+### 🚀 Output:
+
+```
+1 2 3
+1 3 2
+2 1 3
+2 3 1
+3 2 1
+3 1 2
+```
+
+---
+
+### ⏱️ Time and Space Complexity
+
+| Complexity       | Value                       |
+| ---------------- | --------------------------- |
+| Time             | `O(n!)`                     |
+| Auxiliary Space  | `O(1)` (no extra list used) |
+| Call Stack Space | `O(n)` (due to recursion)   |
+
+✅ **Fulfills your constraint of constant space usage** apart from recursion stack.
+
+---
+
+Would you like a **JavaScript** or **C++** version too?
+
