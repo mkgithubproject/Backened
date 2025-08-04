@@ -100,6 +100,98 @@ app.use('/users', (req, res) => {
   proxy.web(req, res, { target: 'http://localhost:3001' });
 });
 ```
+The **API Gateway** and **Load Balancer** are both used in modern application architectures, but they solve **very different problems**.
+
+Here's a simple and clear comparison:
+
+---
+
+## 🧩 1. **Definition**
+
+| Concept           | Description                                                                                                               |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **API Gateway**   | A **reverse proxy** that sits in front of your APIs and manages **routing, authentication, rate limiting, logging, etc.** |
+| **Load Balancer** | Distributes **incoming traffic** across multiple backend servers to ensure **high availability and reliability**.         |
+
+---
+
+## ⚙️ 2. **Primary Purpose**
+
+| API Gateway                                            | Load Balancer                       |
+| ------------------------------------------------------ | ----------------------------------- |
+| Handles API-specific features (auth, versioning, etc.) | Distributes network traffic evenly  |
+| Controls **who** can access **what**                   | Controls **where** the request goes |
+
+---
+
+## 🎯 3. **Main Features**
+
+| Feature              | API Gateway                            | Load Balancer                     |
+| -------------------- | -------------------------------------- | --------------------------------- |
+| Routing              | ✅ Path-based (e.g., `/user`, `/order`) | ✅ IP or port-based                |
+| Authentication       | ✅ Built-in support                     | ❌ Not responsible                 |
+| Rate Limiting        | ✅ Yes                                  | ❌ No                              |
+| Logging & Monitoring | ✅ Per route or API                     | ✅ Per request, but limited detail |
+| TLS Termination      | ✅ Often handles SSL                    | ✅ Often handles SSL               |
+| Caching              | ✅ Often supports response caching      | ❌ Not its job                     |
+
+---
+
+## 🔁 4. **Example**
+
+### 🔹 API Gateway Example:
+
+```bash
+GET /api/user → Auth checked → Route to User Service
+GET /api/order → Throttle checked → Route to Order Service
+```
+
+### 🔸 Load Balancer Example:
+
+```bash
+GET / → Randomly routed to Server 1, 2, or 3
+```
+
+---
+
+## 🧠 5. When to Use What?
+
+| Scenario                                                   | Use             |
+| ---------------------------------------------------------- | --------------- |
+| Microservices / API-first apps                             | ✅ API Gateway   |
+| High-traffic websites needing fault tolerance              | ✅ Load Balancer |
+| Need to authenticate, authorize, throttle, or version APIs | ✅ API Gateway   |
+| Just want to balance traffic among multiple servers        | ✅ Load Balancer |
+
+---
+
+## 🔗 6. Can They Work Together?
+
+**Yes!**
+A common pattern:
+
+```
+Client → Load Balancer → API Gateway → Microservices
+```
+
+* Load balancer distributes traffic across multiple **API Gateways**.
+* API Gateway handles all **API-related logic**.
+
+---
+
+## 🧪 Summary Table
+
+| Criteria                           | API Gateway                               | Load Balancer                      |
+| ---------------------------------- | ----------------------------------------- | ---------------------------------- |
+| Main Role                          | API Management                            | Traffic Distribution               |
+| Layer                              | Application Layer (L7)                    | Network or Transport Layer (L4/L7) |
+| Handles Auth, Rate Limits, Caching | ✅                                         | ❌                                  |
+| Routes based on Path               | ✅                                         | Usually IP/Port                    |
+| Example Tools                      | Kong, AWS API Gateway, NGINX (as gateway) | AWS ELB, HAProxy, NGINX, Traefik   |
+
+---
+
+Let me know if you want a **diagram** or real-world **AWS/Node.js example** of both in action!
 
 ---
 
