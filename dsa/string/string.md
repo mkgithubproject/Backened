@@ -256,3 +256,84 @@ class Solution {
 
 ```
 
+### . Minimum Remove to Make Valid Parentheses
+Input: s = "lee(t(c)o)de)"\
+Output: "lee(t(c)o)de\
+Explanation: "lee(t(co)de)" , "lee(t(c)ode)" would also be accepted.\
+```
+class Solution {
+    public String minRemoveToMakeValid(String s1) {
+        int isOpend = 0;
+        String s = "";
+        for(char c:s1.toCharArray()){
+          if(c == '('){
+            isOpend +=1;
+            s+=c;
+          }else if(c == ')'){
+            if(isOpend>0){
+                isOpend-=1;
+                s+=c;
+            }
+          }else{
+            s+=c;
+          }
+        }
+        String right = "";
+        int rightIndex = s.length()-1;
+        while(isOpend>0 && rightIndex >=0){
+          if(s.charAt(rightIndex) == '('){
+            // skip
+            isOpend-=1;
+          }else{
+            right = s.charAt(rightIndex) + right;
+          }
+          rightIndex-=1;
+        }
+        s = s.substring(0,rightIndex+1)+right;
+        return s;
+    }
+}
+```
+## using stack
+```
+import java.util.*;
+
+public class Solution {
+    public String minRemoveToMakeValid(String s) {
+        Stack<Integer> stack = new Stack<>();
+        Set<Integer> removeSet = new HashSet<>();
+
+        // 1. First pass: identify indexes to remove
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+
+            if (ch == '(') {
+                stack.push(i);
+            } else if (ch == ')') {
+                if (!stack.isEmpty()) {
+                    stack.pop(); // matched '('
+                } else {
+                    removeSet.add(i); // unmatched ')'
+                }
+            }
+        }
+
+        // 2. Add remaining unmatched '(' positions to remove set
+        while (!stack.isEmpty()) {
+            removeSet.add(stack.pop());
+        }
+
+        // 3. Build the result string
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (!removeSet.contains(i)) {
+                result.append(s.charAt(i));
+            }
+        }
+
+        return result.toString();
+    }
+}
+
+```
+
