@@ -183,3 +183,99 @@ function Counter() {
 | `call`, `apply`, `bind`         | Explicit object                 |
 | Event listener (function)       | Event target (e.g. button)      |
 | Event listener (arrow function) | Lexical scope (likely `window`) |
+
+You're absolutely right — this is one of **JavaScript's most confusing topics**: the behavior of `this` in **regular functions vs arrow functions**.
+
+Let’s **break it down visually and clearly** so it becomes crystal clear.
+
+---
+
+## ✅ Case 1: Regular Function Returning Arrow Function
+
+```js
+const obj = {
+  value: 10,
+  regular: function () {
+    return () => {
+      console.log(this.value);
+    };
+  },
+};
+
+const arrowFn = obj.regular(); // this === obj
+arrowFn(); // 🔥 10
+```
+
+### 🔍 Step-by-Step:
+
+* `obj.regular()` is a **regular function call**, so:
+
+  * `this` inside `regular` === `obj`
+* Then it returns an **arrow function**, which **captures** `this` from the surrounding context.
+
+  * So the arrow function’s `this` is also `obj`
+* When `arrowFn()` is called later, it uses the captured `this`, not the caller’s.
+
+✅ **Output**: `10`
+
+---
+
+## ❌ Case 2: Arrow Function as a Method
+
+```js
+const obj = {
+  value: 10,
+  regular: () => {
+    console.log(this.value);
+  },
+};
+
+obj.regular(); // ❌ undefined
+```
+
+### 🔍 What Happens:
+
+* `regular` is defined as an **arrow function**
+* Arrow functions **do NOT get their own `this`**.
+* They inherit `this` from where they were **defined**, not from where they are **called**.
+
+In this case:
+
+* The arrow function was defined in the **global scope** (outside of any object)
+* So `this` refers to:
+
+  * `window` in browsers (if not in strict mode)
+  * `undefined` in strict mode / Node.js
+
+Since `this` is **not `obj`**, `this.value` is `undefined`.
+
+❌ **Output**: `undefined`
+
+---
+
+## 🔁 Visual Summary Table
+
+| Code Location                     | Function Type    | `this` Value     | Output      |
+| --------------------------------- | ---------------- | ---------------- | ----------- |
+| `obj.regular()` (Case 1)          | Regular Function | `obj`            | `10`        |
+| Arrow returned inside `regular()` | Arrow Function   | `obj` (captured) | `10`        |
+| `obj.regular()` (Case 2)          | Arrow Function   | Not `obj`        | `undefined` |
+
+---
+
+## 🧠 Golden Rules for `this`
+
+1. **Regular functions** get `this` based on **how they are called**.
+2. **Arrow functions** get `this` based on **where they are defined**.
+
+---
+
+## 💡 Tips
+
+* ✅ Use **regular functions** for object methods if you want to access `this` as the object.
+* ❌ Don’t use arrow functions for methods where `this` matters.
+
+---
+
+Let me know if you’d like this explained with a **diagram**, **animations**, or **in Hindi**, if that helps!
+
