@@ -261,6 +261,8 @@ Since `this` is **not `obj`**, `this.value` is `undefined`.
 | Arrow returned inside `regular()` | Arrow Function   | `obj` (captured) | `10`        |
 | `obj.regular()` (Case 2)          | Arrow Function   | Not `obj`        | `undefined` |
 
+### lexical scope , checking , local scope/ function or global scope , so check these scope for lexical
+
 ---
 
 ## 🧠 Golden Rules for `this`
