@@ -18,3 +18,31 @@ class Solution {
     }
 }
 ```
+###  Kth Largest Element in an Array
+2. Min-Heap (Efficient for Large Arrays)\
+Use a min-heap of size k.\
+Iterate through elements:\
+Add element to heap.\
+If heap size > k, remove the smallest.\
+Top of heap will be the k-th largest.\
+Time complexity: O(n log k)\
+Space complexity: O(k)\
+maintaine k size heap k
+```
+import java.util.PriorityQueue;
+
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int num : nums) {
+            minHeap.add(num);
+            if (minHeap.size() > k) {
+                minHeap.poll(); // remove smallest
+            }
+        }
+        return minHeap.peek();
+    }
+}
+```
+
+###
