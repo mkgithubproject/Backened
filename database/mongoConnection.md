@@ -154,7 +154,67 @@ connectDB().then(() => { app.listen(...) });
 
 ---
 
-If you want, I can rewrite this so it also **handles DB connection errors in `.catch()`** and gracefully shuts down the app instead of silently failing.  
-That’s a big deal in production.  
+Yes — because `a` is declared as `async`, calling `a()` always **returns a Promise** (even if you don’t explicitly return anything).
 
-Do you want me to make that improved version?
+---
+
+### **How to Check if It’s a Promise**
+
+```js
+let a = async () => {
+    console.log("cvdf");
+}
+
+const result = a(); // calling async fn returns a Promise
+
+console.log(result instanceof Promise); // true ✅
+console.log(result); // Promise { <pending> }
+```
+
+---
+
+### **Why `Promise { <pending> }`**
+
+* When you call `a()`, it starts executing.
+* Inside, it logs `"cvdf"`.
+* Since it’s `async` and doesn’t return anything, it implicitly returns `Promise.resolve(undefined)`.
+* At the time of logging, the Promise hasn’t resolved yet → shows `<pending>`.
+
+---
+
+### **Checking the Resolved Value**
+
+```js
+result.then(value => console.log("Resolved with:", value));
+```
+
+Output:
+
+```
+cvdf
+Resolved with: undefined
+```
+
+---
+
+### **Key Rule**
+
+`async` → Always returns a **Promise**, even if you `return` a value or nothing.
+
+Example:
+
+```js
+async function test1() { return 42; }
+async function test2() { }
+
+console.log(await test1()); // 42
+console.log(await test2()); // undefined
+```
+
+---
+
+If you want, I can also explain **how `await` unwraps the Promise** so you don’t see the `Promise {}` output when logging.
+That’s the key to debugging async functions in Node.
+
+Do you want me to show that?
+
