@@ -285,4 +285,168 @@ class HeapTest {
 
 ---
 
-Want animated **GIFs or interactive heap visualizer** next? Or want to try some real problems step by step with me?
+Alright — let’s open the hood and see how Java’s
+
+```java
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(
+    (a, b) -> count.get(b) - count.get(a)
+);
+```
+
+actually works internally.
+
+---
+
+## **1. How Java PriorityQueue Works**
+
+Java’s `PriorityQueue` is internally a **binary heap** stored in an **array** (array-based complete binary tree).
+
+* **Index 0** → root (highest priority element according to comparator).
+* For a node at index `i`:
+
+  * Left child index → `2*i + 1`
+  * Right child index → `2*i + 2`
+  * Parent index → `(i-1) / 2`
+* When you add/remove elements, it performs **sift-up** or **sift-down** to maintain heap order.
+
+---
+
+## **2. Comparator in Action**
+
+Normally, `PriorityQueue` uses **natural ordering** (`Comparable`) for integers, meaning **smallest number at the root** (min heap).
+
+When we pass:
+
+```java
+(a, b) -> count.get(b) - count.get(a)
+```
+
+we are **changing the meaning of "priority"**:
+
+* If `count.get(b)` > `count.get(a)` → comparator returns positive → `b` is considered *smaller* in heap terms (comes before `a`).
+* This effectively flips the heap so that **largest frequency = highest priority** → max heap.
+
+---
+
+## **3. Step-by-Step Example**
+
+Let:
+
+```java
+nums = [1, 1, 1, 2, 2, 3]
+count = {1=3, 2=2, 3=1}
+```
+
+We insert numbers into:
+
+```java
+PriorityQueue<Integer> maxHeap = new PriorityQueue<>(
+    (a, b) -> count.get(b) - count.get(a)
+);
+```
+
+### Step 1: Insert 1
+
+Heap array:
+
+```
+[1]   // only one element, no reordering needed
+```
+
+---
+
+### Step 2: Insert 2
+
+Comparator check:
+
+```
+compare(2, 1) = count[1] - count[2] = 3 - 2 = 1 > 0
+```
+
+Meaning: 1 has higher priority (freq=3), stays at root.
+
+Heap array:
+
+```
+[1, 2]   // root still 1
+```
+
+---
+
+### Step 3: Insert 3
+
+Comparator check against root (1):
+
+```
+compare(3, 1) = 3 - 1 = 2 > 0 → 1 stays at root
+```
+
+Heap array:
+
+```
+[1, 2, 3]   // root still 1
+```
+
+No swaps needed because freq(3) < freq(2) and freq(1).
+
+---
+
+### Step 4: Insert new element with higher freq
+
+Say we had:
+
+```java
+count.put(4, 5); // freq 5
+maxHeap.offer(4);
+```
+
+Heap insertion:
+
+* Compare 4 with parent (2 or 3) → 5 > 2 → swap upward.
+* Then compare with root (1) → 5 > 3 → swap upward again.
+
+Final heap:
+
+```
+[4, 1, 3, 2]   // root now has highest frequency
+```
+
+---
+
+## **4. Removal (`poll`)**
+
+When you `poll()`:
+
+1. Take root (highest frequency).
+2. Move last element to root.
+3. **Sift-down**:
+
+   * Compare root with its children using comparator.
+   * Swap with the child that has **higher frequency** (max heap rule).
+4. Repeat until heap property restored.
+
+---
+
+## **5. Visualization**
+
+For count = `{1=3, 2=2, 3=1, 4=5}`, the binary heap looks like:
+
+```
+        4(f=5)
+       /      \
+   1(f=3)    3(f=1)
+   /
+ 2(f=2)
+```
+
+Array representation:
+
+```
+[4, 1, 3, 2]
+```
+
+---
+
+If you want, I can **draw the heap transformation diagram** showing **each sift-up and sift-down** step for a full insert/remove sequence so you see exactly how this comparator drives the order.
+Do you want me to make that visual?
+
