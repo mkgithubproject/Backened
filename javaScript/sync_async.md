@@ -252,5 +252,89 @@ A
 
 ---
 
-Would you like to practice these with **hands-on dry run diagrams**, or do you want more **real-world interview-style problems** next?
+Good question 👌 — you’ve hit one of the **most common confusions** about `async` in JavaScript.
+
+---
+
+### 🔎 Your Code:
+
+```js
+async function f1() {
+    console.log("d");
+}
+f1();
+console.log("l");
+```
+
+### 🖨️ Output:
+
+```
+d
+l
+```
+
+---
+
+## ⚡ Why `d` comes before `l` even though `f1` is `async`?
+
+👉 Key point:
+
+* An `async` function **always returns a Promise**, but the **synchronous parts inside it run immediately**.
+* Only the parts that involve `await` or returned Promises get deferred to the event loop (microtask queue).
+
+---
+
+### Step by Step Execution
+
+1. `async function f1() { ... }`
+   Function is declared, nothing executed yet.
+
+2. `f1()` is called.
+
+   * JS **enters the function immediately**.
+   * It sees `console.log("d");` → this is synchronous → so `"d"` prints **right away**.
+   * After the function body finishes, JS automatically wraps the return value (`undefined` here) in a `Promise.resolve(undefined)`.
+
+3. Now back to main thread → executes `console.log("l");` → prints `"l"`.
+
+---
+
+### 🧪 If you add `await`
+
+```js
+async function f1() {
+    console.log("d1");
+    await null; // forces async break
+    console.log("d2");
+}
+f1();
+console.log("l");
+```
+
+👉 Output:
+
+```
+d1
+l
+d2
+```
+
+Explanation:
+
+* `d1` → runs synchronously when `f1()` starts.
+* `await null` → pauses `f1()` and schedules the rest (`d2`) as a microtask.
+* `console.log("l")` runs next in main thread.
+* After main thread finishes, event loop processes microtask → prints `d2`.
+
+---
+
+✅ **In short:**
+
+* `async` makes the function return a Promise.
+* **Synchronous code inside an async function still runs immediately.**
+* Only when you use `await` (or return a Promise) do things get deferred.
+
+---
+
+Would you like me to also show you a **visual timeline diagram (call stack + event loop)** for this exact code so it’s crystal clear?
 
