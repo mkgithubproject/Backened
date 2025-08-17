@@ -165,6 +165,30 @@ public class Main {
 | Inheritance   | Reusability    | `extends`  | Manager is an Employee      | `extends` keyword             |
 | Polymorphism  | Many Forms     | `override` | Same button, different jobs | Method Overriding/Overloading |
 
+
+
+Got it 👍
+You want **real-life examples** for each OOPs pillar (Encapsulation, Abstraction, Inheritance, Polymorphism) in a **table format** with **Java features + real-world mapping**.
+
+Here’s a refined version with **clear real-life examples** 👇
+
+| **Pillar**        | **Concept**           | **Keyword**             | **Real-Life Example**                                                                | **Java Feature**                   |
+| ----------------- | --------------------- | ----------------------- | ------------------------------------------------------------------------------------ | ---------------------------------- |
+| **Encapsulation** | Data hiding           | `private`               | **ATM Machine** → User can only access balance through PIN, internal details hidden. | `private` fields + getters/setters |
+| **Abstraction**   | Hiding implementation | `abstract`, `interface` | **Car Driving** → You press accelerator/brake, don’t know the engine mechanism.      | Abstract Class / Interface         |
+| **Inheritance**   | Reusability / IS-A    | `extends`, `implements` | **Manager is an Employee** → Manager inherits employee properties (name, salary).    | `extends` keyword                  |
+| **Polymorphism**  | Many Forms            | `override`, `overload`  | **Remote Control Button** → Same button (power) works for TV, AC, or Music System.   | Method Overloading / Overriding    |
+
+🔑 **Quick Recap**:
+
+* **Encapsulation** → Data protection (only controlled access).
+* **Abstraction** → Show only what’s necessary, hide complexity.
+* **Inheritance** → Parent-child relationship, reuse properties.
+* **Polymorphism** → One thing, many behaviors.
+
+👉 Do you want me to also show **Java code examples** for each real-life case so you can directly connect them with OOP pillars?
+
+
 ---
 
 Let me know if you want to extend this with:
