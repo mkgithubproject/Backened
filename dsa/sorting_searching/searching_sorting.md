@@ -46,3 +46,60 @@ class Solution {
 ```
 
 ###
+
+### quick sort
+```
+import java.util.*;
+
+class Solution {
+    public int[] sortArray(int[] nums) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    public void quickSort(int[] arr, int low, int high) {
+        if (low >= high) {
+            return;
+        }
+
+        int pivotIndex = partition(arr, low, high);
+        quickSort(arr, low, pivotIndex - 1);
+        quickSort(arr, pivotIndex + 1, high);
+    }
+
+    private int partition(int[] arr, int low, int high) {
+        // Random pivot to avoid worst-case O(n^2)
+        int randomIndex = (int)(Math.random() * (high));
+        swap(arr, low, randomIndex);
+
+        int pivot = arr[low];
+        int left = low + 1;
+        int right = high;
+
+        while (left <= right) {
+            while (left <= right && arr[left] <= pivot) {
+                left++;
+            }
+            while (left <= right && arr[right] > pivot) {
+                right--;
+            }
+            if (left < right) {
+                swap(arr, left, right);
+                left++;
+                right--;
+            }
+        }
+
+        // Put pivot in the correct position
+        swap(arr, low, right);
+        return right;
+    }
+
+    private void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+```
