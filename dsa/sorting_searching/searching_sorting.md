@@ -165,4 +165,44 @@ public void bubbleSort(int[] arr) {
 ```
 ### merge sort
 ```
+class Solution {
+
+    void mergeSort(int arr[], int l, int r) {
+        // code here
+        if(l>=r){ // one elment is already sorted
+            return;
+        }
+        int mid  = (l+r)/2;
+        mergeSort(arr, l , mid);
+        mergeSort(arr, mid+1 , r);
+        merge(arr,l , mid ,r);
+    }
+    void merge(int arr[] , int start , int mid, int end){
+        int[] temp = new int[end - start + 1]; // temporary array
+        int pointer1 = start;
+        int pointer2 = mid+1;
+        int index = 0;
+        while(pointer1<=mid && pointer2 <=end){
+             if (arr[pointer1] <= arr[pointer2]) {
+                temp[index++] = arr[pointer1++];
+            } else {
+                temp[index++] = arr[pointer2++];
+            }
+        }
+        while(pointer1<=mid){
+            temp[index++] = arr[pointer1++];
+        }
+        while(pointer2<=end){
+            temp[index++] = arr[pointer2++];
+        }
+         // copy merged temp back into arr[start..end]
+        for (int i = 0; i < temp.length; i++) {
+            arr[start + i] = temp[i];
+        }
+    }
+}
+
+```
+## m2
+```
 ```
