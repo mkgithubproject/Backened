@@ -131,6 +131,76 @@ docker run -p 3000:3000 my-node-app
 
 Would you like to see how Docker compares to Virtual Machines or how to dockerize a project step by step?
 
+# 🐳 Docker Commands Cheat Sheet
+
+## 🔹 Basics
+
+* `docker --version` → Show Docker version
+* `docker info` → Display system info
+* `docker help` → List all commands
+
+---
+
+## 📦 Images
+
+* `docker images` → List images
+* `docker pull <image>` → Download image
+* `docker build -t <name> .` → Build from Dockerfile
+* `docker rmi <image>` → Remove image
+* `docker tag <src> <repo:tag>` → Tag image
+
+---
+
+## 🏃 Containers
+
+* `docker ps` → List running containers
+* `docker ps -a` → List all containers
+* `docker run <image>` → Run container
+* `docker run -it <image> bash` → Run with shell
+* `docker run -d <image>` → Detached mode
+* `docker exec -it <container> bash` → Enter container
+* `docker stop <container>` → Stop container
+* `docker start <container>` → Start container
+* `docker restart <container>` → Restart container
+* `docker rm <container>` → Remove container
+
+---
+
+## 📂 Volumes & Files
+
+* `docker volume ls` → List volumes
+* `docker volume create <name>` → Create volume
+* `docker run -v <volume>:/path <image>` → Mount volume
+* `docker cp <container>:/path ./local` → Copy from container
+* `docker cp ./local <container>:/path` → Copy to container
+
+---
+
+## 🌐 Networks
+
+* `docker network ls` → List networks
+* `docker network create <name>` → Create network
+* `docker network connect <network> <container>` → Connect container
+* `docker network disconnect <network> <container>` → Disconnect container
+
+---
+
+## 🧹 Cleanup
+
+* `docker system prune` → Remove unused objects
+* `docker container prune` → Remove stopped containers
+* `docker image prune` → Remove unused images
+* `docker volume prune` → Remove unused volumes
+
+---
+
+## 🛠 Docker Compose
+
+* `docker-compose up` → Start services
+* `docker-compose up -d` → Detached mode
+* `docker-compose down` → Stop & remove
+* `docker-compose ps` → List services
+* `docker-compose logs` → View logs
 
 ---
 
