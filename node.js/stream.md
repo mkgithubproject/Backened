@@ -192,5 +192,40 @@ server.listen(3000);
 * You can chain streams together for efficiency and modularity.
 
 ---
+```
+import { MongoClient } from "mongodb";
+import fs from "fs";
 
-Would you like to explore how WebSocket adds persistent two-way connection on top of HTTP using sockets and streams?
+const uri = "mongodb://localhost:27017";
+const client = new MongoClient(uri);
+
+async function exportReport() {
+  await client.connect();
+  const db = client.db("shopDB");
+  const orders = db.collection("orders");
+
+  const pipeline = [
+    { $unwind: "$products" },
+    { $project: { orderId: 1, productId: "$products.productId", quantity: "$products.quantity" } }
+  ];
+
+  // Read stream (MongoDB cursor → Node.js readable)
+  const readable = orders.aggregate(pipeline).stream();
+
+  // Write stream (to file)
+  const writable = fs.createWriteStream("report.json");
+
+  // Pipe MongoDB docs → file
+  readable.on("data", (doc) => {
+    writable.write(JSON.stringify(doc) + "\n");
+  });
+
+  readable.on("end", () => {
+    writable.end(); // close file
+    console.log("Export finished!");
+  });
+}
+
+exportReport();
+
+```
