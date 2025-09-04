@@ -47,7 +47,7 @@ obj.debouncedLog(); // ✅ "Value is: 42"
 obj.debouncedLog(); // Only the last call after 1s will print
 
 ```
-
+============================================= debounce end ===============================================
 
 let obj ={
    a:1,
@@ -106,6 +106,20 @@ let obj ={
     }
 }
 obj.b();
+
+
+### time watch
+
+function watch(){
+    let time = 0;
+   let id =  setInterval(()=>{
+        console.log(time++)
+       if(time == 11){
+           clearInterval(id);
+       }
+    },1000)
+}
+watch();
 
 
 
