@@ -14,7 +14,7 @@ function debounc(fn , delay){
 }
 
 const searchWithDebounce = debounc(searchApi,1000);
-searchWithDebounce("hi");
+searchWithDebounce("hi"); // calling same reference function agagin and again sonthat will have access of previous timer id
 searchWithDebounce("hi2");
 searchWithDebounce("hi3");
 
