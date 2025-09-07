@@ -369,4 +369,85 @@ setB(200) --> updates hookStates[1]
 
 ---
 
-Would you like a live-code simulation of this in JavaScript, or a custom `useState` hook you can run to see closures in action?
+Good question 👍 Let’s break it down.
+
+In React, **`setState` (or `useState` setters)** works **asynchronous + batched** inside React event handlers.
+
+---
+
+### Case 1: Inside the same synchronous event handler
+
+If you call `setState` **three times in a row** inside the same function:
+
+```jsx
+function Counter() {
+  const [count, setCount] = React.useState(0);
+
+  const handleClick = () => {
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+  };
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={handleClick}>Increment</button>
+    </div>
+  );
+}
+```
+
+👉 What happens?
+
+* React batches all three updates because they happen in the same event.
+* Each one uses the **stale value of `count` (0)**.
+* Final state = `0 + 1 = 1`.
+* UI updates **once**, not three times.
+
+---
+
+### Case 2: Using functional updates
+
+If you want it to truly increment 3 times:
+
+```jsx
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+setCount(prev => prev + 1);
+```
+
+👉 Now React applies them sequentially:
+
+* Start: `0`
+* After 1st: `1`
+* After 2nd: `2`
+* After 3rd: `3`
+* UI updates **once**, final value = `3`.
+
+---
+
+### Case 3: Different async contexts
+
+If `setState` is called in **different async callbacks** (like `setTimeout`, `fetch`, etc.), React won’t batch them together:
+
+```jsx
+setTimeout(() => setCount(c => c + 1), 0);
+setTimeout(() => setCount(c => c + 1), 0);
+setTimeout(() => setCount(c => c + 1), 0);
+```
+
+👉 Each executes separately.
+UI will update **three times**, ending at `3`.
+
+---
+
+✅ **Summary**
+
+* Inside one sync event → batched, only last value or functional updates matter.
+* Using functional updates → you can accumulate changes properly.
+* Across async boundaries → React applies them separately.
+
+---
+
+Do you want me to also show a **dry-run diagram** of what happens in memory when React batches vs functional updates?
