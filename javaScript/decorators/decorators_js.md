@@ -175,7 +175,88 @@ guest.deleteUser(); // Throws "Not authorized"
 ```
 
 ---
+Ah, that error makes total sense 👍
 
-If you want, I can make a **visual diagram showing how decorators wrap a method step by step**, which makes it super clear how `target`, `descriptor`, and `apply` work internally.
+Here’s the issue:
 
-Do you want me to make that diagram?
+* **JavaScript (Node.js)** does **not** support the `@decorator` syntax yet.
+* That syntax only works in **TypeScript** (with `experimentalDecorators` enabled in `tsconfig.json`) or via **Babel** with the decorators plugin.
+
+That’s why when you run `node app.js`, Node throws:
+
+```
+SyntaxError: Invalid or unexpected token
+```
+
+because `@addId` is not valid JavaScript.
+
+---
+
+## ✅ How to fix
+
+### **Option 1: Use TypeScript**
+
+If you want to use decorators with `@`, you need TypeScript.
+
+1. Initialize TypeScript:
+
+   ```bash
+   npm init -y
+   npm install typescript ts-node @types/node --save-dev
+   npx tsc --init
+   ```
+
+2. In `tsconfig.json`, enable decorators:
+
+   ```json
+   {
+     "compilerOptions": {
+       "experimentalDecorators": true
+     }
+   }
+   ```
+
+3. Rename `app.js` → `app.ts`, then run:
+
+   ```bash
+   npx ts-node app.ts
+   ```
+
+Your code will run fine.
+
+---
+
+### **Option 2: Pure JavaScript (no @ syntax)**
+
+If you don’t want TypeScript, you can apply the decorator manually:
+
+```js
+function addId(target) {
+  target.prototype.id = Math.random().toString(36).substr(2, 9);
+}
+
+class User {
+  constructor(name) {
+    this.name = name;
+  }
+}
+
+// apply decorator manually
+addId(User);
+
+const user = new User("Mohit");
+console.log(user.name); // Mohit
+console.log(user.id);   // random string
+```
+
+---
+
+👉 So basically:
+
+* If you want the **`@decorator` syntax**, use **TypeScript** with `experimentalDecorators`.
+* If you stick to **plain Node.js**, apply decorators as functions instead of `@`.
+
+---
+
+Do you want me to set this up for **TypeScript (with `@` syntax)** or keep it **pure JS without `@`**?
+
