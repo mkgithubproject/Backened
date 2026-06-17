@@ -79,6 +79,96 @@ setTimeout(() => {
 
 A **Promise** is an object representing the eventual completion or failure of an asynchronous operation.
 
+In the definition:
+
+> **"A Promise is an object representing the eventual completion or failure of an asynchronous operation."**
+
+The word **eventual** means:
+
+> **"at some point in the future, not necessarily right now."**
+
+### Real-life example
+
+Imagine you order food online.
+
+```text
+Order placed ✅
+Food preparing...
+Food on the way...
+Delivered ✅
+```
+
+When you place the order, you don't get the food immediately.
+
+You only get a **promise** that one of these will happen later:
+
+1. Food gets delivered → Success (Resolved)
+2. Restaurant cancels → Failure (Rejected)
+
+The result comes **eventually**.
+
+---
+
+### In JavaScript
+
+```js
+const promise = fetch('/users');
+```
+
+When `fetch()` runs:
+
+```text
+Request sent
+↓
+Waiting for server...
+↓
+Result arrives later
+```
+
+The Promise object is created immediately, but its result is available **eventually**.
+
+```js
+Promise { <pending> }
+```
+
+Later it becomes:
+
+```js
+Promise { <fulfilled>: data }
+```
+
+or
+
+```js
+Promise { <rejected>: error }
+```
+
+---
+
+### Remember it like this
+
+```text
+Immediate      = Right now
+Synchronous    = Right now
+Eventual       = Later
+Asynchronous   = Later
+```
+
+So the Promise definition can be rewritten as:
+
+> **A Promise is an object that holds a value that will become available later, either as a success or an error.**
+
+This is why Promises have 3 states:
+
+```text
+Pending    -> Waiting
+Fulfilled  -> Success
+Rejected   -> Failure
+```
+
+The **"eventual"** part refers to the transition from **Pending** to either **Fulfilled** or **Rejected** sometime in the future.
+
+
 ### 🔹 States:
 
 * **Pending**
