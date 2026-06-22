@@ -1,3 +1,4 @@
+```
 Request
    │
    ▼
@@ -31,7 +32,10 @@ app.use((err, req, res, next) => {
    │
    ▼
 Send 400 response
+```
 
+
+```
 app.use(express.json({
     strict: true,
     verify: (req, res, buf) => {
@@ -44,6 +48,10 @@ app.use(express.json({
         }
     }
 }));
+
+```
+
+```
 
 app.use((err, req, res, next) => {
     if (err.message === "bad_request") {
@@ -60,3 +68,5 @@ app.use((err, req, res, next) => {
         message: req.t("something_went_wrong")
     });
 });
+
+```
