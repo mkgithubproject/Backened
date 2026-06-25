@@ -12,7 +12,7 @@ For a clean, **production-ready MongoDB connection** in Node.js with Mongoose, t
 
 ```env
 PORT=3000
-MONGODB_URI=mongodb+srv://mk:DGDS%409720@cluster0.omk3pot.mongodb.net/myDatabase?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=xyz
 ```
 
 > ⚠ If your password has special characters (`@`, `#`, `/`, etc.), URL-encode them.
